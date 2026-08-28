@@ -12,6 +12,7 @@ export interface ArchitectureNodeData extends Record<string, unknown> {
   area: ArchitectureArea;
   owner?: string;
   deploymentUnit?: string;
+  findingCount: number;
 }
 
 export interface ArchitectureEdgeData extends Record<string, unknown> {

@@ -1,3 +1,5 @@
+import type { ArchitectureFinding } from "../architecture/model";
+
 export type WorkspaceMode = "current" | "proposal";
 export type WebMcpStatus = "checking" | "ready" | "unavailable";
 
@@ -13,5 +15,7 @@ export interface WorkspaceActions {
   setActiveView: (viewId: string) => void;
   selectElements: (elementIds: string[]) => void;
   selectRelations: (relationIds: string[]) => void;
+  addFinding: (finding: ArchitectureFinding) => void;
+  focusFinding: (findingId: string) => void;
   resetWorkspace: () => void;
 }

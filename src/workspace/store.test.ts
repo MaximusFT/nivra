@@ -25,4 +25,26 @@ describe("workspace store", () => {
     expect(state.selectedElementIds).toEqual([]);
     expect(state.selectedRelationIds).toEqual([]);
   });
+
+  it("adds a finding immutably and focuses its evidence view", () => {
+    const originalArchitecture = useWorkspaceStore.getState().architecture;
+
+    useWorkspaceStore.getState().addFinding({
+      id: "checkout-isolation-risk",
+      title: "Checkout isolation risk",
+      description: "Checkout shares Product runtime state.",
+      severity: "warning",
+      source: "human",
+      relationIds: ["basket-adapter-shares-product-store"],
+      status: "open",
+    });
+    useWorkspaceStore.getState().focusFinding("checkout-isolation-risk");
+
+    const state = useWorkspaceStore.getState();
+    expect(state.architecture).not.toBe(originalArchitecture);
+    expect(originalArchitecture.findings).toEqual([]);
+    expect(state.architecture.findings).toHaveLength(1);
+    expect(state.activeViewId).toBe(CHECKOUT_LLD_VIEW_ID);
+    expect(state.selectedRelationIds).toEqual(["basket-adapter-shares-product-store"]);
+  });
 });

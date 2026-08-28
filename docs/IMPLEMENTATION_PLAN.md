@@ -95,15 +95,17 @@ Goal: complete the product story manually before exposing it through WebMCP.
 
 ### Phase 3A — Inspection and Findings
 
-Status: **next**
+Status: **complete**
 
-- [ ] expand pure query layer: descendants, incoming/outgoing relations, constraints and findings
-- [ ] build the Context Panel for selected architecture evidence
-- [ ] implement finding creation as a workspace/domain operation
-- [ ] render finding badges/cards and evidence focus
-- [ ] keep Findings distinct from validation results
+- [x] expand pure query layer: descendants, incoming/outgoing relations, constraints and findings
+- [x] build the Context Panel for selected architecture evidence
+- [x] implement finding creation as a workspace/domain operation
+- [x] render finding badges/cards and evidence focus
+- [x] keep Findings distinct from validation results
 
 ### Phase 3B — Constraints and deterministic validation
+
+Status: **next**
 
 - [ ] implement constraint workspace actions
 - [ ] implement pure validation engine
@@ -221,6 +223,7 @@ Each block should end with tests and a status-file update so work can move betwe
 2. **Block 2 — Phase 2A rendering:** complete.
 3. **Block 3 — Phase 2B drill-down:** complete.
 4. **Block 4 — Phase 2B evidence:** complete; Checkpoint A passed.
-5. **Block 5 — next:** Phase 3A query layer and Context Panel.
+5. **Block 5 — Phase 3A query layer and Context Panel:** complete.
+6. **Block 6 — next:** Phase 3B constraints and deterministic Current validation.
 
 Do not combine all blocks into one unreviewable change.

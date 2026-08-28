@@ -1,7 +1,7 @@
 # Nivra — Project Status
 
 > Last updated: 2026-08-28  
-> Current phase: Phase 2 complete; Phase 3A next
+> Current phase: Phase 3A complete; Phase 3B next
 > Current branch: `main`
 
 This is the first file to read when resuming Nivra on another computer or in a new Codex task.
@@ -64,34 +64,43 @@ Phase 2B completed the first product checkpoint:
 
 Checkpoint A passed in browser review: the Checkout LLD creates the intended “now I see it” moment without Findings or agent explanation.
 
+Phase 3A added the manual inspection and observation loop:
+
+- pure queries for descendants, incoming/outgoing relations, constraints, findings and element inspection;
+- a structured Context Panel for selected elements and relations;
+- immutable, idempotent Finding creation in the workspace;
+- Finding cards and evidence badges on affected nodes;
+- evidence restoration: clicking a Finding selects its evidence and opens the matching view;
+- end-to-end browser verification from relation inspection through Finding focus.
+
 ## Verification baseline
 
 The following checks passed after the latest change:
 
 ```text
 npm run typecheck  PASS
-npm test           PASS — 15 tests
+npm test           PASS — 20 tests
 npm run build      PASS
-Browser runtime    PASS — HLD/LLD drill-down, semantic evidence and focus work; no console errors
+Browser runtime    PASS — inspection and Findings loop works end-to-end; no console errors
 ```
 
 Always run all three command-line checks before ending an implementation task.
 
 ## Exact next task
 
-Start **Phase 3A — Inspection and Findings**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
+Start **Phase 3B — Constraints and deterministic validation**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
 
 The next implementation task should be limited to:
 
-1. expand pure architecture queries for descendants, incoming/outgoing relations, constraints and findings;
-2. define a small inspection result type without introducing WebMCP types;
-3. add a Context Panel for the selected element or relation;
-4. add a minimal architecture finding creation action;
-5. render finding evidence and allow it to drive the existing focus state;
-6. keep Findings visually and structurally separate from future validation results;
-7. add focused query, store and browser tests.
+1. define concrete validation result and per-constraint result types;
+2. implement the pure validation engine outside React, Zustand and WebMCP;
+3. support `forbidden-dependency`, `independent-deployment` and `no-cycles` first;
+4. add `allowed-protocol` only after the P0 rules are stable;
+5. add immutable workspace constraint and validation actions;
+6. add a Constraints/Validation UI clearly separate from Findings;
+7. test the canonical Current Architecture failure cases.
 
-Do not add Constraints, Proposals, validation or WebMCP in Phase 3A.
+Do not add Proposals or WebMCP in Phase 3B.
 
 ## Resume procedure on another computer
 

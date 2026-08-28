@@ -27,7 +27,20 @@ export function toFlowNodes({
 
   return architecture.elements
     .filter((element) => visibleElementIds.has(element.id))
-    .map((element) => ({
+    .map((element) => {
+      const connectedRelationIds = new Set(
+        architecture.relations
+          .filter(({ sourceId, targetId }) => sourceId === element.id || targetId === element.id)
+          .map(({ id }) => id),
+      );
+      const findingCount = architecture.findings.filter(
+        (finding) =>
+          finding.status === "open" &&
+          (finding.elementIds?.includes(element.id) ||
+            finding.relationIds?.some((relationId) => connectedRelationIds.has(relationId))),
+      ).length;
+
+      return {
       id: element.id,
       type: "architecture",
       position: positions.get(element.id) ?? { x: 0, y: 0 },
@@ -40,6 +53,8 @@ export function toFlowNodes({
         area: element.area,
         owner: element.owner,
         deploymentUnit: element.deploymentUnit,
+        findingCount,
       },
-    }));
+      };
+    });
 }

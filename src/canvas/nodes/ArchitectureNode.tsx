@@ -41,7 +41,7 @@ export function ArchitectureNode({ data, selected }: NodeProps<ArchitectureFlowN
 
   return (
     <article
-      className={`w-[196px] rounded-xl border px-3.5 py-3 shadow-sm transition-shadow ${styles.shell} ${
+      className={`relative w-[196px] rounded-xl border px-3.5 py-3 shadow-sm transition-shadow ${styles.shell} ${
         selected ? "ring-2 ring-blue-500 ring-offset-2 shadow-md" : ""
       }`}
     >
@@ -58,6 +58,11 @@ export function ArchitectureNode({ data, selected }: NodeProps<ArchitectureFlowN
           {data.owner ? <p className="mt-2 truncate text-[11px] text-slate-600">{data.owner}</p> : null}
         </div>
       </div>
+      {data.findingCount > 0 ? (
+        <span className="absolute -right-2 -top-2 grid min-w-5 place-items-center rounded-full border-2 border-white bg-amber-500 px-1 text-[10px] font-bold leading-4 text-white shadow-sm">
+          {data.findingCount}
+        </span>
+      ) : null}
       <Handle className="!size-2 !border-white !bg-slate-400" type="source" position={Position.Right} />
     </article>
   );

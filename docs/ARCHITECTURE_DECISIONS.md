@@ -106,6 +106,24 @@ Selecting a relation focuses its two endpoints. Selecting an element focuses tha
 
 Reason: one-hop focus makes evidence legible without implying broader transitive impact analysis, which belongs to later reasoning features.
 
+## D-012 — Workspace Findings are immutable and idempotent by ID
+
+Status: accepted
+Date: 2026-08-28
+
+Adding a Finding creates a new Architecture Model value and replaces any existing Finding with the same ID.
+
+Reason: future WebMCP retries must not duplicate the same observation, and the canonical fixture must remain untouched.
+
+## D-013 — Finding focus resolves the first view containing all evidence
+
+Status: accepted
+Date: 2026-08-28
+
+When a Finding is opened, the workspace selects its element/relation evidence and activates the first architecture view containing all referenced IDs. If no matching view exists, the current view remains active.
+
+Reason: Findings must restore visible evidence deterministically without storing presentation-only view state inside the domain entity.
+
 ## Open decisions before their implementation phases
 
 - Phase 2B: visual treatment for `shares-state` versus explicit protocols.
