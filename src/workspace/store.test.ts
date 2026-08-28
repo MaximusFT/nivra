@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
 import { CHECKOUT_LLD_VIEW_ID, COMMERCE_HLD_VIEW_ID } from "../shared/ids";
+import { checkoutGoldenConstraints } from "../fixtures/commerce/constraints";
 import { useWorkspaceStore } from "./store";
 
 describe("workspace store", () => {
@@ -46,5 +47,23 @@ describe("workspace store", () => {
     expect(state.architecture.findings).toHaveLength(1);
     expect(state.activeViewId).toBe(CHECKOUT_LLD_VIEW_ID);
     expect(state.selectedRelationIds).toEqual(["basket-adapter-shares-product-store"]);
+  });
+
+  it("adds constraints and stores deterministic validation separately from findings", () => {
+    for (const constraint of checkoutGoldenConstraints) {
+      useWorkspaceStore.getState().addConstraint(constraint);
+    }
+    useWorkspaceStore.getState().validateCurrent();
+
+    const state = useWorkspaceStore.getState();
+    expect(state.architecture.constraints).toHaveLength(4);
+    expect(state.architecture.findings).toEqual([]);
+    expect(state.validationResult?.summary).toEqual({ passed: 2, failed: 2 });
+
+    useWorkspaceStore.getState().focusValidationCheck("checkout-runtime-isolation");
+    expect(useWorkspaceStore.getState().activeViewId).toBe(CHECKOUT_LLD_VIEW_ID);
+    expect(useWorkspaceStore.getState().selectedRelationIds).toEqual([
+      "basket-adapter-shares-product-store",
+    ]);
   });
 });

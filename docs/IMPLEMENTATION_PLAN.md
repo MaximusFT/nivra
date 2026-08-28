@@ -105,18 +105,20 @@ Status: **complete**
 
 ### Phase 3B — Constraints and deterministic validation
 
-Status: **next**
+Status: **complete**
 
-- [ ] implement constraint workspace actions
-- [ ] implement pure validation engine
-- [ ] support `forbidden-dependency`
-- [ ] support `independent-deployment`
-- [ ] support `no-cycles`
-- [ ] support `allowed-protocol` after P0 rules are stable
-- [ ] create Current Architecture failure tests
-- [ ] render validation results distinctly from agent findings
+- [x] implement constraint workspace actions
+- [x] implement pure validation engine
+- [x] support `forbidden-dependency`
+- [x] support `independent-deployment`
+- [x] support `no-cycles`
+- [x] support `allowed-protocol` after P0 rules are stable
+- [x] create Current Architecture failure tests
+- [x] render validation results distinctly from agent findings
 
 ### Phase 3C — Proposals and Current/Proposal modes
+
+Status: **next**
 
 - [ ] implement pure `applyProposal`
 - [ ] guarantee Current Architecture is not mutated
@@ -224,6 +226,7 @@ Each block should end with tests and a status-file update so work can move betwe
 3. **Block 3 — Phase 2B drill-down:** complete.
 4. **Block 4 — Phase 2B evidence:** complete; Checkpoint A passed.
 5. **Block 5 — Phase 3A query layer and Context Panel:** complete.
-6. **Block 6 — next:** Phase 3B constraints and deterministic Current validation.
+6. **Block 6 — Phase 3B constraints and deterministic Current validation:** complete.
+7. **Block 7 — next:** Phase 3C proposal engine and Golden Proposal validation.
 
 Do not combine all blocks into one unreviewable change.

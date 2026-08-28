@@ -1,7 +1,7 @@
 # Nivra — Project Status
 
 > Last updated: 2026-08-28  
-> Current phase: Phase 3A complete; Phase 3B next
+> Current phase: Phase 3B complete; Phase 3C next
 > Current branch: `main`
 
 This is the first file to read when resuming Nivra on another computer or in a new Codex task.
@@ -73,34 +73,47 @@ Phase 3A added the manual inspection and observation loop:
 - evidence restoration: clicking a Finding selects its evidence and opens the matching view;
 - end-to-end browser verification from relation inspection through Finding focus.
 
+Phase 3B added deterministic architectural policy verification:
+
+- a pure TypeScript validation engine with typed results;
+- `forbidden-dependency`, `independent-deployment`, `no-cycles` and `allowed-protocol` rules;
+- descendant-aware forbidden dependency checks;
+- inherited deployment-unit resolution for LLD elements;
+- case-insensitive protocol comparison;
+- immutable, idempotent workspace constraints and explicit validation action;
+- a Policy tab that is visually and structurally separate from Findings;
+- evidence restoration from failed validation checks.
+
+Golden Current validation is deterministic: **2 passed / 2 failed**.
+
 ## Verification baseline
 
 The following checks passed after the latest change:
 
 ```text
 npm run typecheck  PASS
-npm test           PASS — 20 tests
+npm test           PASS — 24 tests
 npm run build      PASS
-Browser runtime    PASS — inspection and Findings loop works end-to-end; no console errors
+Browser runtime    PASS — constraints, 2/2 Current validation and failed-check evidence work; no console errors
 ```
 
 Always run all three command-line checks before ending an implementation task.
 
 ## Exact next task
 
-Start **Phase 3B — Constraints and deterministic validation**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
+Start **Phase 3C — Proposals and Current/Proposal modes**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
 
 The next implementation task should be limited to:
 
-1. define concrete validation result and per-constraint result types;
-2. implement the pure validation engine outside React, Zustand and WebMCP;
-3. support `forbidden-dependency`, `independent-deployment` and `no-cycles` first;
-4. add `allowed-protocol` only after the P0 rules are stable;
-5. add immutable workspace constraint and validation actions;
-6. add a Constraints/Validation UI clearly separate from Findings;
-7. test the canonical Current Architecture failure cases.
+1. implement pure `applyProposal` without mutating Current Architecture;
+2. implement proposal diff calculation;
+3. define the Golden Checkout Snapshot proposal patch;
+4. add immutable proposal creation and Current/Proposal workspace modes;
+5. render proposal additions/removals distinctly on the same canvas;
+6. validate the effective proposal architecture;
+7. prove in tests and browser that Current fails 2/2 while Proposal passes 4/0.
 
-Do not add Proposals or WebMCP in Phase 3B.
+Do not add WebMCP in Phase 3C.
 
 ## Resume procedure on another computer
 

@@ -1,4 +1,4 @@
-import type { ArchitectureFinding } from "../architecture/model";
+import type { ArchitectureConstraint, ArchitectureFinding } from "../architecture/model";
 
 export type WorkspaceMode = "current" | "proposal";
 export type WebMcpStatus = "checking" | "ready" | "unavailable";
@@ -17,5 +17,8 @@ export interface WorkspaceActions {
   selectRelations: (relationIds: string[]) => void;
   addFinding: (finding: ArchitectureFinding) => void;
   focusFinding: (findingId: string) => void;
+  addConstraint: (constraint: ArchitectureConstraint) => void;
+  validateCurrent: () => void;
+  focusValidationCheck: (constraintId: string) => void;
   resetWorkspace: () => void;
 }

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 import type { ArchitectureModel } from "../architecture/model";
+import { validateArchitecture, type ValidationResult } from "../architecture/validation";
 import { commerceArchitecture } from "../fixtures/commerce/architecture";
 import { COMMERCE_HLD_VIEW_ID } from "../shared/ids";
 import type { AgentActivityEntry, WebMcpStatus, WorkspaceActions, WorkspaceMode } from "./actions";
@@ -12,7 +13,7 @@ export interface WorkspaceState {
   activeProposalId?: string;
   selectedElementIds: string[];
   selectedRelationIds: string[];
-  validationResult?: unknown;
+  validationResult?: ValidationResult;
   agentActivity: AgentActivityEntry[];
   webMcpStatus: WebMcpStatus;
 }
@@ -67,6 +68,40 @@ export const useWorkspaceStore = create<WorkspaceStore>((set) => ({
         activeViewId: evidenceView?.id ?? state.activeViewId,
         selectedElementIds: [...elementIds],
         selectedRelationIds: [...relationIds],
+      };
+    }),
+  addConstraint: (constraint) =>
+    set((state) => ({
+      architecture: {
+        ...state.architecture,
+        constraints: [
+          ...state.architecture.constraints.filter(({ id }) => id !== constraint.id),
+          constraint,
+        ],
+      },
+      validationResult: undefined,
+    })),
+  validateCurrent: () =>
+    set((state) => ({
+      validationResult: validateArchitecture({ architecture: state.architecture }),
+    })),
+  focusValidationCheck: (constraintId) =>
+    set((state) => {
+      const check = state.validationResult?.checks.find(
+        (candidate) => candidate.constraintId === constraintId,
+      );
+      if (!check) return state;
+
+      const evidenceView = state.architecture.views.find((view) =>
+        check.relationIds.length > 0
+          ? check.relationIds.every((relationId) => view.relationIds.includes(relationId))
+          : check.elementIds.every((elementId) => view.elementIds.includes(elementId)),
+      );
+
+      return {
+        activeViewId: evidenceView?.id ?? state.activeViewId,
+        selectedElementIds: [...check.elementIds],
+        selectedRelationIds: [...check.relationIds],
       };
     }),
   resetWorkspace: () => set(createInitialState()),

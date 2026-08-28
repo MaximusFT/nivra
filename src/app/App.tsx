@@ -38,7 +38,7 @@ export function App() {
           </div>
           <div className="flex items-center gap-2 text-emerald-700">
             <CheckCircle2 aria-hidden="true" size={15} />
-            <span>Foundation ready</span>
+            <span>Workspace ready</span>
           </div>
         </div>
       </header>

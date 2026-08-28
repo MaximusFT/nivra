@@ -25,7 +25,7 @@ Phase 2B review result: the hierarchy is visually understandable when `product-s
 
 ## D-003 — Hidden Checkout coupling is revealed at LLD
 
-Status: accepted  
+Status: accepted
 Date: 2026-08-28
 
 The HLD does not expose a direct Checkout → Shared Store relation. The actual `basket-adapter -> product-store` `shares-state` relation appears in Checkout LLD.
@@ -34,14 +34,14 @@ Reason: this preserves the intended demo narrative: Checkout looks independently
 
 ## D-004 — Protocol is currently a display-friendly string
 
-Status: provisional  
+Status: accepted
 Date: 2026-08-28
 
 Relations currently store `protocol: "REST"` while contract types use the normalized value `rest`.
 
 Reason: the domain specification defines relation protocol as an unrestricted optional string and contract type as a union.
 
-Review point: before validation/WebMCP, decide whether protocol comparisons normalize case internally while preserving display labels.
+Phase 3B resolution: validation normalizes protocol values case-insensitively while relations preserve display-friendly labels such as `REST`.
 
 ## D-005 — Layout belongs to the fixture presentation boundary
 
@@ -54,12 +54,10 @@ Reason: layout is deterministic visual metadata, not architecture semantics.
 
 ## D-006 — Validation result shape is deferred
 
-Status: provisional  
+Status: superseded by D-014
 Date: 2026-08-28
 
-The workspace currently holds `validationResult?: unknown`.
-
-Reason: Phase 1 needed the workspace slot but was explicitly prohibited from designing the validation engine. Replace this with the concrete validation result type in Phase 3B.
+Phase 1 temporarily held `validationResult?: unknown` because it was explicitly prohibited from designing the validation engine. Phase 3B replaced it with the concrete `ValidationResult` defined by D-014.
 
 ## D-007 — Workspace reset reuses the canonical immutable fixture
 
@@ -123,6 +121,23 @@ Date: 2026-08-28
 When a Finding is opened, the workspace selects its element/relation evidence and activates the first architecture view containing all referenced IDs. If no matching view exists, the current view remains active.
 
 Reason: Findings must restore visible evidence deterministically without storing presentation-only view state inside the domain entity.
+
+## D-014 — Validation is pure, typed and evidence-bearing
+
+Status: accepted
+Date: 2026-08-28
+
+Validation returns one typed check per explicit constraint, an aggregate pass/fail summary and element/relation evidence IDs. Validation never creates Findings and never depends on workspace or presentation code.
+
+Rule semantics for Challenge V1:
+
+- forbidden dependencies include relations from source descendants to target descendants;
+- independent deployment fails when shared runtime state crosses the element family's deployment boundary;
+- LLD elements inherit deployment units through `parentId`;
+- cycle detection operates over the complete directed relation graph;
+- allowed protocol comparison is case-insensitive.
+
+Reason: the LLM may explain results, but deterministic application code must decide whether Current or Proposal satisfies human policy.
 
 ## Open decisions before their implementation phases
 
