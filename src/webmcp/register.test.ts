@@ -20,8 +20,12 @@ describe("WebMCP registration", () => {
       "get_architecture",
       "inspect_element",
       "show_architecture_view",
+      "annotate_architecture",
+      "add_constraint",
+      "create_proposal",
+      "validate_architecture",
     ]);
-    expect(registerTool).toHaveBeenCalledTimes(3);
+    expect(registerTool).toHaveBeenCalledTimes(7);
     expect(useWorkspaceStore.getState().webMcpStatus).toBe("ready");
   });
 });

@@ -164,16 +164,18 @@ Status: **complete**
 
 ### Phase 4B — Write and compute tools
 
-Status: **next**
+Status: **complete**
 
-- [ ] register `annotate_architecture`
-- [ ] register `add_constraint`
-- [ ] register `create_proposal`
-- [ ] register `validate_architecture`
-- [ ] validate tool inputs without coupling the domain to WebMCP
-- [ ] surface running/success/error activity states
+- [x] register `annotate_architecture`
+- [x] register `add_constraint`
+- [x] register `create_proposal`
+- [x] register `validate_architecture`
+- [x] validate tool inputs without coupling the domain to WebMCP
+- [x] surface running/success/error activity states
 
 ### Phase 4C — Golden prompt reliability
+
+Status: **next**
 
 - [ ] execute all five Golden prompts repeatedly
 - [ ] confirm deterministic IDs and tool outputs
@@ -238,6 +240,7 @@ Each block should end with tests and a status-file update so work can move betwe
 7. **Block 7 — Phase 3C proposal engine and Golden Proposal validation:** complete.
 8. **Block 8 — Phase 3D Reset Demo and lightweight persistence:** complete; Checkpoint B passed.
 9. **Block 9 — Phase 4A WebMCP adapter and read/navigation tools:** complete.
-10. **Block 10 — next:** Phase 4B WebMCP write and compute tools.
+10. **Block 10 — Phase 4B WebMCP write and compute tools:** complete.
+11. **Block 11 — next:** Phase 4C Golden prompt reliability and Checkpoint C.
 
 Do not combine all blocks into one unreviewable change.

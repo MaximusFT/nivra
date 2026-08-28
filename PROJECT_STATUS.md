@@ -1,7 +1,7 @@
 # Nivra — Project Status
 
 > Last updated: 2026-08-28  
-> Current phase: Phase 4A complete; Phase 4B next
+> Current phase: Phase 4B complete; Phase 4C next
 > Current branch: `main`
 
 This is the first file to read when resuming Nivra on another computer or in a new Codex task.
@@ -124,33 +124,45 @@ Phase 4A established the external-agent read/navigation boundary:
 
 Browser verification with Chromium's `WebMCP` feature enabled showed **WebMCP ready** and a clean 1440×900 workspace render.
 
+Phase 4B completed the WebMCP P0 tool set:
+
+- `annotate_architecture` creates idempotent agent Findings and focuses their visible evidence;
+- `add_constraint` stores all four supported deterministic rule variants;
+- `create_proposal` creates a patch-based active alternative while preserving Current relations/elements;
+- `validate_architecture` validates explicit Current/Proposal mode and updates the shared Policy result;
+- write inputs are validated again inside the adapter, beyond browser JSON Schema enforcement;
+- stable kebab-case IDs, enums, evidence references, rule references, proposal base version, duplicate/conflicting IDs, parent references, relation endpoints and nested update values are checked before workspace mutation;
+- all seven P0 tools register through the same WebMCP lifecycle and activity wrapper.
+
+The automated Golden result is preserved through WebMCP handlers: **Current 2 passed / 2 failed → Proposal 4 passed / 0 failed**, with Current runtime relations untouched.
+
 ## Verification baseline
 
 The following checks passed after the latest change:
 
 ```text
 npm run typecheck  PASS
-npm test           PASS — 41 tests
+npm test           PASS — 51 tests
 npm run build      PASS
-Browser runtime    PASS — Chromium WebMCP registration ready; Agent Activity visible; 1440×900 render clean
+Browser runtime    PASS — clean workspace render; Agent Activity visible; unavailable-runtime fallback verified
 ```
 
 Always run all three command-line checks before ending an implementation task.
 
 ## Exact next task
 
-Start **Phase 4B — WebMCP write and compute tools**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
+Start **Phase 4C — Golden prompt reliability**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
 
 The next implementation task should be limited to:
 
-1. register `annotate_architecture` through the existing Finding action;
-2. register `add_constraint` through the existing constraint action;
-3. register `create_proposal` through the patch-based proposal action;
-4. register `validate_architecture` through deterministic validation;
-5. validate external inputs at the WebMCP boundary;
-6. verify visible running/success/error activity and Current immutability.
+1. execute all five Golden prompts repeatedly through a WebMCP-enabled browser runtime;
+2. confirm deterministic IDs and idempotent retry behavior;
+3. confirm Current is never silently overwritten across repeated proposal/validation calls;
+4. confirm navigation/focus and activity transitions remain visible to the human;
+5. document the exact local WebMCP browser setup and testing procedure;
+6. decide Checkpoint C from recorded evidence.
 
-Keep WebMCP-specific schemas and validation outside the architecture domain.
+Do not begin visual polish until Checkpoint C passes.
 
 ## Resume procedure on another computer
 

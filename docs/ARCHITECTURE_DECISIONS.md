@@ -190,10 +190,21 @@ Every tool invocation upserts one transient activity entry from `running` to `su
 
 Reason: agents receive relevant structured truth without presentation metadata, while humans can see and debug agent participation without persisting stale execution state.
 
+## D-020 — WebMCP writes use schema plus semantic boundary validation
+
+Status: accepted
+Date: 2026-08-28
+
+Every write tool publishes a closed JSON Schema and then independently parses the received value before invoking a workspace action. The parser fixes agent-owned fields (`source: "agent"`, `status: "open"`, `createdBy: "agent"`) and rejects unknown fields, unstable IDs, invalid enums, missing evidence/rule references and structurally invalid proposal patches.
+
+Proposal validation additionally checks the exact Current base version, duplicate/conflicting IDs, added/updated parent references, and effective relation endpoints. Only a fully parsed `ArchitectureProposal` reaches `createProposal`; the workspace continues to store Current and derives Proposal mode separately.
+
+Reason: browser schema validation improves tool calling, but application invariants must still hold when handlers are retried, tested directly or invoked by runtimes with differing schema enforcement.
+
 ## Open decisions before their implementation phases
 
 - Phase 2B: visual treatment for `shares-state` versus explicit protocols.
 - Phase 3B: exact `ValidationResult` and per-rule result schema.
 - Phase 3C: immutable fixture clone/factory strategy for write operations and reset.
-- Phase 4B: exact reusable WebMCP input-validation/error shape for write tools.
+- Phase 4C: exact WebMCP-enabled browser setup and repeat-count evidence for Checkpoint C.
 - Phase 5: final deployment URL and license approval.
