@@ -40,20 +40,20 @@ Goal: make the structured model legible and navigable manually before adding the
 
 ### Phase 2A — Canvas foundation and Commerce HLD
 
-Status: **next**
+Status: **complete**
 
-- [ ] create pure model-to-flow node adapter
-- [ ] create pure model-to-flow edge adapter
-- [ ] keep React Flow types inside `src/canvas`
-- [ ] render only entities referenced by the active view
-- [ ] consume coordinates from the separate layout fixture
-- [ ] implement restrained typed architecture nodes
-- [ ] distinguish frontend, backend, data and state categories
-- [ ] render semantic edge labels such as `calls`, `reads`, `writes`, `hosts`
-- [ ] connect node selection to the workspace store
-- [ ] implement initial `fitView`
-- [ ] add adapter tests for view filtering and layout lookup
-- [ ] run typecheck, tests, build and browser console check
+- [x] create pure model-to-flow node adapter
+- [x] create pure model-to-flow edge adapter
+- [x] keep React Flow types inside `src/canvas`
+- [x] render only entities referenced by the active view
+- [x] consume coordinates from the separate layout fixture
+- [x] implement restrained typed architecture nodes
+- [x] distinguish frontend, backend, data and state categories
+- [x] render semantic edge labels such as `calls`, `reads`, `writes`, `hosts`
+- [x] connect node selection to the workspace store
+- [x] implement initial `fitView`
+- [x] add adapter tests for view filtering and layout lookup
+- [x] run typecheck, tests, build and browser console check
 
 Acceptance gate:
 
@@ -64,7 +64,7 @@ Acceptance gate:
 
 ### Phase 2B — Checkout LLD drill-down
 
-Status: pending
+Status: **next**
 
 - [ ] add view switching through workspace actions
 - [ ] add Commerce / Checkout breadcrumb

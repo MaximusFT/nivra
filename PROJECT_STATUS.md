@@ -1,7 +1,7 @@
 # Nivra — Project Status
 
 > Last updated: 2026-08-28  
-> Current phase: Phase 1 complete; Phase 2 not started  
+> Current phase: Phase 2A complete; Phase 2B next
 > Current branch: `main`
 
 This is the first file to read when resuming Nivra on another computer or in a new Codex task.
@@ -41,34 +41,44 @@ The critical Golden Scenario semantics already exist:
 
 The React/Zustand infinite-render issue was fixed by applying `useShallow` to the object-returning summary selector in `src/app/App.tsx`.
 
+Phase 2A added:
+
+- pure Architecture Model → React Flow node and edge adapters;
+- deterministic Commerce HLD rendering from the active view and layout fixture;
+- typed architecture nodes with frontend/backend/data/state differentiation;
+- semantic edge labels and relation-specific colors;
+- workspace-backed node and relation selection;
+- fit-to-view, zoom controls and a small category legend;
+- adapter tests that protect view filtering, fixture positions and semantic relations.
+
 ## Verification baseline
 
 The following checks passed after the latest change:
 
 ```text
 npm run typecheck  PASS
-npm test           PASS — 9 tests
+npm test           PASS — 12 tests
 npm run build      PASS
-Browser runtime    PASS — foundation screen rendered, no console errors
+Browser runtime    PASS — Commerce HLD rendered, selection works, no console errors
 ```
 
 Always run all three command-line checks before ending an implementation task.
 
 ## Exact next task
 
-Start **Phase 2A — Canvas foundation and Commerce HLD**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
+Start **Phase 2B — Checkout LLD drill-down**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
 
 The next implementation task should be limited to:
 
-1. create pure Architecture Model → React Flow adapters;
-2. render the `commerce-hld` view from model and layout fixtures;
-3. add typed custom nodes and semantic edges only as needed for HLD;
-4. support element selection through the existing workspace store;
-5. add basic fit-to-view behaviour;
-6. add focused adapter/component tests;
-7. retain a restrained structural shell rather than building the final UI.
+1. add manual HLD → Checkout LLD view switching;
+2. add a Commerce / Checkout breadcrumb;
+3. complete deterministic Checkout LLD layout coverage;
+4. make `shares-state` visually distinct from explicit `REST` integration;
+5. preserve node and relation selection while switching views safely;
+6. add initial focus/dimming behaviour for architectural evidence;
+7. add view-transition and LLD adapter tests.
 
-Do not add Checkout drill-down, Findings, Constraints, Proposals, validation or WebMCP in Phase 2A.
+Do not add Findings, Constraints, Proposals, validation or WebMCP in Phase 2B.
 
 ## Resume procedure on another computer
 
@@ -101,6 +111,4 @@ The user has explicitly authorized automatic Git delivery. After every completed
 
 Do not commit partially verified implementation work. If a block is interrupted or failing, record the state locally and finish or repair it before pushing.
 
-## Git synchronization warning
-
-At the time this file was created, the repository had a configured GitHub remote but `main` had no commits. This warning can be removed after the initial foundation commit is pushed successfully.
+The initial foundation was committed and pushed successfully. `main` tracks `origin/main`.

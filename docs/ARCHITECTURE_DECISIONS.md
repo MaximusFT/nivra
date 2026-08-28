@@ -5,7 +5,7 @@
 
 ## D-001 — One Architecture Model for all views
 
-Status: accepted  
+Status: accepted
 Date: 2026-08-28
 
 Commerce HLD and Checkout LLD reference the same elements and relations. Views contain IDs only and never duplicate entities.
@@ -79,6 +79,15 @@ Selectors that return newly allocated objects must be consumed with `useShallow`
 
 Reason: an unstable `getSnapshot` caused React's maximum update depth error during the Phase 1 browser smoke test.
 
+## D-009 — React Flow is isolated behind canvas adapters
+
+Status: accepted
+Date: 2026-08-28
+
+`src/canvas/adapters` is the only mapping boundary between Architecture Model/view/layout data and React Flow nodes or edges. The adapters filter by active view, attach visual positions and add presentation metadata.
+
+Reason: the domain and fixtures must remain usable by validation and WebMCP without importing React Flow concepts.
+
 ## Open decisions before their implementation phases
 
 - Phase 2B: visual treatment for `shares-state` versus explicit protocols.
@@ -86,4 +95,3 @@ Reason: an unstable `getSnapshot` caused React's maximum update depth error duri
 - Phase 3C: immutable fixture clone/factory strategy for write operations and reset.
 - Phase 4: WebMCP runtime API shape and supported input-validation boundary.
 - Phase 5: final deployment URL and license approval.
-
