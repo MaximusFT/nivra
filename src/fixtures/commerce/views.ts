@@ -45,7 +45,6 @@ export const commerceViews: ArchitectureView[] = [
     level: "lld",
     rootElementId: "checkout-mfe",
     elementIds: [
-      "checkout-mfe",
       "checkout-page",
       "checkout-domain",
       "basket-adapter",

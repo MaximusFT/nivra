@@ -26,16 +26,20 @@ export interface ToFlowEdgesOptions {
   architecture: ArchitectureModel;
   view: ArchitectureView;
   selectedRelationIds?: string[];
+  focusedRelationIds?: string[];
 }
 
 export function toFlowEdges({
   architecture,
   view,
   selectedRelationIds = [],
+  focusedRelationIds = [],
 }: ToFlowEdgesOptions): ArchitectureFlowEdge[] {
   const visibleElementIds = new Set(view.elementIds);
   const visibleRelationIds = new Set(view.relationIds);
   const selectedIds = new Set(selectedRelationIds);
+  const focusedIds = new Set(focusedRelationIds);
+  const hasFocus = focusedIds.size > 0;
 
   return architecture.relations
     .filter(
@@ -46,6 +50,9 @@ export function toFlowEdges({
     )
     .map((relation) => {
       const color = relationColors[relation.type];
+      const isSelected = selectedIds.has(relation.id);
+      const isFocused = !hasFocus || focusedIds.has(relation.id);
+      const isSharedState = relation.type === "shares-state";
 
       return {
         id: relation.id,
@@ -53,15 +60,27 @@ export function toFlowEdges({
         target: relation.targetId,
         type: "smoothstep",
         label: formatRelationLabel(relation.type, relation.protocol),
-        selected: selectedIds.has(relation.id),
+        selected: isSelected,
         data: {
           relationType: relation.type,
           protocol: relation.protocol,
           description: relation.description,
         },
-        style: { stroke: color, strokeWidth: 1.5 },
-        labelStyle: { fill: "#475569", fontSize: 11, fontWeight: 600 },
-        labelBgStyle: { fill: "#f7f8fa", fillOpacity: 0.94 },
+        style: {
+          stroke: color,
+          strokeWidth: isSelected ? 3 : isSharedState ? 2.4 : 1.5,
+          strokeDasharray: isSharedState ? "7 4" : undefined,
+          opacity: isFocused ? 1 : 0.18,
+        },
+        labelStyle: {
+          fill: isSharedState ? "#b91c1c" : relation.protocol ? "#1d4ed8" : "#475569",
+          fontSize: 11,
+          fontWeight: isSharedState ? 700 : 600,
+        },
+        labelBgStyle: {
+          fill: isSharedState ? "#fef2f2" : "#f7f8fa",
+          fillOpacity: 0.96,
+        },
         labelBgPadding: [5, 3],
         labelBgBorderRadius: 4,
         markerEnd: { type: MarkerType.ArrowClosed, color, width: 16, height: 16 },

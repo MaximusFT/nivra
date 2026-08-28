@@ -14,14 +14,14 @@ Reason: the shared structured model is Nivra's core product invariant.
 
 ## D-002 — Product Store is an LLD child of Shared Store
 
-Status: accepted pending visual review  
+Status: accepted
 Date: 2026-08-28
 
 `product-store` represents Product-domain runtime state and has `parentId: "shared-store"`.
 
 Reason: the Golden Scenario needs a precise LLD evidence target while preserving `shared-store` as the HLD runtime-state concept.
 
-Review point: confirm during Phase 2B that this hierarchy is visually understandable. If it creates ambiguity, revisit the naming or presentation without duplicating model entities.
+Phase 2B review result: the hierarchy is visually understandable when `product-store` appears as the precise external state dependency in Checkout LLD.
 
 ## D-003 — Hidden Checkout coupling is revealed at LLD
 
@@ -87,6 +87,24 @@ Date: 2026-08-28
 `src/canvas/adapters` is the only mapping boundary between Architecture Model/view/layout data and React Flow nodes or edges. The adapters filter by active view, attach visual positions and add presentation metadata.
 
 Reason: the domain and fixtures must remain usable by validation and WebMCP without importing React Flow concepts.
+
+## D-010 — View root provides context without requiring a canvas node
+
+Status: accepted
+Date: 2026-08-28
+
+`checkout-lld.rootElementId` remains `checkout-mfe`, but `checkout-mfe` is not included in the view's visible `elementIds`.
+
+Reason: the root establishes hierarchy and breadcrumb context. Rendering it as an unconnected node would add noise to the internal dependency view.
+
+## D-011 — Selection focus uses one-hop architectural evidence
+
+Status: accepted
+Date: 2026-08-28
+
+Selecting a relation focuses its two endpoints. Selecting an element focuses that element, its directly connected visible elements and the connecting relations. Unrelated nodes and edges are dimmed.
+
+Reason: one-hop focus makes evidence legible without implying broader transitive impact analysis, which belongs to later reasoning features.
 
 ## Open decisions before their implementation phases
 

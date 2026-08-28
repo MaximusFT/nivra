@@ -7,6 +7,7 @@ export interface ToFlowNodesOptions {
   view: ArchitectureView;
   layout: ViewLayout;
   selectedElementIds?: string[];
+  focusedElementIds?: string[];
 }
 
 export function toFlowNodes({
@@ -14,9 +15,12 @@ export function toFlowNodes({
   view,
   layout,
   selectedElementIds = [],
+  focusedElementIds = [],
 }: ToFlowNodesOptions): ArchitectureFlowNode[] {
   const visibleElementIds = new Set(view.elementIds);
   const selectedIds = new Set(selectedElementIds);
+  const focusedIds = new Set(focusedElementIds);
+  const hasFocus = focusedIds.size > 0;
   const positions = new Map(
     layout.elements.map(({ elementId, x, y }) => [elementId, { x, y }] as const),
   );
@@ -29,6 +33,7 @@ export function toFlowNodes({
       position: positions.get(element.id) ?? { x: 0, y: 0 },
       selected: selectedIds.has(element.id),
       draggable: false,
+      style: { opacity: hasFocus && !focusedIds.has(element.id) ? 0.32 : 1 },
       data: {
         label: element.name,
         kind: element.kind,

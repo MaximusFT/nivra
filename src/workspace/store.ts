@@ -35,7 +35,8 @@ function createInitialState(): WorkspaceState {
 
 export const useWorkspaceStore = create<WorkspaceStore>((set) => ({
   ...createInitialState(),
-  setActiveView: (activeViewId) => set({ activeViewId }),
+  setActiveView: (activeViewId) =>
+    set({ activeViewId, selectedElementIds: [], selectedRelationIds: [] }),
   selectElements: (selectedElementIds) => set({ selectedElementIds: [...selectedElementIds] }),
   selectRelations: (selectedRelationIds) => set({ selectedRelationIds: [...selectedRelationIds] }),
   resetWorkspace: () => set(createInitialState()),

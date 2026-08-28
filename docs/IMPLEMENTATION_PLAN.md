@@ -64,17 +64,17 @@ Acceptance gate:
 
 ### Phase 2B — Checkout LLD drill-down
 
-Status: **next**
+Status: **complete**
 
-- [ ] add view switching through workspace actions
-- [ ] add Commerce / Checkout breadcrumb
-- [ ] render Checkout LLD from the same Architecture Model
-- [ ] include external evidence nodes required by the view
-- [ ] make `shares-state` visually distinct from `REST`
-- [ ] add node and relation selection behaviour
-- [ ] implement deterministic focus/dimming state
-- [ ] add manual HLD → LLD navigation
-- [ ] test hierarchy resolution and active-view transitions
+- [x] add view switching through workspace actions
+- [x] add Commerce / Checkout breadcrumb
+- [x] render Checkout LLD from the same Architecture Model
+- [x] include external evidence nodes required by the view
+- [x] make `shares-state` visually distinct from `REST`
+- [x] add node and relation selection behaviour
+- [x] implement deterministic focus/dimming state
+- [x] add manual HLD → LLD navigation
+- [x] test hierarchy resolution and active-view transitions
 
 Acceptance gate — Checkpoint A:
 
@@ -87,11 +87,15 @@ Basket Adapter -> Product Store       shares state
 Pricing Module -> Product Service     REST
 ```
 
+Checkpoint A result: **passed in browser review**. The two relations are simultaneously visible, semantically labeled and visually distinct.
+
 ## Phase 3 — Manual reasoning loop
 
 Goal: complete the product story manually before exposing it through WebMCP.
 
 ### Phase 3A — Inspection and Findings
+
+Status: **next**
 
 - [ ] expand pure query layer: descendants, incoming/outgoing relations, constraints and findings
 - [ ] build the Context Panel for selected architecture evidence
@@ -213,10 +217,10 @@ Cut these first if schedule pressure appears.
 
 Each block should end with tests and a status-file update so work can move between computers safely.
 
-1. **Block 1 — Phase 2A adapters:** model/view/layout → nodes and edges, with unit tests.
-2. **Block 2 — Phase 2A rendering:** Commerce HLD canvas, selection and browser verification.
-3. **Block 3 — Phase 2B drill-down:** active view navigation and Checkout LLD.
-4. **Block 4 — Phase 2B evidence:** semantic edges, focus/dimming and Checkpoint A review.
-5. **Block 5 — only after approval:** begin Phase 3A query layer and Context Panel.
+1. **Block 1 — Phase 2A adapters:** complete.
+2. **Block 2 — Phase 2A rendering:** complete.
+3. **Block 3 — Phase 2B drill-down:** complete.
+4. **Block 4 — Phase 2B evidence:** complete; Checkpoint A passed.
+5. **Block 5 — next:** Phase 3A query layer and Context Panel.
 
 Do not combine all blocks into one unreviewable change.

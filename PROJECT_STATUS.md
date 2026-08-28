@@ -1,7 +1,7 @@
 # Nivra — Project Status
 
 > Last updated: 2026-08-28  
-> Current phase: Phase 2A complete; Phase 2B next
+> Current phase: Phase 2 complete; Phase 3A next
 > Current branch: `main`
 
 This is the first file to read when resuming Nivra on another computer or in a new Codex task.
@@ -51,34 +51,47 @@ Phase 2A added:
 - fit-to-view, zoom controls and a small category legend;
 - adapter tests that protect view filtering, fixture positions and semantic relations.
 
+Phase 2B completed the first product checkpoint:
+
+- manual Commerce HLD ↔ Checkout LLD switching;
+- Commerce / Checkout breadcrumb and level-aware header;
+- complete deterministic LLD positions;
+- visibly distinct red `shares state` runtime coupling and blue `REST` integration;
+- relation legend for the architectural trade-off;
+- deterministic focus/dimming for selected nodes, relations and direct evidence;
+- selection reset on view changes;
+- focus, layout and workspace transition tests.
+
+Checkpoint A passed in browser review: the Checkout LLD creates the intended “now I see it” moment without Findings or agent explanation.
+
 ## Verification baseline
 
 The following checks passed after the latest change:
 
 ```text
 npm run typecheck  PASS
-npm test           PASS — 12 tests
+npm test           PASS — 15 tests
 npm run build      PASS
-Browser runtime    PASS — Commerce HLD rendered, selection works, no console errors
+Browser runtime    PASS — HLD/LLD drill-down, semantic evidence and focus work; no console errors
 ```
 
 Always run all three command-line checks before ending an implementation task.
 
 ## Exact next task
 
-Start **Phase 2B — Checkout LLD drill-down**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
+Start **Phase 3A — Inspection and Findings**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
 
 The next implementation task should be limited to:
 
-1. add manual HLD → Checkout LLD view switching;
-2. add a Commerce / Checkout breadcrumb;
-3. complete deterministic Checkout LLD layout coverage;
-4. make `shares-state` visually distinct from explicit `REST` integration;
-5. preserve node and relation selection while switching views safely;
-6. add initial focus/dimming behaviour for architectural evidence;
-7. add view-transition and LLD adapter tests.
+1. expand pure architecture queries for descendants, incoming/outgoing relations, constraints and findings;
+2. define a small inspection result type without introducing WebMCP types;
+3. add a Context Panel for the selected element or relation;
+4. add a minimal architecture finding creation action;
+5. render finding evidence and allow it to drive the existing focus state;
+6. keep Findings visually and structurally separate from future validation results;
+7. add focused query, store and browser tests.
 
-Do not add Findings, Constraints, Proposals, validation or WebMCP in Phase 2B.
+Do not add Constraints, Proposals, validation or WebMCP in Phase 3A.
 
 ## Resume procedure on another computer
 

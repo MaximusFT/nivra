@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { getChildren } from "../../architecture/queries";
 import { commerceArchitecture } from "./architecture";
+import { commerceLayouts } from "./layout";
 
 describe("Commerce fixture integrity", () => {
   it("uses unique IDs across the architecture model", () => {
@@ -35,6 +36,18 @@ describe("Commerce fixture integrity", () => {
       }
       for (const relationId of view.relationIds) {
         expect(relationIds.has(relationId), `${view.id} relation ${relationId}`).toBe(true);
+      }
+    }
+  });
+
+  it("provides a deterministic position for every visible element", () => {
+    for (const view of commerceArchitecture.views) {
+      const layout = commerceLayouts.find(({ viewId }) => view.id === viewId);
+      expect(layout, view.id).toBeDefined();
+
+      const positionedIds = new Set(layout?.elements.map(({ elementId }) => elementId));
+      for (const elementId of view.elementIds) {
+        expect(positionedIds.has(elementId), `${view.id} layout ${elementId}`).toBe(true);
       }
     }
   });

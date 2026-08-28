@@ -16,13 +16,13 @@ describe("workspace store", () => {
   });
 
   it("supports the minimal navigation and selection actions", () => {
-    useWorkspaceStore.getState().setActiveView(CHECKOUT_LLD_VIEW_ID);
     useWorkspaceStore.getState().selectElements(["basket-adapter"]);
     useWorkspaceStore.getState().selectRelations(["basket-adapter-shares-product-store"]);
+    useWorkspaceStore.getState().setActiveView(CHECKOUT_LLD_VIEW_ID);
 
     const state = useWorkspaceStore.getState();
     expect(state.activeViewId).toBe(CHECKOUT_LLD_VIEW_ID);
-    expect(state.selectedElementIds).toEqual(["basket-adapter"]);
-    expect(state.selectedRelationIds).toEqual(["basket-adapter-shares-product-store"]);
+    expect(state.selectedElementIds).toEqual([]);
+    expect(state.selectedRelationIds).toEqual([]);
   });
 });
