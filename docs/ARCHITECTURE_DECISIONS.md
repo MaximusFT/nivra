@@ -201,10 +201,20 @@ Proposal validation additionally checks the exact Current base version, duplicat
 
 Reason: browser schema validation improves tool calling, but application invariants must still hold when handlers are retried, tested directly or invoked by runtimes with differing schema enforcement.
 
+## D-021 — Checkpoint C uses a browser-owned black-box harness
+
+Status: accepted
+Date: 2026-08-28
+
+`scripts/test-webmcp.mjs` launches an isolated Vite server and temporary Chromium profile with `WebMCP` enabled, discovers the registered tools and invokes them only through the browser's `ModelContext.executeTool()` testing extension. It does not import the Zustand store or tool handlers.
+
+The default reliability gate is three complete repetitions from Reset Demo. Each run includes deliberate stable-ID retries, DOM focus/activity assertions, deterministic Current/Proposal validation, and a final semantic read proving Current was not overwritten. The harness uses free localhost ports, supports `NIVRA_CHROME_PATH`, owns process shutdown and removes its temporary profile.
+
+Reason: unit tests protect handlers and invariants, but Checkpoint C requires black-box proof that registration, browser transport, workspace actions and visible React state work together.
+
 ## Open decisions before their implementation phases
 
 - Phase 2B: visual treatment for `shares-state` versus explicit protocols.
 - Phase 3B: exact `ValidationResult` and per-rule result schema.
 - Phase 3C: immutable fixture clone/factory strategy for write operations and reset.
-- Phase 4C: exact WebMCP-enabled browser setup and repeat-count evidence for Checkpoint C.
 - Phase 5: final deployment URL and license approval.

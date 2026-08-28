@@ -1,7 +1,7 @@
 # Nivra — Project Status
 
 > Last updated: 2026-08-28  
-> Current phase: Phase 4B complete; Phase 4C next
+> Current phase: Phase 4 complete; Checkpoint C passed; Phase 5A next
 > Current branch: `main`
 
 This is the first file to read when resuming Nivra on another computer or in a new Codex task.
@@ -136,6 +136,19 @@ Phase 4B completed the WebMCP P0 tool set:
 
 The automated Golden result is preserved through WebMCP handlers: **Current 2 passed / 2 failed → Proposal 4 passed / 0 failed**, with Current runtime relations untouched.
 
+Phase 4C completed browser-level reliability verification:
+
+- a cross-platform `npm run test:webmcp` harness locates Chrome/Chromium or accepts `NIVRA_CHROME_PATH`;
+- it launches isolated Vite and temporary Chromium processes on free localhost ports with WebMCP enabled;
+- it discovers and invokes all seven tools through `ModelContext.executeTool()`;
+- the complete Golden workflow runs three times by default, beginning from Reset Demo;
+- deliberate Finding, Constraint and Proposal retries prove stable-ID idempotency;
+- DOM assertions prove Checkout LLD focus and Agent Activity visibility;
+- Current/Proposal validation and Current immutability are checked after every repetition;
+- process shutdown and temporary profile cleanup are owned by the harness.
+
+All three recorded runs produced the same evidence. **Checkpoint C passed.** See `docs/CHECKPOINT_C_REPORT.md` and `docs/WEBMCP_TESTING.md`.
+
 ## Verification baseline
 
 The following checks passed after the latest change:
@@ -144,25 +157,26 @@ The following checks passed after the latest change:
 npm run typecheck  PASS
 npm test           PASS — 51 tests
 npm run build      PASS
-Browser runtime    PASS — clean workspace render; Agent Activity visible; unavailable-runtime fallback verified
+npm run test:webmcp PASS — 3 complete Chromium runs; 7 tools; Current 2/2 → Proposal 4/0
+Browser runtime    PASS — focus and Agent Activity visible; Current preserved; unavailable fallback verified
 ```
 
 Always run all three command-line checks before ending an implementation task.
 
 ## Exact next task
 
-Start **Phase 4C — Golden prompt reliability**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
+Start **Phase 5A — Visual polish**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
 
 The next implementation task should be limited to:
 
-1. execute all five Golden prompts repeatedly through a WebMCP-enabled browser runtime;
-2. confirm deterministic IDs and idempotent retry behavior;
-3. confirm Current is never silently overwritten across repeated proposal/validation calls;
-4. confirm navigation/focus and activity transitions remain visible to the human;
-5. document the exact local WebMCP browser setup and testing procedure;
-6. decide Checkpoint C from recorded evidence.
+1. review and refine the complete desktop shell at 1440×900 and 1920×1080;
+2. improve typography, spacing, focus states and semantic contrast without changing the proven workflow;
+3. polish the Checkout LLD evidence hero state;
+4. polish the Proposal `4/4` validation hero state;
+5. verify accessibility basics, readable labels and browser console cleanliness;
+6. preserve all Phase 4 tool schemas and Checkpoint C invariants.
 
-Do not begin visual polish until Checkpoint C passes.
+Phase 4 is feature-complete. Avoid expanding product scope during visual polish.
 
 ## Resume procedure on another computer
 

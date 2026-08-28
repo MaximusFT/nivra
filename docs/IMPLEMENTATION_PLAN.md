@@ -175,13 +175,13 @@ Status: **complete**
 
 ### Phase 4C — Golden prompt reliability
 
-Status: **next**
+Status: **complete**
 
-- [ ] execute all five Golden prompts repeatedly
-- [ ] confirm deterministic IDs and tool outputs
-- [ ] confirm Current is never silently overwritten
-- [ ] confirm agent focus/navigation is visible to the human
-- [ ] document WebMCP testing setup
+- [x] execute all five Golden prompts repeatedly
+- [x] confirm deterministic IDs and tool outputs
+- [x] confirm Current is never silently overwritten
+- [x] confirm agent focus/navigation is visible to the human
+- [x] document WebMCP testing setup
 
 Acceptance gate — Checkpoint C:
 
@@ -189,9 +189,13 @@ Acceptance gate — Checkpoint C:
 
 After this gate: feature freeze.
 
+Checkpoint C result: **passed** after three complete WebMCP-enabled Chromium repetitions. Phase 4 is feature-frozen.
+
 ## Phase 5 — Challenge hardening and delivery
 
 ### Phase 5A — Visual polish
+
+Status: **next**
 
 - [ ] finalize desktop workspace shell
 - [ ] tune 1440×900 and 1920×1080 layouts
@@ -241,6 +245,7 @@ Each block should end with tests and a status-file update so work can move betwe
 8. **Block 8 — Phase 3D Reset Demo and lightweight persistence:** complete; Checkpoint B passed.
 9. **Block 9 — Phase 4A WebMCP adapter and read/navigation tools:** complete.
 10. **Block 10 — Phase 4B WebMCP write and compute tools:** complete.
-11. **Block 11 — next:** Phase 4C Golden prompt reliability and Checkpoint C.
+11. **Block 11 — Phase 4C Golden prompt reliability and Checkpoint C:** complete; gate passed.
+12. **Block 12 — next:** Phase 5A visual polish.
 
 Do not combine all blocks into one unreviewable change.
