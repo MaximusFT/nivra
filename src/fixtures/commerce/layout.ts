@@ -39,6 +39,7 @@ export const commerceLayouts: ViewLayout[] = [
       { elementId: "order-module", x: 600, y: 400 },
       { elementId: "checkout-api-client", x: 600, y: 520 },
       { elementId: "product-store", x: 880, y: 40 },
+      { elementId: "checkout-snapshot-contract", x: 880, y: 40 },
       { elementId: "product-service", x: 880, y: 160 },
       { elementId: "checkout-service", x: 880, y: 520 },
     ],

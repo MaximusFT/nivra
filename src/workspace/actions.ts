@@ -1,4 +1,8 @@
-import type { ArchitectureConstraint, ArchitectureFinding } from "../architecture/model";
+import type {
+  ArchitectureConstraint,
+  ArchitectureFinding,
+  ArchitectureProposal,
+} from "../architecture/model";
 
 export type WorkspaceMode = "current" | "proposal";
 export type WebMcpStatus = "checking" | "ready" | "unavailable";
@@ -13,6 +17,7 @@ export interface AgentActivityEntry {
 
 export interface WorkspaceActions {
   setActiveView: (viewId: string) => void;
+  setActiveMode: (mode: WorkspaceMode) => void;
   selectElements: (elementIds: string[]) => void;
   selectRelations: (relationIds: string[]) => void;
   addFinding: (finding: ArchitectureFinding) => void;
@@ -20,5 +25,7 @@ export interface WorkspaceActions {
   addConstraint: (constraint: ArchitectureConstraint) => void;
   validateCurrent: () => void;
   focusValidationCheck: (constraintId: string) => void;
+  createProposal: (proposal: ArchitectureProposal) => void;
+  validateActive: () => void;
   resetWorkspace: () => void;
 }

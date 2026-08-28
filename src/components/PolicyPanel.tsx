@@ -1,25 +1,41 @@
-import { AlertCircle, CheckCircle2, Play, Plus, ShieldCheck, XCircle } from "lucide-react";
+import { AlertCircle, CheckCircle2, GitCompare, Play, Plus, ShieldCheck, XCircle } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
 
 import { checkoutGoldenConstraints } from "../fixtures/commerce/constraints";
+import { goldenCheckoutProposal } from "../fixtures/commerce/proposals";
+import { getProposalDiff } from "../architecture/proposals";
 import { useWorkspaceStore } from "../workspace/store";
 
 export function PolicyPanel() {
   const {
     constraints,
     validationResult,
+    proposals,
+    activeMode,
+    activeProposalId,
     addConstraint,
-    validateCurrent,
+    createProposal,
+    setActiveMode,
+    validateActive,
     focusValidationCheck,
   } = useWorkspaceStore(
     useShallow((state) => ({
       constraints: state.architecture.constraints,
       validationResult: state.validationResult,
+      proposals: state.architecture.proposals,
+      activeMode: state.activeMode,
+      activeProposalId: state.activeProposalId,
       addConstraint: state.addConstraint,
-      validateCurrent: state.validateCurrent,
+      createProposal: state.createProposal,
+      setActiveMode: state.setActiveMode,
+      validateActive: state.validateActive,
       focusValidationCheck: state.focusValidationCheck,
     })),
   );
+  const activeProposal = activeProposalId
+    ? proposals.find(({ id }) => id === activeProposalId)
+    : undefined;
+  const proposalDiff = activeProposal ? getProposalDiff(activeProposal) : undefined;
 
   const addGoldenConstraints = () => {
     for (const constraint of checkoutGoldenConstraints) {
@@ -66,11 +82,65 @@ export function PolicyPanel() {
         )}
       </section>
 
+      {constraints.length > 0 ? (
+        <section className="mt-6 border-t border-slate-200 pt-5">
+          <div className="flex items-start gap-3">
+            <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-violet-50 text-violet-700">
+              <GitCompare aria-hidden="true" size={17} />
+            </span>
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900">Architecture Proposal</h3>
+              <p className="mt-1 text-xs leading-5 text-slate-500">Current remains immutable.</p>
+            </div>
+          </div>
+
+          {!activeProposal ? (
+            <button
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-violet-200 bg-violet-50 px-3 py-2.5 text-xs font-semibold text-violet-700 transition-colors hover:bg-violet-100"
+              onClick={() => createProposal(goldenCheckoutProposal)}
+              type="button"
+            >
+              <Plus aria-hidden="true" size={14} />
+              Create smallest proposal
+            </button>
+          ) : (
+            <div className="mt-4 rounded-xl border border-violet-200 bg-violet-50 p-3">
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <p className="text-xs font-semibold text-violet-900">{activeProposal.name}</p>
+                  <p className="mt-0.5 text-[10px] text-violet-600">based on v{activeProposal.baseVersion}</p>
+                </div>
+                <button
+                  className="rounded-md bg-white px-2.5 py-1.5 text-[10px] font-semibold text-violet-700 shadow-sm"
+                  onClick={() => setActiveMode(activeMode === "proposal" ? "current" : "proposal")}
+                  type="button"
+                >
+                  Show {activeMode === "proposal" ? "Current" : "Proposal"}
+                </button>
+              </div>
+              <ul className="mt-3 space-y-1 text-[11px]">
+                {proposalDiff?.addedElements.map((id) => (
+                  <li className="text-emerald-700" key={id}>+ Checkout Snapshot Contract</li>
+                ))}
+                {proposalDiff?.removedRelations.map((id) => (
+                  <li className="text-red-700" key={id}>− Product Store runtime dependency</li>
+                ))}
+                {proposalDiff?.addedRelations.map((id) => (
+                  <li className="text-emerald-700" key={id}>+ Snapshot contract dependency</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      ) : null}
+
       <section className="mt-6 border-t border-slate-200 pt-5">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-sm font-semibold text-slate-900">Architecture Validation</h3>
-            <p className="mt-1 text-xs text-slate-500">Current · Commerce Platform v1.35</p>
+            <p className="mt-1 text-xs text-slate-500">
+              {activeMode === "proposal" ? `Proposal · ${activeProposal?.name ?? "Unknown"}` : "Current · Commerce Platform v1.35"}
+            </p>
           </div>
           {validationResult ? (
             <span
@@ -86,11 +156,11 @@ export function PolicyPanel() {
         <button
           className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-slate-900 px-3 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
           disabled={constraints.length === 0}
-          onClick={validateCurrent}
+          onClick={validateActive}
           type="button"
         >
           <Play aria-hidden="true" size={13} />
-          Validate current architecture
+          Validate {activeMode === "proposal" ? "proposal" : "current"} architecture
         </button>
 
         {validationResult ? (

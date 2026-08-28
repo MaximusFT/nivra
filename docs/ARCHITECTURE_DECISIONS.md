@@ -139,6 +139,24 @@ Rule semantics for Challenge V1:
 
 Reason: the LLM may explain results, but deterministic application code must decide whether Current or Proposal satisfies human policy.
 
+## D-015 — Effective proposal views are derived from the patch
+
+Status: accepted
+Date: 2026-08-28
+
+`applyProposal` updates elements and relations, then derives effective view membership without extending the proposal patch format. Added children of a view root become visible, added relations become visible when both endpoints are visible, and disconnected external evidence nodes are pruned from the effective LLD view.
+
+Reason: proposals remain architecture patches rather than presentation patches, while the visual workspace still shows the effective alternative deterministically.
+
+## D-016 — Current Architecture remains stored and proposal mode is derived
+
+Status: accepted
+Date: 2026-08-28
+
+The Zustand store always retains Current Architecture as its canonical `architecture`. Proposal mode derives an effective architecture with `applyProposal`; switching back to Current reveals the original relation unchanged.
+
+Reason: Current must never appear silently overwritten, and deterministic validation must be able to evaluate both states independently.
+
 ## Open decisions before their implementation phases
 
 - Phase 2B: visual treatment for `shares-state` versus explicit protocols.

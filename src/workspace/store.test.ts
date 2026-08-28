@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { CHECKOUT_LLD_VIEW_ID, COMMERCE_HLD_VIEW_ID } from "../shared/ids";
 import { checkoutGoldenConstraints } from "../fixtures/commerce/constraints";
+import { goldenCheckoutProposal } from "../fixtures/commerce/proposals";
 import { useWorkspaceStore } from "./store";
 
 describe("workspace store", () => {
@@ -65,5 +66,22 @@ describe("workspace store", () => {
     expect(useWorkspaceStore.getState().selectedRelationIds).toEqual([
       "basket-adapter-shares-product-store",
     ]);
+  });
+
+  it("switches to an immutable proposal and validates its effective architecture", () => {
+    for (const constraint of checkoutGoldenConstraints) {
+      useWorkspaceStore.getState().addConstraint(constraint);
+    }
+    useWorkspaceStore.getState().createProposal(goldenCheckoutProposal);
+    useWorkspaceStore.getState().validateActive();
+
+    const state = useWorkspaceStore.getState();
+    expect(state.activeMode).toBe("proposal");
+    expect(state.activeProposalId).toBe("checkout-isolation");
+    expect(state.architecture.relations.some(({ id }) => id === "basket-adapter-shares-product-store")).toBe(true);
+    expect(state.validationResult?.summary).toEqual({ passed: 4, failed: 0 });
+
+    useWorkspaceStore.getState().setActiveMode("current");
+    expect(useWorkspaceStore.getState().activeMode).toBe("current");
   });
 });

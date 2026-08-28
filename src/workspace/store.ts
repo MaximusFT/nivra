@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 import type { ArchitectureModel } from "../architecture/model";
+import { applyProposal } from "../architecture/proposals";
 import { validateArchitecture, type ValidationResult } from "../architecture/validation";
 import { commerceArchitecture } from "../fixtures/commerce/architecture";
 import { COMMERCE_HLD_VIEW_ID } from "../shared/ids";
@@ -38,6 +39,16 @@ export const useWorkspaceStore = create<WorkspaceStore>((set) => ({
   ...createInitialState(),
   setActiveView: (activeViewId) =>
     set({ activeViewId, selectedElementIds: [], selectedRelationIds: [] }),
+  setActiveMode: (activeMode) =>
+    set((state) => {
+      if (activeMode === "proposal" && !state.activeProposalId) return state;
+      return {
+        activeMode,
+        selectedElementIds: [],
+        selectedRelationIds: [],
+        validationResult: undefined,
+      };
+    }),
   selectElements: (selectedElementIds) => set({ selectedElementIds: [...selectedElementIds] }),
   selectRelations: (selectedRelationIds) => set({ selectedRelationIds: [...selectedRelationIds] }),
   addFinding: (finding) =>
@@ -85,6 +96,36 @@ export const useWorkspaceStore = create<WorkspaceStore>((set) => ({
     set((state) => ({
       validationResult: validateArchitecture({ architecture: state.architecture }),
     })),
+  createProposal: (proposal) =>
+    set((state) => ({
+      architecture: {
+        ...state.architecture,
+        proposals: [
+          ...state.architecture.proposals.filter(({ id }) => id !== proposal.id),
+          proposal,
+        ],
+      },
+      activeMode: "proposal",
+      activeProposalId: proposal.id,
+      activeViewId: proposal.id === "checkout-isolation" ? "checkout-lld" : state.activeViewId,
+      selectedElementIds: [],
+      selectedRelationIds: [],
+      validationResult: undefined,
+    })),
+  validateActive: () =>
+    set((state) => {
+      const proposal = state.activeProposalId
+        ? state.architecture.proposals.find(({ id }) => id === state.activeProposalId)
+        : undefined;
+      const effectiveArchitecture =
+        state.activeMode === "proposal" && proposal
+          ? applyProposal(state.architecture, proposal)
+          : state.architecture;
+
+      return {
+        validationResult: validateArchitecture({ architecture: effectiveArchitecture }),
+      };
+    }),
   focusValidationCheck: (constraintId) =>
     set((state) => {
       const check = state.validationResult?.checks.find(

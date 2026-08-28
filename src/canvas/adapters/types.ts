@@ -13,12 +13,14 @@ export interface ArchitectureNodeData extends Record<string, unknown> {
   owner?: string;
   deploymentUnit?: string;
   findingCount: number;
+  changeStatus?: "added";
 }
 
 export interface ArchitectureEdgeData extends Record<string, unknown> {
   relationType: ArchitectureRelationType;
   protocol?: string;
   description?: string;
+  changeStatus?: "added";
 }
 
 export type ArchitectureFlowNode = Node<ArchitectureNodeData, "architecture">;

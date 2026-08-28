@@ -11,6 +11,9 @@ export function App() {
   const summary = useWorkspaceStore(useShallow(selectArchitectureSummary));
   const activeView = useWorkspaceStore(selectActiveView);
   const setActiveView = useWorkspaceStore((state) => state.setActiveView);
+  const activeMode = useWorkspaceStore((state) => state.activeMode);
+  const activeProposalId = useWorkspaceStore((state) => state.activeProposalId);
+  const setActiveMode = useWorkspaceStore((state) => state.setActiveMode);
   const isCheckoutView = activeView?.id === CHECKOUT_LLD_VIEW_ID;
 
   return (
@@ -32,9 +35,27 @@ export function App() {
         </div>
 
         <div className="flex items-center gap-5 text-xs">
-          <div className="flex items-center gap-2 text-slate-600">
-            <Circle aria-hidden="true" className="fill-slate-900 text-slate-900" size={8} />
-            <span>Current</span>
+          <div className="flex rounded-lg bg-slate-100 p-1 text-[11px]">
+            <button
+              className={`flex items-center gap-1.5 rounded-md px-2.5 py-1.5 ${
+                activeMode === "current" ? "bg-white font-semibold text-slate-900 shadow-sm" : "text-slate-500"
+              }`}
+              onClick={() => setActiveMode("current")}
+              type="button"
+            >
+              <Circle aria-hidden="true" className="fill-slate-900 text-slate-900" size={7} />
+              Current
+            </button>
+            <button
+              className={`rounded-md px-2.5 py-1.5 ${
+                activeMode === "proposal" ? "bg-white font-semibold text-violet-700 shadow-sm" : "text-slate-500"
+              } disabled:cursor-not-allowed disabled:opacity-40`}
+              disabled={!activeProposalId}
+              onClick={() => setActiveMode("proposal")}
+              type="button"
+            >
+              Proposal
+            </button>
           </div>
           <div className="flex items-center gap-2 text-emerald-700">
             <CheckCircle2 aria-hidden="true" size={15} />

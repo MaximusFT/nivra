@@ -1,7 +1,7 @@
 # Nivra — Project Status
 
 > Last updated: 2026-08-28  
-> Current phase: Phase 3B complete; Phase 3C next
+> Current phase: Phase 3C complete; Phase 3D next
 > Current branch: `main`
 
 This is the first file to read when resuming Nivra on another computer or in a new Codex task.
@@ -86,34 +86,47 @@ Phase 3B added deterministic architectural policy verification:
 
 Golden Current validation is deterministic: **2 passed / 2 failed**.
 
+Phase 3C completed the Current/Proposal reasoning loop:
+
+- pure patch-based `applyProposal` and proposal diff calculation;
+- strict base-version check and immutable Current Architecture;
+- Golden Checkout Isolation proposal;
+- derived effective view membership for added and disconnected external elements;
+- Current/Proposal workspace modes and header switching;
+- proposal-specific node/edge presentation and semantic legend;
+- validation of the active architecture mode;
+- browser proof that Current remains unchanged after viewing the Proposal.
+
+Golden result: **Current 2 passed / 2 failed → Proposal 4 passed / 0 failed**.
+
 ## Verification baseline
 
 The following checks passed after the latest change:
 
 ```text
 npm run typecheck  PASS
-npm test           PASS — 24 tests
+npm test           PASS — 29 tests
 npm run build      PASS
-Browser runtime    PASS — constraints, 2/2 Current validation and failed-check evidence work; no console errors
+Browser runtime    PASS — Current/Proposal diff and 2/2 → 4/0 validation work; no console errors
 ```
 
 Always run all three command-line checks before ending an implementation task.
 
 ## Exact next task
 
-Start **Phase 3C — Proposals and Current/Proposal modes**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
+Start **Phase 3D — Reset and lightweight persistence**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
 
 The next implementation task should be limited to:
 
-1. implement pure `applyProposal` without mutating Current Architecture;
-2. implement proposal diff calculation;
-3. define the Golden Checkout Snapshot proposal patch;
-4. add immutable proposal creation and Current/Proposal workspace modes;
-5. render proposal additions/removals distinctly on the same canvas;
-6. validate the effective proposal architecture;
-7. prove in tests and browser that Current fails 2/2 while Proposal passes 4/0.
+1. define a small versioned persisted-workspace payload;
+2. persist only constraints, findings, proposals and active proposal/mode;
+3. keep focus, validation results and WebMCP status transient;
+4. hydrate safely with malformed/obsolete payload fallback;
+5. implement canonical Reset Demo that clears persistence and restores HLD Current;
+6. add a visible Reset Demo control;
+7. test hydration, reset and browser reload behaviour.
 
-Do not add WebMCP in Phase 3C.
+Do not add WebMCP in Phase 3D.
 
 ## Resume procedure on another computer
 

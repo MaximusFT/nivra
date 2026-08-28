@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { AlertTriangle, ArrowDownLeft, ArrowUpRight, Box, Plus, Search, ShieldCheck } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
 
 import { getElementById, inspectElement } from "../architecture/queries";
-import type { ArchitectureFinding, ArchitectureRelation } from "../architecture/model";
+import type { ArchitectureFinding, ArchitectureModel, ArchitectureRelation } from "../architecture/model";
 import { useWorkspaceStore } from "../workspace/store";
+import { getEffectiveWorkspaceArchitecture } from "../workspace/selectors";
 import { PolicyPanel } from "./PolicyPanel";
 
 function relationFinding(relation: ArchitectureRelation): ArchitectureFinding {
@@ -27,11 +28,12 @@ function relationFinding(relation: ArchitectureRelation): ArchitectureFinding {
 function RelationListItem({
   relation,
   direction,
+  architecture,
 }: {
   relation: ArchitectureRelation;
   direction: "incoming" | "outgoing";
+  architecture: ArchitectureModel;
 }) {
-  const architecture = useWorkspaceStore((state) => state.architecture);
   const peerId = direction === "incoming" ? relation.sourceId : relation.targetId;
   const peer = getElementById(architecture, peerId);
   const Icon = direction === "incoming" ? ArrowDownLeft : ArrowUpRight;
@@ -55,6 +57,8 @@ export function ContextPanel() {
     architecture,
     selectedElementIds,
     selectedRelationIds,
+    activeMode,
+    activeProposalId,
     addFinding,
     focusFinding,
   } = useWorkspaceStore(
@@ -62,24 +66,31 @@ export function ContextPanel() {
       architecture: state.architecture,
       selectedElementIds: state.selectedElementIds,
       selectedRelationIds: state.selectedRelationIds,
+      activeMode: state.activeMode,
+      activeProposalId: state.activeProposalId,
       addFinding: state.addFinding,
       focusFinding: state.focusFinding,
     })),
   );
 
+  const effectiveArchitecture = useMemo(
+    () => getEffectiveWorkspaceArchitecture({ architecture, activeMode, activeProposalId }),
+    [activeMode, activeProposalId, architecture],
+  );
+
   const selectedElementId = selectedElementIds[0];
   const selectedRelationId = selectedRelationIds[0];
   const inspection = selectedElementId
-    ? inspectElement(architecture, selectedElementId)
+    ? inspectElement(effectiveArchitecture, selectedElementId)
     : undefined;
   const relation = selectedRelationId
-    ? architecture.relations.find(({ id }) => id === selectedRelationId)
+    ? effectiveArchitecture.relations.find(({ id }) => id === selectedRelationId)
     : undefined;
-  const relationSource = relation ? getElementById(architecture, relation.sourceId) : undefined;
-  const relationTarget = relation ? getElementById(architecture, relation.targetId) : undefined;
+  const relationSource = relation ? getElementById(effectiveArchitecture, relation.sourceId) : undefined;
+  const relationTarget = relation ? getElementById(effectiveArchitecture, relation.targetId) : undefined;
   const findingId = relation ? `finding-${relation.id}` : undefined;
   const relationAlreadyAnnotated = findingId
-    ? architecture.findings.some(({ id }) => id === findingId)
+    ? effectiveArchitecture.findings.some(({ id }) => id === findingId)
     : false;
 
   return (
@@ -147,10 +158,10 @@ export function ContextPanel() {
               </h4>
               <ul className="space-y-1.5">
                 {inspection.incomingRelations.map((item) => (
-                  <RelationListItem direction="incoming" key={item.id} relation={item} />
+                  <RelationListItem architecture={effectiveArchitecture} direction="incoming" key={item.id} relation={item} />
                 ))}
                 {inspection.outgoingRelations.map((item) => (
-                  <RelationListItem direction="outgoing" key={item.id} relation={item} />
+                  <RelationListItem architecture={effectiveArchitecture} direction="outgoing" key={item.id} relation={item} />
                 ))}
                 {inspection.incomingRelations.length + inspection.outgoingRelations.length === 0 ? (
                   <li className="text-xs text-slate-400">No direct relations.</li>
@@ -196,14 +207,14 @@ export function ContextPanel() {
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">Findings</h2>
           <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">
-            {architecture.findings.length}
+            {effectiveArchitecture.findings.length}
           </span>
         </div>
-        {architecture.findings.length === 0 ? (
+        {effectiveArchitecture.findings.length === 0 ? (
           <p className="text-xs leading-5 text-slate-400">No findings yet. Inspect a relation to record an observation.</p>
         ) : (
           <ul className="space-y-2">
-            {architecture.findings.map((finding) => (
+            {effectiveArchitecture.findings.map((finding) => (
               <li key={finding.id}>
                 <button
                   className="w-full rounded-xl border border-amber-200 bg-amber-50 p-3 text-left transition-colors hover:border-amber-300"

@@ -12,6 +12,8 @@ import {
 import { useShallow } from "zustand/react/shallow";
 
 import { commerceLayouts } from "../fixtures/commerce/layout";
+import { getProposalDiff } from "../architecture/proposals";
+import { getEffectiveWorkspaceArchitecture } from "../workspace/selectors";
 import { useWorkspaceStore } from "../workspace/store";
 import { toFlowEdges, toFlowNodes } from "./adapters";
 import { getFocusContext } from "./focus/getFocusContext";
@@ -24,6 +26,8 @@ function CanvasContent() {
   const {
     architecture,
     activeViewId,
+    activeMode,
+    activeProposalId,
     selectedElementIds,
     selectedRelationIds,
     selectElements,
@@ -32,6 +36,8 @@ function CanvasContent() {
     useShallow((state) => ({
       architecture: state.architecture,
       activeViewId: state.activeViewId,
+      activeMode: state.activeMode,
+      activeProposalId: state.activeProposalId,
       selectedElementIds: state.selectedElementIds,
       selectedRelationIds: state.selectedRelationIds,
       selectElements: state.selectElements,
@@ -39,47 +45,65 @@ function CanvasContent() {
     })),
   );
 
-  const view = architecture.views.find(({ id }) => id === activeViewId);
+  const activeProposal = activeProposalId
+    ? architecture.proposals.find(({ id }) => id === activeProposalId)
+    : undefined;
+  const effectiveArchitecture = useMemo(
+    () => getEffectiveWorkspaceArchitecture({ architecture, activeMode, activeProposalId }),
+    [activeMode, activeProposalId, architecture],
+  );
+  const proposalDiff = useMemo(
+    () => (activeMode === "proposal" && activeProposal ? getProposalDiff(activeProposal) : undefined),
+    [activeMode, activeProposal],
+  );
+  const view = effectiveArchitecture.views.find(({ id }) => id === activeViewId);
   const layout = commerceLayouts.find(({ viewId }) => viewId === activeViewId);
+  const visibleRelations = view
+    ? effectiveArchitecture.relations.filter(({ id }) => view.relationIds.includes(id))
+    : [];
+  const hasSharedState = visibleRelations.some(({ type }) => type === "shares-state");
+  const hasSnapshot = visibleRelations.some(({ protocol }) => protocol?.toLowerCase() === "snapshot");
 
   const focus = useMemo(
     () =>
       view
         ? getFocusContext({
-            architecture,
+            architecture: effectiveArchitecture,
             view,
             selectedElementIds,
             selectedRelationIds,
           })
         : { elementIds: [], relationIds: [] },
-    [architecture, selectedElementIds, selectedRelationIds, view],
+    [effectiveArchitecture, selectedElementIds, selectedRelationIds, view],
   );
 
   const nodes = useMemo(
     () =>
       view && layout
         ? toFlowNodes({
-            architecture,
+            architecture: effectiveArchitecture,
             view,
             layout,
             selectedElementIds,
             focusedElementIds: focus.elementIds,
+            addedElementIds: proposalDiff?.addedElements,
           })
         : [],
-    [architecture, focus.elementIds, layout, selectedElementIds, view],
+    [effectiveArchitecture, focus.elementIds, layout, proposalDiff?.addedElements, selectedElementIds, view],
   );
 
   const edges = useMemo(
     () =>
       view
         ? toFlowEdges({
-            architecture,
+            architecture: effectiveArchitecture,
             view,
             selectedRelationIds,
             focusedRelationIds: focus.relationIds,
+            addedRelationIds: proposalDiff?.addedRelations,
           })
         : [],
-    [architecture, focus.relationIds, selectedRelationIds, view],
+    [effectiveArchitecture, focus.relationIds, proposalDiff?.addedRelations, selectedRelationIds, view],
   );
 
   useEffect(() => {
@@ -122,9 +146,16 @@ function CanvasContent() {
       {view.level === "lld" ? (
         <Panel position="top-left">
           <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white/95 p-1.5 text-[11px] shadow-sm backdrop-blur">
-            <span className="rounded-md bg-red-50 px-2.5 py-1.5 font-semibold text-red-700">
-              shares state · runtime coupling
-            </span>
+            {hasSharedState ? (
+              <span className="rounded-md bg-red-50 px-2.5 py-1.5 font-semibold text-red-700">
+                shares state · runtime coupling
+              </span>
+            ) : null}
+            {hasSnapshot ? (
+              <span className="rounded-md bg-indigo-50 px-2.5 py-1.5 font-semibold text-indigo-700">
+                snapshot · Checkout contract
+              </span>
+            ) : null}
             <span className="rounded-md bg-blue-50 px-2.5 py-1.5 font-semibold text-blue-700">
               REST · explicit API
             </span>

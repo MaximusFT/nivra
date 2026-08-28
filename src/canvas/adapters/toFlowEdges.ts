@@ -27,6 +27,7 @@ export interface ToFlowEdgesOptions {
   view: ArchitectureView;
   selectedRelationIds?: string[];
   focusedRelationIds?: string[];
+  addedRelationIds?: string[];
 }
 
 export function toFlowEdges({
@@ -34,12 +35,14 @@ export function toFlowEdges({
   view,
   selectedRelationIds = [],
   focusedRelationIds = [],
+  addedRelationIds = [],
 }: ToFlowEdgesOptions): ArchitectureFlowEdge[] {
   const visibleElementIds = new Set(view.elementIds);
   const visibleRelationIds = new Set(view.relationIds);
   const selectedIds = new Set(selectedRelationIds);
   const focusedIds = new Set(focusedRelationIds);
   const hasFocus = focusedIds.size > 0;
+  const addedIds = new Set(addedRelationIds);
 
   return architecture.relations
     .filter(
@@ -53,6 +56,7 @@ export function toFlowEdges({
       const isSelected = selectedIds.has(relation.id);
       const isFocused = !hasFocus || focusedIds.has(relation.id);
       const isSharedState = relation.type === "shares-state";
+      const isAdded = addedIds.has(relation.id);
 
       return {
         id: relation.id,
@@ -65,9 +69,10 @@ export function toFlowEdges({
           relationType: relation.type,
           protocol: relation.protocol,
           description: relation.description,
+          changeStatus: isAdded ? "added" : undefined,
         },
         style: {
-          stroke: color,
+          stroke: isAdded ? "#4f46e5" : color,
           strokeWidth: isSelected ? 3 : isSharedState ? 2.4 : 1.5,
           strokeDasharray: isSharedState ? "7 4" : undefined,
           opacity: isFocused ? 1 : 0.18,
@@ -83,7 +88,12 @@ export function toFlowEdges({
         },
         labelBgPadding: [5, 3],
         labelBgBorderRadius: 4,
-        markerEnd: { type: MarkerType.ArrowClosed, color, width: 16, height: 16 },
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          color: isAdded ? "#4f46e5" : color,
+          width: 16,
+          height: 16,
+        },
       };
     });
 }

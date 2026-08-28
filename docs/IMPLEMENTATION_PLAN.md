@@ -118,18 +118,20 @@ Status: **complete**
 
 ### Phase 3C — Proposals and Current/Proposal modes
 
-Status: **next**
+Status: **complete**
 
-- [ ] implement pure `applyProposal`
-- [ ] guarantee Current Architecture is not mutated
-- [ ] implement proposal diff calculation
-- [ ] add Current / Proposal switching
-- [ ] implement the Golden Checkout Snapshot proposal
-- [ ] show added and removed relations/elements
-- [ ] validate the effective proposal architecture
-- [ ] test that Current fails and Golden Proposal passes
+- [x] implement pure `applyProposal`
+- [x] guarantee Current Architecture is not mutated
+- [x] implement proposal diff calculation
+- [x] add Current / Proposal switching
+- [x] implement the Golden Checkout Snapshot proposal
+- [x] show added and removed relations/elements
+- [x] validate the effective proposal architecture
+- [x] test that Current fails and Golden Proposal passes
 
 ### Phase 3D — Reset and lightweight persistence
+
+Status: **next**
 
 - [ ] implement canonical Reset Demo
 - [ ] persist only specified durable state
@@ -227,6 +229,7 @@ Each block should end with tests and a status-file update so work can move betwe
 4. **Block 4 — Phase 2B evidence:** complete; Checkpoint A passed.
 5. **Block 5 — Phase 3A query layer and Context Panel:** complete.
 6. **Block 6 — Phase 3B constraints and deterministic Current validation:** complete.
-7. **Block 7 — next:** Phase 3C proposal engine and Golden Proposal validation.
+7. **Block 7 — Phase 3C proposal engine and Golden Proposal validation:** complete.
+8. **Block 8 — next:** Phase 3D Reset Demo and lightweight persistence.
 
 Do not combine all blocks into one unreviewable change.
