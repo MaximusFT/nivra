@@ -168,10 +168,32 @@ Canonical empty Current state removes the persistence key instead of writing an 
 
 Reason: persisted state should preserve human decisions and alternatives without making a stale visual/debug session part of the Architecture Model.
 
+## D-018 — WebMCP is a browser adapter over shared operations
+
+Status: accepted
+Date: 2026-08-28
+
+Nivra registers tools through the canonical `document.modelContext` API and keeps a guarded `navigator.modelContext` fallback for earlier preview runtimes. Registration uses an `AbortSignal`, and all browser-specific code lives under `src/webmcp`.
+
+Tool handlers read the effective Current/Proposal architecture through workspace selectors and invoke the same Zustand actions used by the human interface. They never import React or React Flow, and no WebMCP type enters the architecture domain.
+
+Reason: external agents and humans must operate on one shared workspace without coupling the source-of-truth model to an experimental browser API.
+
+## D-019 — WebMCP reads expose semantics and activity remains transient
+
+Status: accepted
+Date: 2026-08-28
+
+`get_architecture` returns the active effective model's semantic entities, views, boundaries, constraints and findings, plus current workspace mode/view identifiers. It deliberately excludes proposal catalogs, migration plans and canvas layout positions from this read response.
+
+Every tool invocation upserts one transient activity entry from `running` to `success` or `error`. Activity is capped at 20 entries, is visible in the workspace footer and is cleared by Reset Demo without changing the detected WebMCP availability for the current page.
+
+Reason: agents receive relevant structured truth without presentation metadata, while humans can see and debug agent participation without persisting stale execution state.
+
 ## Open decisions before their implementation phases
 
 - Phase 2B: visual treatment for `shares-state` versus explicit protocols.
 - Phase 3B: exact `ValidationResult` and per-rule result schema.
 - Phase 3C: immutable fixture clone/factory strategy for write operations and reset.
-- Phase 4: WebMCP runtime API shape and supported input-validation boundary.
+- Phase 4B: exact reusable WebMCP input-validation/error shape for write tools.
 - Phase 5: final deployment URL and license approval.

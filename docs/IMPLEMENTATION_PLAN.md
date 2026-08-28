@@ -152,17 +152,19 @@ Goal: let an external agent reliably drive the same tested domain and workspace 
 
 ### Phase 4A — Adapter and read/navigation tools
 
-Status: **next**
+Status: **complete**
 
-- [ ] implement WebMCP availability detection
-- [ ] implement activity logging wrapper
-- [ ] register `get_architecture`
-- [ ] register `inspect_element`
-- [ ] register `show_architecture_view`
-- [ ] exclude visual-only metadata from architecture responses
-- [ ] verify tool calls update the same visible workspace
+- [x] implement WebMCP availability detection
+- [x] implement activity logging wrapper
+- [x] register `get_architecture`
+- [x] register `inspect_element`
+- [x] register `show_architecture_view`
+- [x] exclude visual-only metadata from architecture responses
+- [x] verify tool calls update the same visible workspace
 
 ### Phase 4B — Write and compute tools
+
+Status: **next**
 
 - [ ] register `annotate_architecture`
 - [ ] register `add_constraint`
@@ -235,6 +237,7 @@ Each block should end with tests and a status-file update so work can move betwe
 6. **Block 6 — Phase 3B constraints and deterministic Current validation:** complete.
 7. **Block 7 — Phase 3C proposal engine and Golden Proposal validation:** complete.
 8. **Block 8 — Phase 3D Reset Demo and lightweight persistence:** complete; Checkpoint B passed.
-9. **Block 9 — next:** Phase 4A WebMCP adapter and read/navigation tools.
+9. **Block 9 — Phase 4A WebMCP adapter and read/navigation tools:** complete.
+10. **Block 10 — next:** Phase 4B WebMCP write and compute tools.
 
 Do not combine all blocks into one unreviewable change.

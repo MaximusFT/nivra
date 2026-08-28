@@ -2,6 +2,7 @@ import { Box, CheckCircle2, Circle, RotateCcw } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
 
 import { ArchitectureCanvas } from "../canvas/ArchitectureCanvas";
+import { AgentActivityBar } from "../components/AgentActivityBar";
 import { ContextPanel } from "../components/ContextPanel";
 import { CHECKOUT_LLD_VIEW_ID, COMMERCE_HLD_VIEW_ID } from "../shared/ids";
 import { selectActiveView, selectArchitectureSummary } from "../workspace/selectors";
@@ -128,6 +129,7 @@ export function App() {
           <ContextPanel />
         </div>
       </section>
+      <AgentActivityBar />
     </main>
   );
 }

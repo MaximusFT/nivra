@@ -17,6 +17,7 @@
     "zustand": "latest"
   },
   "devDependencies": {
+    "@mcp-b/webmcp-types": "^5.0.1",
     "@tailwindcss/vite": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",

@@ -56,6 +56,14 @@ function createInitialState(): WorkspaceState {
 
 export const useWorkspaceStore = create<WorkspaceStore>((set) => ({
   ...createInitialState(),
+  setWebMcpStatus: (webMcpStatus) => set({ webMcpStatus }),
+  upsertAgentActivity: (entry) =>
+    set((state) => ({
+      agentActivity: [
+        ...state.agentActivity.filter(({ id }) => id !== entry.id),
+        entry,
+      ].slice(-20),
+    })),
   setActiveView: (activeViewId) =>
     set({ activeViewId, selectedElementIds: [], selectedRelationIds: [] }),
   setActiveMode: (activeMode) =>
@@ -166,7 +174,7 @@ export const useWorkspaceStore = create<WorkspaceStore>((set) => ({
     }),
   resetWorkspace: () => {
     clearWorkspacePersistence();
-    set({
+    set((state) => ({
       architecture: commerceArchitecture,
       activeViewId: COMMERCE_HLD_VIEW_ID,
       activeMode: "current",
@@ -175,8 +183,8 @@ export const useWorkspaceStore = create<WorkspaceStore>((set) => ({
       selectedRelationIds: [],
       validationResult: undefined,
       agentActivity: [],
-      webMcpStatus: "checking",
-    });
+      webMcpStatus: state.webMcpStatus,
+    }));
   },
 }));
 

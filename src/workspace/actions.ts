@@ -16,6 +16,8 @@ export interface AgentActivityEntry {
 }
 
 export interface WorkspaceActions {
+  setWebMcpStatus: (status: WebMcpStatus) => void;
+  upsertAgentActivity: (entry: AgentActivityEntry) => void;
   setActiveView: (viewId: string) => void;
   setActiveMode: (mode: WorkspaceMode) => void;
   selectElements: (elementIds: string[]) => void;

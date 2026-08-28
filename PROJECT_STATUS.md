@@ -1,7 +1,7 @@
 # Nivra — Project Status
 
 > Last updated: 2026-08-28  
-> Current phase: Phase 3 complete; Phase 4A next
+> Current phase: Phase 4A complete; Phase 4B next
 > Current branch: `main`
 
 This is the first file to read when resuming Nivra on another computer or in a new Codex task.
@@ -110,34 +110,47 @@ Phase 3D added reproducible demo state:
 
 Checkpoint B passed: the full Observe → Inspect → Decide → Propose → Verify story now works manually and can be reset to canonical state.
 
+Phase 4A established the external-agent read/navigation boundary:
+
+- current `document.modelContext.registerTool()` integration with guarded legacy fallback;
+- isolated WebMCP availability detection and registration adapter;
+- `get_architecture` structured active-model read without canvas positions;
+- `inspect_element` backed by the existing pure query layer;
+- `show_architecture_view` backed by the same workspace actions as manual navigation;
+- optional element/relation focus validation against the requested view;
+- running/success/error activity logging for every tool invocation;
+- visible Agent Activity bar and WebMCP availability status;
+- abort-signal-owned tool registrations and read-only annotations for read tools.
+
+Browser verification with Chromium's `WebMCP` feature enabled showed **WebMCP ready** and a clean 1440×900 workspace render.
+
 ## Verification baseline
 
 The following checks passed after the latest change:
 
 ```text
 npm run typecheck  PASS
-npm test           PASS — 33 tests
+npm test           PASS — 41 tests
 npm run build      PASS
-Browser runtime    PASS — complete manual loop and clean Reset Demo entry render; no console errors
+Browser runtime    PASS — Chromium WebMCP registration ready; Agent Activity visible; 1440×900 render clean
 ```
 
 Always run all three command-line checks before ending an implementation task.
 
 ## Exact next task
 
-Start **Phase 4A — WebMCP adapter and read/navigation tools**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
+Start **Phase 4B — WebMCP write and compute tools**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
 
 The next implementation task should be limited to:
 
-1. confirm the current WebMCP browser API from primary OpenAI documentation;
-2. implement WebMCP availability detection without leaking browser APIs into the domain;
-3. add an activity logging wrapper;
-4. register `get_architecture`;
-5. register `inspect_element`;
-6. register `show_architecture_view`;
-7. verify that navigation tools drive the same visible workspace actions.
+1. register `annotate_architecture` through the existing Finding action;
+2. register `add_constraint` through the existing constraint action;
+3. register `create_proposal` through the patch-based proposal action;
+4. register `validate_architecture` through deterministic validation;
+5. validate external inputs at the WebMCP boundary;
+6. verify visible running/success/error activity and Current immutability.
 
-Do not add WebMCP write tools until the Phase 4A read/navigation tools are reliable.
+Keep WebMCP-specific schemas and validation outside the architecture domain.
 
 ## Resume procedure on another computer
 
