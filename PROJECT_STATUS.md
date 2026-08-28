@@ -1,7 +1,7 @@
 # Nivra — Project Status
 
 > Last updated: 2026-08-28  
-> Current phase: Phase 3C complete; Phase 3D next
+> Current phase: Phase 3 complete; Phase 4A next
 > Current branch: `main`
 
 This is the first file to read when resuming Nivra on another computer or in a new Codex task.
@@ -99,34 +99,45 @@ Phase 3C completed the Current/Proposal reasoning loop:
 
 Golden result: **Current 2 passed / 2 failed → Proposal 4 passed / 0 failed**.
 
+Phase 3D added reproducible demo state:
+
+- a versioned `nivra.workspace.v1` localStorage payload;
+- persistence limited to constraints, findings, proposals and active proposal/mode;
+- safe malformed and obsolete payload fallback;
+- transient selection, validation and WebMCP status excluded from persistence;
+- canonical Reset Demo restoring Current Commerce HLD and clearing durable state;
+- visible one-click Reset Demo control.
+
+Checkpoint B passed: the full Observe → Inspect → Decide → Propose → Verify story now works manually and can be reset to canonical state.
+
 ## Verification baseline
 
 The following checks passed after the latest change:
 
 ```text
 npm run typecheck  PASS
-npm test           PASS — 29 tests
+npm test           PASS — 33 tests
 npm run build      PASS
-Browser runtime    PASS — Current/Proposal diff and 2/2 → 4/0 validation work; no console errors
+Browser runtime    PASS — complete manual loop and clean Reset Demo entry render; no console errors
 ```
 
 Always run all three command-line checks before ending an implementation task.
 
 ## Exact next task
 
-Start **Phase 3D — Reset and lightweight persistence**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
+Start **Phase 4A — WebMCP adapter and read/navigation tools**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
 
 The next implementation task should be limited to:
 
-1. define a small versioned persisted-workspace payload;
-2. persist only constraints, findings, proposals and active proposal/mode;
-3. keep focus, validation results and WebMCP status transient;
-4. hydrate safely with malformed/obsolete payload fallback;
-5. implement canonical Reset Demo that clears persistence and restores HLD Current;
-6. add a visible Reset Demo control;
-7. test hydration, reset and browser reload behaviour.
+1. confirm the current WebMCP browser API from primary OpenAI documentation;
+2. implement WebMCP availability detection without leaking browser APIs into the domain;
+3. add an activity logging wrapper;
+4. register `get_architecture`;
+5. register `inspect_element`;
+6. register `show_architecture_view`;
+7. verify that navigation tools drive the same visible workspace actions.
 
-Do not add WebMCP in Phase 3D.
+Do not add WebMCP write tools until the Phase 4A read/navigation tools are reliable.
 
 ## Resume procedure on another computer
 

@@ -1,4 +1,4 @@
-import { Box, CheckCircle2, Circle } from "lucide-react";
+import { Box, CheckCircle2, Circle, RotateCcw } from "lucide-react";
 import { useShallow } from "zustand/react/shallow";
 
 import { ArchitectureCanvas } from "../canvas/ArchitectureCanvas";
@@ -14,6 +14,7 @@ export function App() {
   const activeMode = useWorkspaceStore((state) => state.activeMode);
   const activeProposalId = useWorkspaceStore((state) => state.activeProposalId);
   const setActiveMode = useWorkspaceStore((state) => state.setActiveMode);
+  const resetWorkspace = useWorkspaceStore((state) => state.resetWorkspace);
   const isCheckoutView = activeView?.id === CHECKOUT_LLD_VIEW_ID;
 
   return (
@@ -61,6 +62,14 @@ export function App() {
             <CheckCircle2 aria-hidden="true" size={15} />
             <span>Workspace ready</span>
           </div>
+          <button
+            className="flex items-center gap-1.5 rounded-lg border border-slate-200 px-2.5 py-1.5 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-800"
+            onClick={resetWorkspace}
+            type="button"
+          >
+            <RotateCcw aria-hidden="true" size={13} />
+            Reset Demo
+          </button>
         </div>
       </header>
 

@@ -157,6 +157,17 @@ The Zustand store always retains Current Architecture as its canonical `architec
 
 Reason: Current must never appear silently overwritten, and deterministic validation must be able to evaluate both states independently.
 
+## D-017 — Persistence stores durable decisions, not transient workspace state
+
+Status: accepted
+Date: 2026-08-28
+
+The versioned localStorage payload contains constraints, findings, proposals, active proposal ID and active mode. Selection/focus, validation result, active WebMCP state and agent activity are reconstructed or cleared.
+
+Canonical empty Current state removes the persistence key instead of writing an empty payload. Invalid JSON, obsolete versions and structurally invalid arrays fall back to the canonical fixture.
+
+Reason: persisted state should preserve human decisions and alternatives without making a stale visual/debug session part of the Architecture Model.
+
 ## Open decisions before their implementation phases
 
 - Phase 2B: visual treatment for `shares-state` versus explicit protocols.

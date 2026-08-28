@@ -131,12 +131,12 @@ Status: **complete**
 
 ### Phase 3D — Reset and lightweight persistence
 
-Status: **next**
+Status: **complete**
 
-- [ ] implement canonical Reset Demo
-- [ ] persist only specified durable state
-- [ ] do not persist transient focus or WebMCP availability
-- [ ] add corrupted/obsolete persistence fallback
+- [x] implement canonical Reset Demo
+- [x] persist only specified durable state
+- [x] do not persist transient focus or WebMCP availability
+- [x] add corrupted/obsolete persistence fallback
 
 Acceptance gate — Checkpoint B:
 
@@ -144,11 +144,15 @@ Acceptance gate — Checkpoint B:
 
 Do not begin WebMCP until this gate passes.
 
+Checkpoint B result: **passed**. The complete manual reasoning loop and canonical reset are implemented and verified.
+
 ## Phase 4 — WebMCP integration
 
 Goal: let an external agent reliably drive the same tested domain and workspace operations.
 
 ### Phase 4A — Adapter and read/navigation tools
+
+Status: **next**
 
 - [ ] implement WebMCP availability detection
 - [ ] implement activity logging wrapper
@@ -230,6 +234,7 @@ Each block should end with tests and a status-file update so work can move betwe
 5. **Block 5 — Phase 3A query layer and Context Panel:** complete.
 6. **Block 6 — Phase 3B constraints and deterministic Current validation:** complete.
 7. **Block 7 — Phase 3C proposal engine and Golden Proposal validation:** complete.
-8. **Block 8 — next:** Phase 3D Reset Demo and lightweight persistence.
+8. **Block 8 — Phase 3D Reset Demo and lightweight persistence:** complete; Checkpoint B passed.
+9. **Block 9 — next:** Phase 4A WebMCP adapter and read/navigation tools.
 
 Do not combine all blocks into one unreviewable change.

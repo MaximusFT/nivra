@@ -6,6 +6,11 @@ import { validateArchitecture, type ValidationResult } from "../architecture/val
 import { commerceArchitecture } from "../fixtures/commerce/architecture";
 import { COMMERCE_HLD_VIEW_ID } from "../shared/ids";
 import type { AgentActivityEntry, WebMcpStatus, WorkspaceActions, WorkspaceMode } from "./actions";
+import {
+  clearWorkspacePersistence,
+  readWorkspacePersistence,
+  writeWorkspacePersistence,
+} from "./persistence";
 
 export interface WorkspaceState {
   architecture: ArchitectureModel;
@@ -22,11 +27,25 @@ export interface WorkspaceState {
 export type WorkspaceStore = WorkspaceState & WorkspaceActions;
 
 function createInitialState(): WorkspaceState {
+  const persisted = readWorkspacePersistence();
+  const proposals = persisted?.proposals ?? [];
+  const activeProposalId = proposals.some(({ id }) => id === persisted?.activeProposalId)
+    ? persisted?.activeProposalId
+    : undefined;
+  const activeMode = persisted?.activeMode === "proposal" && activeProposalId
+    ? "proposal"
+    : "current";
+
   return {
-    architecture: commerceArchitecture,
-    activeViewId: COMMERCE_HLD_VIEW_ID,
-    activeMode: "current",
-    activeProposalId: undefined,
+    architecture: {
+      ...commerceArchitecture,
+      constraints: persisted?.constraints ?? [],
+      findings: persisted?.findings ?? [],
+      proposals,
+    },
+    activeViewId: activeMode === "proposal" ? "checkout-lld" : COMMERCE_HLD_VIEW_ID,
+    activeMode,
+    activeProposalId,
     selectedElementIds: [],
     selectedRelationIds: [],
     validationResult: undefined,
@@ -145,5 +164,22 @@ export const useWorkspaceStore = create<WorkspaceStore>((set) => ({
         selectedRelationIds: [...check.relationIds],
       };
     }),
-  resetWorkspace: () => set(createInitialState()),
+  resetWorkspace: () => {
+    clearWorkspacePersistence();
+    set({
+      architecture: commerceArchitecture,
+      activeViewId: COMMERCE_HLD_VIEW_ID,
+      activeMode: "current",
+      activeProposalId: undefined,
+      selectedElementIds: [],
+      selectedRelationIds: [],
+      validationResult: undefined,
+      agentActivity: [],
+      webMcpStatus: "checking",
+    });
+  },
 }));
+
+useWorkspaceStore.subscribe((state) => {
+  writeWorkspacePersistence(state);
+});
