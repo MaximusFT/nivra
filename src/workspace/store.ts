@@ -62,7 +62,7 @@ export const useWorkspaceStore = create<WorkspaceStore>((set) => ({
       agentActivity: [
         ...state.agentActivity.filter(({ id }) => id !== entry.id),
         entry,
-      ].slice(-20),
+      ].slice(-50),
     })),
   setActiveView: (activeViewId) =>
     set({ activeViewId, selectedElementIds: [], selectedRelationIds: [] }),

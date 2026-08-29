@@ -1,17 +1,17 @@
-import { MarkerType } from "@xyflow/react";
+import { MarkerType } from '@xyflow/react';
 
-import type { ArchitectureModel, ArchitectureRelationType, ArchitectureView } from "../../architecture/model";
-import type { ArchitectureFlowEdge } from "./types";
+import type { ArchitectureModel, ArchitectureRelationType, ArchitectureView } from '../../architecture/model';
+import type { ArchitectureFlowEdge } from './types';
 
 const relationColors: Record<ArchitectureRelationType, string> = {
-  "depends-on": "#64748b",
-  calls: "#2563eb",
-  publishes: "#7c3aed",
-  subscribes: "#7c3aed",
-  reads: "#0891b2",
-  writes: "#d97706",
-  "shares-state": "#dc2626",
-  hosts: "#475569",
+  'depends-on': '#64748b',
+  calls: '#2563eb',
+  publishes: '#7c3aed',
+  subscribes: '#7c3aed',
+  reads: '#0891b2',
+  writes: '#d97706',
+  'shares-state': '#dc2626',
+  hosts: '#475569',
 };
 
 function formatRelationLabel(type: ArchitectureRelationType, protocol?: string): string {
@@ -19,7 +19,7 @@ function formatRelationLabel(type: ArchitectureRelationType, protocol?: string):
     return protocol;
   }
 
-  return type.replaceAll("-", " ");
+  return type.replaceAll('-', ' ');
 }
 
 export interface ToFlowEdgesOptions {
@@ -58,16 +58,16 @@ export function toFlowEdges({
       const color = relationColors[relation.type];
       const isSelected = selectedIds.has(relation.id);
       const isFocused = !hasFocus || focusedIds.has(relation.id);
-      const isSharedState = relation.type === "shares-state";
+      const isSharedState = relation.type === 'shares-state';
       const isAdded = addedIds.has(relation.id);
       const isRemoved = removedIds.has(relation.id);
-      const changeStatus = isAdded ? "added" : isRemoved ? "removed" : undefined;
+      const changeStatus = isAdded ? 'added' : isRemoved ? 'removed' : undefined;
 
       return {
         id: relation.id,
         source: relation.sourceId,
         target: relation.targetId,
-        type: "smoothstep",
+        type: 'smoothstep',
         label: formatRelationLabel(relation.type, relation.protocol),
         selected: isSelected,
         data: {
@@ -77,25 +77,25 @@ export function toFlowEdges({
           changeStatus,
         },
         style: {
-          stroke: isRemoved ? "#94a3b8" : isAdded ? "#4f46e5" : color,
+          stroke: isRemoved ? '#94a3b8' : isAdded ? '#4f46e5' : color,
           strokeWidth: isSelected ? 3 : isSharedState ? 2.4 : 1.5,
-          strokeDasharray: isRemoved ? "4 5" : isSharedState ? "7 4" : undefined,
+          strokeDasharray: isRemoved ? '4 5' : isSharedState ? '7 4' : undefined,
           opacity: isRemoved ? 0.65 : isFocused ? 1 : 0.18,
         },
         labelStyle: {
-          fill: isRemoved ? "#64748b" : isSharedState ? "#b91c1c" : relation.protocol ? "#1d4ed8" : "#475569",
+          fill: isRemoved ? '#64748b' : isSharedState ? '#b91c1c' : relation.protocol ? '#1d4ed8' : '#475569',
           fontSize: 11,
           fontWeight: isSharedState ? 700 : 600,
         },
         labelBgStyle: {
-          fill: isRemoved ? "#f1f5f9" : isSharedState ? "#fef2f2" : "#f7f8fa",
+          fill: isRemoved ? '#f1f5f9' : isSharedState ? '#fef2f2' : '#f7f8fa',
           fillOpacity: 0.96,
         },
         labelBgPadding: [5, 3],
         labelBgBorderRadius: 4,
         markerEnd: {
           type: MarkerType.ArrowClosed,
-          color: isRemoved ? "#94a3b8" : isAdded ? "#4f46e5" : color,
+          color: isRemoved ? '#94a3b8' : isAdded ? '#4f46e5' : color,
           width: 16,
           height: 16,
         },

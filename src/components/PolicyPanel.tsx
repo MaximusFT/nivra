@@ -83,7 +83,11 @@ export function PolicyPanel() {
   ];
 
   const copyImplementationPlan = async () => {
-    const markdown = ['# Checkout Isolation', '', ...implementationSteps.map((step, index) => `${index + 1}. ${step}`)].join('\n');
+    const markdown = [
+      '# Checkout Isolation',
+      '',
+      ...implementationSteps.map((step, index) => `${index + 1}. ${step}`),
+    ].join('\n');
     await navigator.clipboard.writeText(markdown);
     setImplementationPlanCopied(true);
   };
@@ -281,7 +285,8 @@ export function PolicyPanel() {
                           <ArrowRight aria-hidden="true" size={14} />
                         </button>
                         <p className="mt-2 text-[10px] leading-4 text-amber-700">
-                          Uses the verified Checkout isolation demo template. A connected agent can create its own patch through WebMCP.
+                          Uses the verified Checkout isolation demo template. A connected agent can create its own patch
+                          through WebMCP.
                         </p>
                       </div>
                     ) : null}
@@ -341,7 +346,9 @@ export function PolicyPanel() {
                       </button>
                     ) : (
                       <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-3">
-                        <p className="text-xs font-semibold text-emerald-950">Checkout Isolation · ready for delivery</p>
+                        <p className="text-xs font-semibold text-emerald-950">
+                          Checkout Isolation · ready for delivery
+                        </p>
                         <ol className="mt-2 space-y-1.5 text-[11px] leading-4 text-emerald-900">
                           {implementationSteps.map((step, index) => (
                             <li className="flex gap-2" key={step}>
@@ -355,7 +362,11 @@ export function PolicyPanel() {
                           onClick={() => void copyImplementationPlan()}
                           type="button"
                         >
-                          {implementationPlanCopied ? <Check aria-hidden="true" size={13} /> : <Clipboard aria-hidden="true" size={13} />}
+                          {implementationPlanCopied ? (
+                            <Check aria-hidden="true" size={13} />
+                          ) : (
+                            <Clipboard aria-hidden="true" size={13} />
+                          )}
                           {implementationPlanCopied ? 'Copied as Markdown' : 'Copy implementation brief'}
                         </button>
                       </section>

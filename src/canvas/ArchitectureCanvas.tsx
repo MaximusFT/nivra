@@ -82,13 +82,13 @@ function CanvasContent() {
     if (!view || !layout) return [];
 
     const activeNodes = toFlowNodes({
-            architecture: effectiveArchitecture,
-            view,
-            layout,
-            selectedElementIds,
-            focusedElementIds: focus.elementIds,
-            addedElementIds: proposalDiff?.addedElements,
-          });
+      architecture: effectiveArchitecture,
+      view,
+      layout,
+      selectedElementIds,
+      focusedElementIds: focus.elementIds,
+      addedElementIds: proposalDiff?.addedElements,
+    });
 
     if (!proposalDiff || !originalView) return activeNodes;
 
@@ -117,18 +117,27 @@ function CanvasContent() {
     }));
 
     return [...activeNodes, ...removedNodes];
-  }, [architecture, effectiveArchitecture, focus.elementIds, layout, originalView, proposalDiff, selectedElementIds, view]);
+  }, [
+    architecture,
+    effectiveArchitecture,
+    focus.elementIds,
+    layout,
+    originalView,
+    proposalDiff,
+    selectedElementIds,
+    view,
+  ]);
 
   const edges = useMemo(() => {
     if (!view) return [];
 
     const activeEdges = toFlowEdges({
-            architecture: effectiveArchitecture,
-            view,
-            selectedRelationIds,
-            focusedRelationIds: focus.relationIds,
-            addedRelationIds: proposalDiff?.addedRelations,
-          });
+      architecture: effectiveArchitecture,
+      view,
+      selectedRelationIds,
+      focusedRelationIds: focus.relationIds,
+      addedRelationIds: proposalDiff?.addedRelations,
+    });
 
     if (!proposalDiff || !originalView) return activeEdges;
 

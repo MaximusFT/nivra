@@ -115,8 +115,8 @@ export function ContextPanel() {
   const selectedRelationId = selectedRelationIds[0];
   const inspection = selectedElementId ? inspectElement(effectiveArchitecture, selectedElementId) : undefined;
   const relation = selectedRelationId
-    ? effectiveArchitecture.relations.find(({ id }) => id === selectedRelationId) ??
-      architecture.relations.find(({ id }) => id === selectedRelationId)
+    ? (effectiveArchitecture.relations.find(({ id }) => id === selectedRelationId) ??
+      architecture.relations.find(({ id }) => id === selectedRelationId))
     : undefined;
   const relationSource = relation ? getElementById(effectiveArchitecture, relation.sourceId) : undefined;
   const relationTarget = relation ? getElementById(effectiveArchitecture, relation.targetId) : undefined;
@@ -148,10 +148,10 @@ export function ContextPanel() {
         status: 'running' as const,
       };
       upsertAgentActivity(entry);
-      await new Promise((resolve) => window.setTimeout(resolve, 650));
+      await new Promise((resolve) => window.setTimeout(resolve, 850));
       action();
       upsertAgentActivity({ ...entry, status: 'success' });
-      await new Promise((resolve) => window.setTimeout(resolve, 250));
+      await new Promise((resolve) => window.setTimeout(resolve, 350));
     };
 
     try {
@@ -354,20 +354,29 @@ export function ContextPanel() {
                     type="button"
                   >
                     <span className="flex items-center gap-2">
-                      {demoRunning ? <Bot aria-hidden="true" className="animate-pulse" size={14} /> : <Play aria-hidden="true" size={14} />}
+                      {demoRunning ? (
+                        <Bot aria-hidden="true" className="animate-pulse" size={14} />
+                      ) : (
+                        <Play aria-hidden="true" size={14} />
+                      )}
                       {demoRunning ? 'Analyzing architecture…' : 'Run guided agent demo'}
                     </span>
                     {!demoRunning ? <ArrowRight aria-hidden="true" size={14} /> : null}
                   </button>
                   <button
                     className="mt-2 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50"
-                    onClick={() => setActiveView(CHECKOUT_LLD_VIEW_ID)}
+                    onClick={() => {
+                      setActiveView(CHECKOUT_LLD_VIEW_ID);
+                      selectElements([]);
+                      selectRelations(['basket-adapter-shares-product-store']);
+                    }}
                     type="button"
                   >
-                    Explore manually
+                    Explore evidence manually
                   </button>
                   <p className="mt-3 text-[11px] leading-4 text-slate-400">
-                    Guided mode locally simulates the same verified WebMCP tool sequence. Or select any element to inspect it.
+                    Guided mode locally simulates the same verified WebMCP tool sequence. Or select any element to
+                    inspect it.
                   </p>
                 </div>
               </section>

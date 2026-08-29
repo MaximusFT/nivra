@@ -250,7 +250,9 @@ Reason: the challenge application must remain understandable when explored after
 Status: accepted
 Date: 2026-08-29
 
-When no external WebMCP client is available, the workspace may stage a guided agent demo. Each timeline entry is explicitly labeled `Demo simulation`, uses the same tool name as the corresponding WebMCP operation and invokes the existing workspace actions. The simulation stops after recording evidence so the human still owns policy and remediation decisions.
+When no external WebMCP client is available, the workspace may stage a guided agent demo. Each timeline entry is explicitly labeled `Demo simulation`, uses the same tool name as the corresponding WebMCP operation and invokes the existing workspace actions. Short presentation pacing makes transitions readable but does not claim model latency. The simulation stops after recording evidence so the human still owns policy and remediation decisions.
+
+The compact activity footer shows only the two latest operations. A dismissible history drawer exposes up to 50 newest-first operations, preserving transparency without allowing a long session to crowd the architecture canvas.
 
 Proposal mode overlays presentation-only ghosts for removed evidence while the effective Architecture Model remains unchanged. After deterministic validation succeeds, the UI derives a copyable implementation brief without claiming a live Jira integration or mutating Current Architecture.
 

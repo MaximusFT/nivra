@@ -29,6 +29,8 @@ The workspace can also be explored manually. Selecting Checkout opens its owner,
 
 For a self-contained rehearsal without an external agent, select **Run guided agent demo**. Nivra clearly labels this as a local simulation and stages the same four verified operations in Agent Activity: read architecture, inspect Checkout, open evidence and record a Finding.
 
+Select **Explore evidence manually** to skip the staged sequence and open the same shared-state relation directly. The footer keeps the latest two steps visible; **View all** opens the complete activity history.
+
 ## 2. Reveal the hidden coupling
 
 Prompt:

@@ -191,6 +191,8 @@ The final narrative pass removed the hard-coded HLD/LLD tabs in favor of context
 
 Final local browser verification passed at 1440×900: the complete guided path reached the implementation brief, added and removed evidence remained visible together, the page had no horizontal overflow and the console was clean.
 
+The guided simulation now uses slightly slower presentation pacing so each real workspace transition is readable. **Explore evidence manually** opens Checkout LLD with the shared-state relation selected and its evidence visible. Agent Activity keeps the latest two steps in the compact footer and exposes up to 50 newest-first entries in a dismissible history drawer.
+
 Production verification passed in both ordinary-browser fallback mode and WebMCP-enabled Chromium. The black-box harness now accepts `NIVRA_WEBMCP_URL` and completed three full Golden repetitions against the public HTTPS deployment.
 
 The Vercel project is connected to the private GitHub repository `MaximusFT/nivra`, with access limited to that repository. Pushes to `main` automatically build and update production; branches and pull requests produce preview deployments. Direct Vercel access is not required on a development computer.
