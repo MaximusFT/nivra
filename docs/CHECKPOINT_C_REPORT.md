@@ -44,3 +44,7 @@ npm run test:webmcp
 ```
 
 See `docs/WEBMCP_TESTING.md` for prerequisites, environment overrides and every asserted invariant.
+
+## Production verification
+
+The same harness completed three additional Golden repetitions against `https://nivra-psi.vercel.app` on 2026-08-29. All seven tools registered, Current remained `2 passed / 2 failed`, Proposal remained `4 passed / 0 failed`, and the Current immutability and visible Activity assertions passed in every run.

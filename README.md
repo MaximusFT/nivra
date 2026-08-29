@@ -2,6 +2,8 @@
 
 Nivra is a shared visual architecture workspace for humans and AI agents. The human works with an interactive diagram while an agent reads, navigates, annotates, proposes and validates the same structured Architecture Model through browser-native WebMCP tools.
 
+**Live application:** https://nivra-psi.vercel.app
+
 ## Demo story
 
 The included Commerce Platform fixture makes one architecture trade-off visible:
@@ -44,6 +46,8 @@ npx --yes --registry=https://registry.npmjs.org vercel --prod
 ```
 
 Open the resulting HTTPS URL in Chrome with WebMCP enabled for the agent-driven demonstration. A standard browser still supports the complete manual workflow.
+
+Current production deployment: [nivra-psi.vercel.app](https://nivra-psi.vercel.app).
 
 ## WebMCP tools
 

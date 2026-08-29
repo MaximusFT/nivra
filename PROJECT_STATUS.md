@@ -1,7 +1,7 @@
 # Nivra — Project Status
 
 > Last updated: 2026-08-29
-> Current phase: Phase 5B in progress; deploy from home computer only
+> Current phase: Phase 5B deployment complete; final delivery assets next
 > Current branch: `main`
 
 This is the first file to read when resuming Nivra on another computer or in a new Codex task.
@@ -159,27 +159,31 @@ npm test           PASS — 51 tests
 npm run build      PASS
 npm run test:webmcp PASS — 3 complete Chromium runs; 7 tools; Current 2/2 → Proposal 4/0
 Browser runtime    PASS — focus and Agent Activity visible; Current preserved; unavailable fallback verified
+Production HTTPS   PASS — https://nivra-psi.vercel.app; HTTP 200; Vercel Ready
+Production WebMCP  PASS — 3 complete Chromium runs against HTTPS; all 7 tools reliable
 ```
 
 Always run all command-line checks before ending an implementation task.
 
 ## Exact next task
 
-Complete **Phase 5B — Documentation and deployment**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
+Complete the remaining **Phase 5B/5C delivery assets**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
 
-Do not attempt Vercel authentication or deployment from this work computer. The next implementation task must run from the user's home computer:
+The production application is live at **https://nivra-psi.vercel.app**. The next task is limited to:
 
-1. `git pull --ff-only` in the `MaximusFT/nivra` clone;
-2. install dependencies with `npm install` if needed, then run `npm run typecheck`, `npm test`, `npm run build` and `npm run test:webmcp`;
-3. authenticate interactively with `npx --yes --registry=https://registry.npmjs.org vercel login`;
-4. deploy from the repository root with `npx --yes --registry=https://registry.npmjs.org vercel --prod`;
-5. record the production HTTPS URL here, verify it in a clean Chrome profile with WebMCP enabled and capture final screenshots if required.
+1. decide whether the user approves adding an MIT license;
+2. capture final production screenshots for the Checkout LLD evidence and Proposal `4/4` states;
+3. prepare a fallback screenshot/video package if required for submission;
+4. perform the final fixed demo rehearsal against the production URL;
+5. avoid feature changes unless production verification reveals a blocking defect.
 
 Phase 5A is complete. It refined the global visual foundation and desktop application shell, then made graph evidence and the Context/Policy panels denser and more legible. Intentional system typography, a restrained workspace grid, stronger header/view hierarchy, consistent compact controls and visible keyboard focus preserve the established workflow. The WebMCP browser harness now uses semantic DOM text instead of CSS-rendered text.
 
 Desktop verification passed at 1440×900 and 1920×1080: no horizontal overflow, Checkout LLD runtime coupling evidence and Agent Activity remained visible, and the browser console was clean after reload.
 
-Phase 5B documentation is complete: `README.md` documents setup, verification, architecture and all seven tools; `docs/DEMO_SCRIPT.md` defines the fixed five-step, sub-three-minute flow. Public deployment is intentionally deferred to the home computer because this work computer cannot access Vercel.
+Phase 5B documentation and deployment are complete: `README.md` documents setup, verification, architecture and all seven tools; `docs/DEMO_SCRIPT.md` defines the fixed five-step, sub-three-minute flow; Vercel serves the production build at `https://nivra-psi.vercel.app`.
+
+Production verification passed in both ordinary-browser fallback mode and WebMCP-enabled Chromium. The black-box harness now accepts `NIVRA_WEBMCP_URL` and completed three full Golden repetitions against the public HTTPS deployment.
 
 Phase 4 is feature-complete. Avoid expanding product scope during visual polish.
 

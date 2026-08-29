@@ -8,6 +8,7 @@ import WebSocket from 'ws';
 
 const root = resolve(import.meta.dirname, '..');
 const repeatCount = Number.parseInt(process.env.NIVRA_WEBMCP_REPEATS ?? '3', 10);
+const requestedTargetUrl = process.env.NIVRA_WEBMCP_URL?.trim();
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -61,6 +62,7 @@ async function waitFor(check, message, timeoutMs = 15_000) {
 }
 
 async function stopProcess(child) {
+  if (!child) return;
   if (child.exitCode !== null || child.signalCode !== null) return;
   const exited = new Promise((resolveExit) => child.once('exit', resolveExit));
   child.kill();
@@ -315,21 +317,29 @@ async function executeGoldenRun(cdp, runNumber) {
 
 async function main() {
   assert(Number.isInteger(repeatCount) && repeatCount > 0, 'NIVRA_WEBMCP_REPEATS must be a positive integer.');
+  if (requestedTargetUrl) {
+    const protocol = new URL(requestedTargetUrl).protocol;
+    assert(protocol === 'http:' || protocol === 'https:', 'NIVRA_WEBMCP_URL must use HTTP or HTTPS.');
+  }
   const chromePath = findChrome();
-  const [vitePort, cdpPort] = await Promise.all([availablePort(), availablePort()]);
+  const cdpPort = await availablePort();
+  const vitePort = requestedTargetUrl ? undefined : await availablePort();
+  const targetUrl = requestedTargetUrl ?? `http://127.0.0.1:${vitePort}/`;
   const profileDir = await mkdtemp(join(tmpdir(), 'nivra-webmcp-'));
-  const vite = spawn(
-    process.execPath,
-    [
-      join(root, 'node_modules', 'vite', 'bin', 'vite.js'),
-      '--host',
-      '127.0.0.1',
-      '--port',
-      String(vitePort),
-      '--strictPort',
-    ],
-    { cwd: root, stdio: 'ignore' },
-  );
+  const vite = vitePort
+    ? spawn(
+      process.execPath,
+      [
+        join(root, 'node_modules', 'vite', 'bin', 'vite.js'),
+        '--host',
+        '127.0.0.1',
+        '--port',
+        String(vitePort),
+        '--strictPort',
+      ],
+      { cwd: root, stdio: 'ignore' },
+    )
+    : undefined;
   const chrome = spawn(
     chromePath,
     [
@@ -347,7 +357,7 @@ async function main() {
 
   let cdp;
   try {
-    await waitFor(async () => (await fetch(`http://127.0.0.1:${vitePort}/`)).ok, 'Vite did not start');
+    await waitFor(async () => (await fetch(targetUrl)).ok, `${requestedTargetUrl ? 'Target URL' : 'Vite'} did not respond`);
     const target = await waitFor(async () => {
       const targets = await fetch(`http://127.0.0.1:${cdpPort}/json/list`).then((response) => response.json());
       return targets.find(({ type }) => type === 'page');
@@ -357,7 +367,7 @@ async function main() {
     await cdp.connect();
     await cdp.send('Runtime.enable');
     await cdp.send('Page.enable');
-    await cdp.send('Page.navigate', { url: `http://127.0.0.1:${vitePort}/` });
+    await cdp.send('Page.navigate', { url: targetUrl });
     const toolMetadata = await waitFor(async () => {
       const value = await cdp.evaluate(`(async () => {
         if (!document.modelContext || !document.body.innerText.includes("WebMCP ready")) return null;
@@ -380,6 +390,7 @@ async function main() {
       JSON.stringify(
         {
           status: 'passed',
+          targetUrl,
           repeatCount,
           tools: toolMetadata.names,
           reports,

@@ -212,9 +212,20 @@ The default reliability gate is three complete repetitions from Reset Demo. Each
 
 Reason: unit tests protect handlers and invariants, but Checkpoint C requires black-box proof that registration, browser transport, workspace actions and visible React state work together.
 
+## D-022 — Production is an explicit Vercel CLI deployment
+
+Status: accepted
+Date: 2026-08-29
+
+The production application is deployed to `https://nivra-psi.vercel.app` under the `maximusfts-projects/nivra` Vercel project. The initial deployment uses Vercel's detected Vite defaults and is not connected to automatic Git deployments; future releases remain explicit CLI actions until the user chooses otherwise.
+
+The WebMCP harness accepts `NIVRA_WEBMCP_URL` for black-box verification of a deployed target. Three complete Golden repetitions passed against the production HTTPS URL after deployment.
+
+Reason: explicit releases keep deployment changes deliberate while still providing repeatable proof that the published artifact, not only local Vite, supports the full agent workflow.
+
 ## Open decisions before their implementation phases
 
 - Phase 2B: visual treatment for `shares-state` versus explicit protocols.
 - Phase 3B: exact `ValidationResult` and per-rule result schema.
 - Phase 3C: immutable fixture clone/factory strategy for write operations and reset.
-- Phase 5: final deployment URL and license approval.
+- Phase 5: license approval.

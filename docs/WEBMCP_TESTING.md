@@ -25,6 +25,15 @@ npm run test:webmcp
 
 The environment variable affects only this command. The harness uses random free localhost ports and an isolated temporary browser profile.
 
+To verify an already deployed build instead of starting local Vite:
+
+```powershell
+$env:NIVRA_WEBMCP_URL = "https://nivra-psi.vercel.app"
+npm run test:webmcp
+```
+
+The production URL must use HTTP or HTTPS. The harness still uses an isolated temporary browser profile and never persists server-side data.
+
 ## Assertions per repetition
 
 The harness verifies:
