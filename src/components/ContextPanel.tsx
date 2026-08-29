@@ -94,10 +94,10 @@ export function ContextPanel() {
     : false;
 
   return (
-    <aside className="flex w-[320px] shrink-0 flex-col border-l border-slate-200 bg-white">
+    <aside className="flex w-[336px] shrink-0 flex-col border-l border-slate-200 bg-white shadow-[-8px_0_24px_rgba(15,23,42,0.025)]">
       <div className="grid grid-cols-2 gap-1 border-b border-slate-200 p-2">
         <button
-          className={`flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold transition-colors ${
+          className={`flex items-center justify-center gap-2 rounded px-3 py-2 text-xs font-semibold transition-colors ${
             activeTab === "inspect" ? "bg-slate-100 text-slate-900" : "text-slate-500 hover:text-slate-800"
           }`}
           onClick={() => setActiveTab("inspect")}
@@ -107,7 +107,7 @@ export function ContextPanel() {
           Context
         </button>
         <button
-          className={`flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold transition-colors ${
+          className={`flex items-center justify-center gap-2 rounded px-3 py-2 text-xs font-semibold transition-colors ${
             activeTab === "policy" ? "bg-indigo-50 text-indigo-700" : "text-slate-500 hover:text-slate-800"
           }`}
           onClick={() => setActiveTab("policy")}
@@ -193,7 +193,7 @@ export function ContextPanel() {
             </button>
           </section>
         ) : (
-          <section className="rounded-xl border border-dashed border-slate-200 px-4 py-6 text-center">
+            <section className="rounded-lg border border-dashed border-slate-200 px-4 py-6 text-center">
             <Search aria-hidden="true" className="mx-auto text-slate-300" size={22} />
             <h3 className="mt-3 text-sm font-medium text-slate-700">Inspect architecture</h3>
             <p className="mt-1 text-xs leading-5 text-slate-400">
@@ -217,7 +217,7 @@ export function ContextPanel() {
             {effectiveArchitecture.findings.map((finding) => (
               <li key={finding.id}>
                 <button
-                  className="w-full rounded-xl border border-amber-200 bg-amber-50 p-3 text-left transition-colors hover:border-amber-300"
+                  className="w-full rounded-lg border border-amber-200 bg-amber-50 p-3 text-left transition-colors hover:border-amber-300"
                   onClick={() => focusFinding(finding.id)}
                   type="button"
                 >

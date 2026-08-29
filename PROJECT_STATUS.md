@@ -1,7 +1,7 @@
 # Nivra — Project Status
 
 > Last updated: 2026-08-28  
-> Current phase: Phase 5A in progress; shell polish block complete
+> Current phase: Phase 5B in progress; deployment authentication required
 > Current branch: `main`
 
 This is the first file to read when resuming Nivra on another computer or in a new Codex task.
@@ -161,21 +161,24 @@ npm run test:webmcp PASS — 3 complete Chromium runs; 7 tools; Current 2/2 → 
 Browser runtime    PASS — focus and Agent Activity visible; Current preserved; unavailable fallback verified
 ```
 
-Always run all three command-line checks before ending an implementation task.
+Always run all command-line checks before ending an implementation task.
 
 ## Exact next task
 
-Continue **Phase 5A — Visual polish**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
+Complete **Phase 5B — Documentation and deployment**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
 
 The next implementation task should be limited to:
 
-1. refine the Context and Policy panel density at 1440×900 and 1920×1080;
-2. improve node and edge presentation, including focus states and semantic contrast;
-3. audit the Checkout LLD and Proposal `4/4` hero states at both desktop sizes;
-4. verify accessibility basics, readable labels and browser console cleanliness;
-5. preserve all Phase 4 tool schemas and Checkpoint C invariants.
+1. authenticate to Vercel interactively with `npx --yes --registry=https://registry.npmjs.org vercel login`;
+2. run `npx --yes --registry=https://registry.npmjs.org vercel --prod` from the repository root;
+3. record the production HTTPS URL in this file and verify the deployed build in a clean browser profile;
+4. capture final public screenshots if needed for challenge submission.
 
-The first 5A block refined the global visual foundation and desktop application shell: intentional system typography, a restrained workspace grid, stronger header/view hierarchy, consistent compact controls and visible keyboard focus. It also made the WebMCP browser harness independent of CSS text transformations.
+Phase 5A is complete. It refined the global visual foundation and desktop application shell, then made graph evidence and the Context/Policy panels denser and more legible. Intentional system typography, a restrained workspace grid, stronger header/view hierarchy, consistent compact controls and visible keyboard focus preserve the established workflow. The WebMCP browser harness now uses semantic DOM text instead of CSS-rendered text.
+
+Desktop verification passed at 1440×900 and 1920×1080: no horizontal overflow, Checkout LLD runtime coupling evidence and Agent Activity remained visible, and the browser console was clean after reload.
+
+Phase 5B documentation is complete: `README.md` documents setup, verification, architecture and all seven tools; `docs/DEMO_SCRIPT.md` defines the fixed five-step, sub-three-minute flow. Vercel CLI is available but currently logged out. An unauthenticated temporary deployment also requires interactive login, so public deployment is blocked only on Vercel authentication.
 
 Phase 4 is feature-complete. Avoid expanding product scope during visual polish.
 

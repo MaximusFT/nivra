@@ -138,32 +138,32 @@ function CanvasContent() {
         selectRelations([]);
       }}
     >
-      <Background color="#cbd5e1" gap={24} size={1} variant={BackgroundVariant.Dots} />
+      <Background color="#94a3b8" gap={28} size={1} variant={BackgroundVariant.Dots} />
       <Controls
-        className="!overflow-hidden !rounded-lg !border !border-slate-200 !bg-white !shadow-sm"
+        className="!overflow-hidden !rounded-md !border !border-slate-200 !bg-white !shadow-sm"
         showInteractive={false}
       />
       {view.level === "lld" ? (
         <Panel position="top-left">
-          <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white/95 p-1.5 text-[11px] shadow-sm backdrop-blur">
+          <div className="flex items-center gap-2 rounded-md border border-slate-200 bg-white/95 p-1.5 text-[11px] shadow-sm backdrop-blur">
             {hasSharedState ? (
-              <span className="rounded-md bg-red-50 px-2.5 py-1.5 font-semibold text-red-700">
+              <span className="rounded bg-red-50 px-2.5 py-1.5 font-semibold text-red-700">
                 shares state · runtime coupling
               </span>
             ) : null}
             {hasSnapshot ? (
-              <span className="rounded-md bg-indigo-50 px-2.5 py-1.5 font-semibold text-indigo-700">
+              <span className="rounded bg-indigo-50 px-2.5 py-1.5 font-semibold text-indigo-700">
                 snapshot · Checkout contract
               </span>
             ) : null}
-            <span className="rounded-md bg-blue-50 px-2.5 py-1.5 font-semibold text-blue-700">
+            <span className="rounded bg-blue-50 px-2.5 py-1.5 font-semibold text-blue-700">
               REST · explicit API
             </span>
           </div>
         </Panel>
       ) : null}
       <Panel position="bottom-right">
-        <div className="flex items-center gap-4 rounded-lg border border-slate-200 bg-white/95 px-3 py-2 text-[11px] text-slate-600 shadow-sm backdrop-blur">
+        <div className="flex items-center gap-4 rounded-md border border-slate-200 bg-white/95 px-3 py-2 text-[11px] text-slate-600 shadow-sm backdrop-blur">
           <span className="flex items-center gap-1.5"><i className="size-2 rounded-full bg-blue-500" />Frontend</span>
           <span className="flex items-center gap-1.5"><i className="size-2 rounded-full bg-violet-500" />Backend</span>
           <span className="flex items-center gap-1.5"><i className="size-2 rounded-full bg-amber-500" />Data</span>

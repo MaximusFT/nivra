@@ -47,7 +47,7 @@ export function PolicyPanel() {
     <div className="min-h-0 flex-1 overflow-y-auto p-4">
       <section>
         <div className="flex items-start gap-3">
-          <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-indigo-50 text-indigo-700">
+            <span className="grid size-9 shrink-0 place-items-center rounded-md bg-indigo-50 text-indigo-700">
             <ShieldCheck aria-hidden="true" size={17} />
           </span>
           <div>
@@ -70,7 +70,7 @@ export function PolicyPanel() {
         ) : (
           <ul className="mt-5 space-y-2">
             {constraints.map((constraint) => (
-              <li className="rounded-xl border border-slate-200 p-3" key={constraint.id}>
+              <li className="rounded-lg border border-slate-200 p-3" key={constraint.id}>
                 <p className="text-xs font-semibold text-slate-800">{constraint.name}</p>
                 <p className="mt-1 text-[11px] leading-4 text-slate-500">{constraint.description}</p>
                 <p className="mt-2 text-[9px] font-semibold uppercase tracking-[0.08em] text-indigo-500">
@@ -85,7 +85,7 @@ export function PolicyPanel() {
       {constraints.length > 0 ? (
         <section className="mt-6 border-t border-slate-200 pt-5">
           <div className="flex items-start gap-3">
-            <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-violet-50 text-violet-700">
+            <span className="grid size-9 shrink-0 place-items-center rounded-md bg-violet-50 text-violet-700">
               <GitCompare aria-hidden="true" size={17} />
             </span>
             <div>
@@ -104,7 +104,7 @@ export function PolicyPanel() {
               Create smallest proposal
             </button>
           ) : (
-            <div className="mt-4 rounded-xl border border-violet-200 bg-violet-50 p-3">
+            <div className="mt-4 rounded-lg border border-violet-200 bg-violet-50 p-3">
               <div className="flex items-center justify-between gap-2">
                 <div>
                   <p className="text-xs font-semibold text-violet-900">{activeProposal.name}</p>

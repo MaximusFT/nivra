@@ -41,13 +41,13 @@ export function ArchitectureNode({ data, selected }: NodeProps<ArchitectureFlowN
 
   return (
     <article
-      className={`relative w-[196px] rounded-xl border px-3.5 py-3 shadow-sm transition-shadow ${styles.shell} ${
-        selected ? "ring-2 ring-blue-500 ring-offset-2 shadow-md" : ""
-      } ${data.changeStatus === "added" ? "!border-indigo-400 ring-2 ring-indigo-200" : ""}`}
+      className={`relative w-[204px] rounded-lg border px-3.5 py-3 shadow-sm transition-[box-shadow,transform] ${styles.shell} ${
+        selected ? "ring-2 ring-teal-600 ring-offset-2 shadow-md" : ""
+      } ${data.changeStatus === "added" ? "!border-indigo-500 ring-2 ring-indigo-200 shadow-md" : ""}`}
     >
       <Handle className="!size-2 !border-white !bg-slate-400" type="target" position={Position.Left} />
       <div className="flex items-start gap-3">
-        <span className={`grid size-8 shrink-0 place-items-center rounded-lg ${styles.icon}`}>
+        <span className={`grid size-8 shrink-0 place-items-center rounded-md ${styles.icon}`}>
           <NodeIcon kind={data.kind} />
         </span>
         <div className="min-w-0">

@@ -195,20 +195,20 @@ Checkpoint C result: **passed** after three complete WebMCP-enabled Chromium rep
 
 ### Phase 5A — Visual polish
 
-Status: **in progress**
+Status: **complete**
 
 - [x] establish visual foundation and refine desktop workspace shell
-- [ ] tune 1440×900 and 1920×1080 layouts
-- [ ] refine typography, spacing, focus and semantic colors
-- [ ] polish hero screen: Checkout LLD evidence
-- [ ] polish hero screen: proposal with 4/4 validation
-- [ ] verify accessibility basics and readable video labels
+- [x] tune 1440×900 and 1920×1080 layouts
+- [x] refine typography, spacing, focus and semantic colors
+- [x] polish hero screen: Checkout LLD evidence
+- [x] polish hero screen: proposal with 4/4 validation
+- [x] verify accessibility basics and readable video labels
 
 ### Phase 5B — Documentation and deployment
 
-- [ ] create final README
-- [ ] document architecture and WebMCP tools
-- [ ] document local setup and testing
+- [x] create final README
+- [x] document architecture and WebMCP tools
+- [x] document local setup and testing
 - [ ] add MIT license if approved
 - [ ] deploy to Vercel
 - [ ] verify public HTTPS build
@@ -216,10 +216,10 @@ Status: **in progress**
 
 ### Phase 5C — Demo rehearsal
 
-- [ ] freeze a fixed five-prompt script
-- [ ] record/rehearse a sub-three-minute flow
-- [ ] test Reset Demo before every run
-- [ ] verify a clean browser profile and WebMCP status
+- [x] freeze a fixed five-prompt script
+- [x] rehearse the deterministic sub-three-minute flow
+- [x] test Reset Demo before every run
+- [x] verify a clean browser profile and WebMCP status
 - [ ] prepare fallback screenshots/video
 
 ## Optional work after P0/P1 stability
