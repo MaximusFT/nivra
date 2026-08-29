@@ -79,6 +79,8 @@ Architecture Model -> workspace actions -> React workspace
 
 HLD and LLD are views of the same model. Current Architecture is immutable; Proposals are patch-derived alternatives. Further decisions are captured in [docs/ARCHITECTURE_DECISIONS.md](docs/ARCHITECTURE_DECISIONS.md).
 
+Verified Proposals can be saved as architecture branches. These are durable alternatives inside Nivra, not Git branches: teams can switch between the canonical `current/commerce-1.35` model and `proposal/checkout-isolation` without overwriting either architecture.
+
 ## Project status
 
 Functional MVP gates A, B and C have passed. The remaining delivery work is visual refinement, public deployment and rehearsal. See [PROJECT_STATUS.md](PROJECT_STATUS.md) for the current handoff state and [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) for the fixed demo sequence.

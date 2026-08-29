@@ -28,6 +28,7 @@ function CanvasContent() {
     activeViewId,
     activeMode,
     activeProposalId,
+    savedBranchProposalIds,
     selectedElementIds,
     selectedRelationIds,
     selectElements,
@@ -38,6 +39,7 @@ function CanvasContent() {
       activeViewId: state.activeViewId,
       activeMode: state.activeMode,
       activeProposalId: state.activeProposalId,
+      savedBranchProposalIds: state.savedBranchProposalIds,
       selectedElementIds: state.selectedElementIds,
       selectedRelationIds: state.selectedRelationIds,
       selectElements: state.selectElements,
@@ -53,8 +55,11 @@ function CanvasContent() {
     [activeMode, activeProposalId, architecture],
   );
   const proposalDiff = useMemo(
-    () => (activeMode === 'proposal' && activeProposal ? getProposalDiff(activeProposal) : undefined),
-    [activeMode, activeProposal],
+    () =>
+      activeMode === 'proposal' && activeProposal && !savedBranchProposalIds.includes(activeProposal.id)
+        ? getProposalDiff(activeProposal)
+        : undefined,
+    [activeMode, activeProposal, savedBranchProposalIds],
   );
   const view = effectiveArchitecture.views.find(({ id }) => id === activeViewId);
   const originalView = architecture.views.find(({ id }) => id === activeViewId);
@@ -113,7 +118,7 @@ function CanvasContent() {
     }).map((node) => ({
       ...node,
       selectable: false,
-      position: { x: node.position.x + 260, y: node.position.y },
+      position: { x: node.position.x, y: node.position.y - 120 },
     }));
 
     return [...activeNodes, ...removedNodes];

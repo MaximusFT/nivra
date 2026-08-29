@@ -240,6 +240,17 @@ Status: **complete**
 - [x] show added and removed architecture evidence together
 - [x] finish verified Proposals with a copyable implementation brief
 
+### Phase 5E — Architecture branches
+
+Status: **complete**
+
+- [x] render added and removed dependencies as parallel replacement paths
+- [x] save only deterministically verified Proposals as architecture branches
+- [x] replace transient comparison controls with a branch selector after save
+- [x] preserve canonical Current while switching durable alternatives
+- [x] persist saved architecture branch references
+- [x] keep architecture branches distinct from Git branches
+
 ## Optional work after P0/P1 stability
 
 - [ ] migration plan types → workspace action → optional WebMCP tool

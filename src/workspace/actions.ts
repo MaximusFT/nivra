@@ -28,6 +28,8 @@ export interface WorkspaceActions {
   validateCurrent: () => void;
   focusValidationCheck: (constraintId: string) => void;
   createProposal: (proposal: ArchitectureProposal) => void;
+  saveActiveProposalAsBranch: () => void;
+  switchArchitectureBranch: (branchId: string) => void;
   validateActive: () => void;
   resetWorkspace: () => void;
 }

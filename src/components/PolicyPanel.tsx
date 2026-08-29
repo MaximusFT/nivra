@@ -7,6 +7,7 @@ import {
   Clipboard,
   FileText,
   GitCompare,
+  GitBranch,
   Play,
   ShieldCheck,
   X,
@@ -29,11 +30,13 @@ export function PolicyPanel() {
     activeMode,
     activeProposalId,
     selectedElementIds,
+    savedBranchProposalIds,
     addConstraint,
     createProposal,
     setActiveMode,
     validateActive,
     focusValidationCheck,
+    saveActiveProposalAsBranch,
   } = useWorkspaceStore(
     useShallow((state) => ({
       constraints: state.architecture.constraints,
@@ -42,11 +45,13 @@ export function PolicyPanel() {
       activeMode: state.activeMode,
       activeProposalId: state.activeProposalId,
       selectedElementIds: state.selectedElementIds,
+      savedBranchProposalIds: state.savedBranchProposalIds,
       addConstraint: state.addConstraint,
       createProposal: state.createProposal,
       setActiveMode: state.setActiveMode,
       validateActive: state.validateActive,
       focusValidationCheck: state.focusValidationCheck,
+      saveActiveProposalAsBranch: state.saveActiveProposalAsBranch,
     })),
   );
   const activeProposal = activeProposalId ? proposals.find(({ id }) => id === activeProposalId) : undefined;
@@ -66,6 +71,7 @@ export function PolicyPanel() {
     'checkout-service',
   ]);
   const selectedOutsideCheckout = selectedElement && !checkoutElementIds.has(selectedElement.id);
+  const activeProposalSaved = activeProposalId ? savedBranchProposalIds.includes(activeProposalId) : false;
 
   const addGoldenConstraints = () => {
     for (const constraint of checkoutGoldenConstraints) {
@@ -369,6 +375,27 @@ export function PolicyPanel() {
                           )}
                           {implementationPlanCopied ? 'Copied as Markdown' : 'Copy implementation brief'}
                         </button>
+                        {!activeProposalSaved ? (
+                          <button
+                            className="mt-2 flex w-full items-center justify-between rounded-md bg-slate-900 px-3 py-2.5 text-[11px] font-semibold text-white hover:bg-slate-700"
+                            onClick={saveActiveProposalAsBranch}
+                            type="button"
+                          >
+                            <span className="flex items-center gap-2">
+                              <GitBranch aria-hidden="true" size={13} />
+                              Save as architecture branch
+                            </span>
+                            <ArrowRight aria-hidden="true" size={13} />
+                          </button>
+                        ) : (
+                          <div className="mt-2 rounded-md border border-emerald-300 bg-white px-3 py-2.5">
+                            <p className="flex items-center gap-2 text-[11px] font-semibold text-emerald-800">
+                              <GitBranch aria-hidden="true" size={13} />
+                              proposal/{activeProposalId}
+                            </p>
+                            <p className="mt-0.5 text-[10px] text-emerald-700">Verified architecture branch saved</p>
+                          </div>
+                        )}
                       </section>
                     )}
                   </div>

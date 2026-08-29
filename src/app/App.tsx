@@ -1,4 +1,4 @@
-import { ArrowLeft, Box, CheckCircle2, Circle, RotateCcw } from 'lucide-react';
+import { ArrowLeft, Box, CheckCircle2, Circle, GitBranch, RotateCcw } from 'lucide-react';
 import { useShallow } from 'zustand/react/shallow';
 
 import { ArchitectureCanvas } from '../canvas/ArchitectureCanvas';
@@ -14,7 +14,9 @@ export function App() {
   const setActiveView = useWorkspaceStore((state) => state.setActiveView);
   const activeMode = useWorkspaceStore((state) => state.activeMode);
   const activeProposalId = useWorkspaceStore((state) => state.activeProposalId);
+  const savedBranchProposalIds = useWorkspaceStore((state) => state.savedBranchProposalIds);
   const setActiveMode = useWorkspaceStore((state) => state.setActiveMode);
+  const switchArchitectureBranch = useWorkspaceStore((state) => state.switchArchitectureBranch);
   const resetWorkspace = useWorkspaceStore((state) => state.resetWorkspace);
   const isCheckoutView = activeView?.id === CHECKOUT_LLD_VIEW_ID;
 
@@ -37,7 +39,26 @@ export function App() {
         </div>
 
         <div className="flex items-center gap-6 text-xs">
-          <div className="flex rounded-md border border-slate-200 bg-slate-100/80 p-0.5 text-[11px]">
+          {savedBranchProposalIds.length > 0 ? (
+            <label className="flex items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-[11px] font-semibold text-slate-600">
+              <GitBranch aria-hidden="true" size={13} />
+              <span className="sr-only">Architecture branch</span>
+              <select
+                aria-label="Architecture branch"
+                className="max-w-56 bg-transparent text-slate-800 outline-none"
+                onChange={(event) => switchArchitectureBranch(event.target.value)}
+                value={activeMode === 'current' ? 'current/commerce-1.35' : (activeProposalId ?? '')}
+              >
+                <option value="current/commerce-1.35">current/commerce-1.35</option>
+                {savedBranchProposalIds.map((proposalId) => (
+                  <option key={proposalId} value={proposalId}>
+                    proposal/{proposalId} · verified
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : (
+            <div className="flex rounded-md border border-slate-200 bg-slate-100/80 p-0.5 text-[11px]">
             <button
               className={`flex items-center gap-1.5 rounded px-2.5 py-1.5 ${
                 activeMode === 'current'
@@ -62,7 +83,8 @@ export function App() {
             >
               Proposal
             </button>
-          </div>
+            </div>
+          )}
           <div className="flex items-center gap-2 text-emerald-700">
             <CheckCircle2 aria-hidden="true" size={15} />
             <span>Workspace ready</span>

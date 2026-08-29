@@ -258,6 +258,17 @@ Proposal mode overlays presentation-only ghosts for removed evidence while the e
 
 Reason: standalone judges need to understand the complete product flow without mistaking scripted presentation for a connected AI service, and visual comparison must remain separate from architecture semantics.
 
+## D-026 — Verified proposals become architecture branches
+
+Status: accepted
+Date: 2026-08-29
+
+Only an active Proposal with a passing deterministic validation result can be saved as an architecture branch. The branch stores a durable reference to the immutable Proposal patch rather than copying or replacing Current Architecture. Before save, Current/Proposal controls and the parallel visual diff support review. After save, a branch selector switches between `current/commerce-1.35` and the clean effective `proposal/checkout-isolation` architecture without diff markers.
+
+Architecture branches are explicitly not Git branches. A future delivery connector may associate them with source-control branches, ADRs or work-management items, but Challenge V1 does not claim that integration.
+
+Reason: a verified alternative needs a durable review state and a clear demo conclusion, while preserving Current Architecture and existing WebMCP contracts.
+
 ## Open decisions before their implementation phases
 
 - Phase 2B: visual treatment for `shares-state` versus explicit protocols.

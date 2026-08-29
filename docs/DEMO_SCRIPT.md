@@ -77,12 +77,14 @@ Prompt:
 Validate the proposal, then switch back to Current and confirm that the original architecture is unchanged.
 ```
 
-Expected result: the agent calls `validate_architecture` for Proposal and Current. Proposal reports `4 passed / 0 failed`; Current restores the original `shares state` relation. Select **Prepare implementation plan** to finish with a five-step delivery brief that can be copied as Markdown.
+Expected result: the agent calls `validate_architecture` for Proposal and Current. Proposal reports `4 passed / 0 failed`; Current restores the original `shares state` relation. Select **Prepare implementation plan** to produce a five-step delivery brief, then select **Save as architecture branch**.
+
+The temporary Current/Proposal comparison becomes a durable branch selector. `proposal/checkout-isolation` shows the accepted architecture without diff markers; switching to `current/commerce-1.35` restores the original runtime dependency.
 
 Closing narration:
 
 ```text
-The agent did not replace the architect. It exposed evidence, the human turned a trade-off into policy, and Nivra verified the smallest alternative. Current Architecture was never overwritten.
+The agent did not replace the architect. It exposed evidence, the human turned a trade-off into policy, and Nivra saved the verified alternative as an architecture branch ready for delivery. Current Architecture was never overwritten.
 ```
 
 ## Fallback

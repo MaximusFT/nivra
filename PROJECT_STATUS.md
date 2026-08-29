@@ -155,7 +155,7 @@ The following checks passed after the latest change:
 
 ```text
 npm run typecheck  PASS
-npm test           PASS — 52 tests
+npm test           PASS — 53 tests
 npm run build      PASS
 npm run test:webmcp PASS — 3 complete Chromium runs; 7 tools; Current 2/2 → Proposal 4/0
 Browser runtime    PASS — focus and Agent Activity visible; Current preserved; unavailable fallback verified
@@ -192,6 +192,10 @@ The final narrative pass removed the hard-coded HLD/LLD tabs in favor of context
 Final local browser verification passed at 1440×900: the complete guided path reached the implementation brief, added and removed evidence remained visible together, the page had no horizontal overflow and the console was clean.
 
 The guided simulation now uses slightly slower presentation pacing so each real workspace transition is readable. **Explore evidence manually** opens Checkout LLD with the shared-state relation selected and its evidence visible. Agent Activity keeps the latest two steps in the compact footer and exposes up to 50 newest-first entries in a dismissible history drawer.
+
+Phase 5E architecture branches are complete. Proposal diff now renders two parallel replacement paths from Basket Adapter: a muted removed Product Store dependency and an added Snapshot Contract dependency. After `4/4` validation and implementation planning, the user can save `proposal/checkout-isolation` as a durable architecture branch. The header then replaces transient Current/Proposal controls with a branch selector. Saved branches display as clean architectures without diff markers, while `current/commerce-1.35` continues to expose the original runtime relation. Branch references persist locally; they are Nivra architecture branches, not Git branches.
+
+Browser verification passed at 1440×900: added and removed targets share the same graph depth and split vertically from Basket Adapter; saving removes diff markers; switching to Current restores the runtime relation; switching back restores the Snapshot Contract; no horizontal overflow was introduced.
 
 Production verification passed in both ordinary-browser fallback mode and WebMCP-enabled Chromium. The black-box harness now accepts `NIVRA_WEBMCP_URL` and completed three full Golden repetitions against the public HTTPS deployment.
 

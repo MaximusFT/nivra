@@ -14,6 +14,7 @@ export interface PersistedWorkspace {
   findings: ArchitectureFinding[];
   proposals: ArchitectureProposal[];
   activeProposalId?: string;
+  savedBranchProposalIds?: string[];
   activeMode: WorkspaceMode;
 }
 
@@ -24,6 +25,7 @@ export interface PersistableWorkspaceState {
     proposals: ArchitectureProposal[];
   };
   activeProposalId?: string;
+  savedBranchProposalIds?: string[];
   activeMode: WorkspaceMode;
 }
 
@@ -48,6 +50,7 @@ export function createPersistedWorkspace(
     findings: state.architecture.findings,
     proposals: state.architecture.proposals,
     activeProposalId: state.activeProposalId,
+    savedBranchProposalIds: state.savedBranchProposalIds ?? [],
     activeMode: state.activeMode,
   };
 }
@@ -69,7 +72,10 @@ export function readWorkspacePersistence(
       !isIdentifiedArray(value.findings) ||
       !isIdentifiedArray(value.proposals) ||
       (value.activeMode !== "current" && value.activeMode !== "proposal") ||
-      (value.activeProposalId !== undefined && typeof value.activeProposalId !== "string")
+      (value.activeProposalId !== undefined && typeof value.activeProposalId !== "string") ||
+      (value.savedBranchProposalIds !== undefined &&
+        (!Array.isArray(value.savedBranchProposalIds) ||
+          !value.savedBranchProposalIds.every((item) => typeof item === "string")))
     ) {
       return undefined;
     }
@@ -91,7 +97,8 @@ export function writeWorkspacePersistence(
     payload.findings.length === 0 &&
     payload.proposals.length === 0 &&
     payload.activeMode === "current" &&
-    payload.activeProposalId === undefined;
+    payload.activeProposalId === undefined &&
+    (payload.savedBranchProposalIds?.length ?? 0) === 0;
 
   if (isCanonical) {
     storage.removeItem(WORKSPACE_STORAGE_KEY);

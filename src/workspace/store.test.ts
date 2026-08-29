@@ -84,4 +84,26 @@ describe("workspace store", () => {
     useWorkspaceStore.getState().setActiveMode("current");
     expect(useWorkspaceStore.getState().activeMode).toBe("current");
   });
+
+  it("saves a verified proposal as an architecture branch and switches without mutating Current", () => {
+    for (const constraint of checkoutGoldenConstraints) {
+      useWorkspaceStore.getState().addConstraint(constraint);
+    }
+    useWorkspaceStore.getState().createProposal(goldenCheckoutProposal);
+    useWorkspaceStore.getState().saveActiveProposalAsBranch();
+    expect(useWorkspaceStore.getState().savedBranchProposalIds).toEqual([]);
+
+    useWorkspaceStore.getState().validateActive();
+    useWorkspaceStore.getState().saveActiveProposalAsBranch();
+
+    expect(useWorkspaceStore.getState().savedBranchProposalIds).toEqual(["checkout-isolation"]);
+
+    useWorkspaceStore.getState().switchArchitectureBranch("current/commerce-1.35");
+    expect(useWorkspaceStore.getState().activeMode).toBe("current");
+    expect(useWorkspaceStore.getState().architecture.relations.some(({ id }) => id === "basket-adapter-shares-product-store")).toBe(true);
+
+    useWorkspaceStore.getState().switchArchitectureBranch("checkout-isolation");
+    expect(useWorkspaceStore.getState().activeMode).toBe("proposal");
+    expect(useWorkspaceStore.getState().activeProposalId).toBe("checkout-isolation");
+  });
 });

@@ -54,6 +54,7 @@ describe("workspace persistence", () => {
       },
       activeMode: "proposal",
       activeProposalId: goldenCheckoutProposal.id,
+      savedBranchProposalIds: [goldenCheckoutProposal.id],
     });
 
     expect(payload).toEqual(
@@ -61,6 +62,7 @@ describe("workspace persistence", () => {
         version: 1,
         activeMode: "proposal",
         activeProposalId: "checkout-isolation",
+        savedBranchProposalIds: ["checkout-isolation"],
       }),
     );
     expect(payload).not.toHaveProperty("selectedElementIds");
@@ -78,6 +80,7 @@ describe("workspace persistence", () => {
       },
       activeMode: "proposal" as const,
       activeProposalId: goldenCheckoutProposal.id,
+      savedBranchProposalIds: [goldenCheckoutProposal.id],
     };
 
     writeWorkspacePersistence(state, storage);
