@@ -8,6 +8,7 @@ import {
   FileText,
   GitCompare,
   GitBranch,
+  MousePointer2,
   Play,
   ShieldCheck,
   X,
@@ -30,6 +31,7 @@ export function PolicyPanel() {
     activeMode,
     activeProposalId,
     selectedElementIds,
+    selectedRelationIds,
     savedBranchProposalIds,
     addConstraint,
     createProposal,
@@ -45,6 +47,7 @@ export function PolicyPanel() {
       activeMode: state.activeMode,
       activeProposalId: state.activeProposalId,
       selectedElementIds: state.selectedElementIds,
+      selectedRelationIds: state.selectedRelationIds,
       savedBranchProposalIds: state.savedBranchProposalIds,
       addConstraint: state.addConstraint,
       createProposal: state.createProposal,
@@ -71,6 +74,7 @@ export function PolicyPanel() {
     'checkout-service',
   ]);
   const selectedOutsideCheckout = selectedElement && !checkoutElementIds.has(selectedElement.id);
+  const hasSelection = selectedElementIds.length > 0 || selectedRelationIds.length > 0;
   const activeProposalSaved = activeProposalId ? savedBranchProposalIds.includes(activeProposalId) : false;
 
   const addGoldenConstraints = () => {
@@ -100,7 +104,20 @@ export function PolicyPanel() {
 
   return (
     <div className="min-h-0 flex-1 overflow-y-auto p-4">
-      {selectedOutsideCheckout ? (
+      {!hasSelection ? (
+        <section className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+          <span className="grid size-9 place-items-center rounded-md bg-white text-slate-500 shadow-sm">
+            <MousePointer2 aria-hidden="true" size={17} />
+          </span>
+          <h3 className="mt-3 text-sm font-semibold text-slate-900">Select architecture evidence</h3>
+          <p className="mt-1 text-xs leading-5 text-slate-600">
+            Choose an element, relation or Finding to review the policy that applies to it.
+          </p>
+          <p className="mt-3 text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+            No policy scope selected
+          </p>
+        </section>
+      ) : selectedOutsideCheckout ? (
         <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-4">
           <span className="grid size-9 place-items-center rounded-md bg-white text-emerald-700 shadow-sm">
             <CheckCircle2 aria-hidden="true" size={17} />

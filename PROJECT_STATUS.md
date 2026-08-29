@@ -197,6 +197,8 @@ Phase 5E architecture branches are complete. Proposal diff now renders two paral
 
 Browser verification passed at 1440×900: added and removed targets share the same graph depth and split vertically from Basket Adapter; saving removes diff markers; switching to Current restores the runtime relation; switching back restores the Snapshot Contract; no horizontal overflow was introduced.
 
+Policy context bug fix verified: clearing the canvas selection now shows a neutral `Select architecture evidence` state and does not leak Checkout decisions. Selecting the shared-state relation still opens the scoped Checkout policy flow.
+
 Production verification passed in both ordinary-browser fallback mode and WebMCP-enabled Chromium. The black-box harness now accepts `NIVRA_WEBMCP_URL` and completed three full Golden repetitions against the public HTTPS deployment.
 
 The Vercel project is connected to the private GitHub repository `MaximusFT/nivra`, with access limited to that repository. Pushes to `main` automatically build and update production; branches and pull requests produce preview deployments. Direct Vercel access is not required on a development computer.

@@ -241,7 +241,7 @@ Date: 2026-08-29
 
 Selecting an architecture element always opens its own Context. Elements that own a deeper view expose an explicit contextual drill-down; clicking a node never navigates implicitly. Inspection identifies the demo architecture snapshot as its source, and relation evidence includes protocol, contract and inherited deployment-boundary information.
 
-Policy remains scoped to the Checkout isolation review but shows a safe contextual state when an unrelated element is selected. The Proposal action is hidden until Current validation fails, after which the failed result explains the blocking issue and presents one recommended action. Agent Activity displays real tool calls in sequence with both human-readable labels and exact WebMCP tool names; no artificial delay is introduced.
+Policy remains scoped to the Checkout isolation review but shows a neutral state when nothing is selected and a safe contextual state when an unrelated element is selected. Checkout decisions appear only when Checkout evidence is selected. The Proposal action is hidden until Current validation fails, after which the failed result explains the blocking issue and presents one recommended action. Agent Activity displays real tool calls in sequence with both human-readable labels and exact WebMCP tool names; no artificial delay is introduced.
 
 Reason: the challenge application must remain understandable when explored after the video, while preserving the emotional flow from apparently independent HLD to hidden LLD evidence, human policy, minimal Proposal and deterministic verification.
 
