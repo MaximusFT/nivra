@@ -56,3 +56,24 @@ The command prints a JSON report with `"status": "passed"`, the registered tool 
 ## Browser without WebMCP
 
 Ordinary browsers may not expose `document.modelContext`. Nivra treats this as a supported fallback and shows `WebMCP unavailable`; the architecture workspace remains fully usable manually. Use the harness above for the WebMCP-enabled verification path.
+
+## Open the application manually with WebMCP on macOS
+
+Quit all Chrome windows, then launch an isolated WebMCP-enabled profile:
+
+```sh
+open -na "Google Chrome" --args \
+	--enable-features=WebMCP \
+	--user-data-dir="$HOME/.nivra-webmcp-profile" \
+	https://nivra-psi.vercel.app
+```
+
+Nivra should show `WebMCP ready · 7 tools` in the footer. This confirms that the page can register WebMCP tools. It does not by itself connect VS Code Chat or another arbitrary chat client; the client must support invoking browser WebMCP tools.
+
+To confirm the browser API directly, open Chrome DevTools and evaluate:
+
+```js
+typeof document.modelContext?.getTools === "function"
+```
+
+The result should be `true`.

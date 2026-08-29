@@ -222,6 +222,19 @@ Status: **complete**
 - [x] verify a clean browser profile and WebMCP status
 - [ ] prepare fallback screenshots/video
 
+### Phase 5D — Demo narrative hardening
+
+Status: **complete**
+
+- [x] add a first-open workspace brief
+- [x] move Checkout drill-down into selected element context
+- [x] show relation protocol, contract, deployment boundary and evidence source
+- [x] keep unrelated Policy states scoped to the selected element
+- [x] explain failed validation and reveal one next action
+- [x] explain the verified Proposal and preserve Current
+- [x] present real WebMCP tool calls as a readable activity timeline
+- [x] document manual WebMCP-enabled Chrome launch
+
 ## Optional work after P0/P1 stability
 
 - [ ] migration plan types → workspace action → optional WebMCP tool

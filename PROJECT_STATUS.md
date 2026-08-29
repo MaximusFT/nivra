@@ -185,6 +185,8 @@ Phase 5B documentation and deployment are complete: `README.md` documents setup,
 
 The project is licensed under MIT, approved by the copyright holder on 2026-08-29.
 
+Phase 5D demo narrative hardening is complete. First-time visitors now receive a scoped Checkout independence brief; selecting Checkout exposes an explicit LLD drill-down while unrelated elements retain their own safe context. Element and relation inspection identifies the demo snapshot source, and relations explain protocol, contract and deployment-boundary evidence. Policy hides Proposal until Current fails, then presents one recommended action and explains the verified result. Agent Activity presents actual WebMCP calls as a numbered timeline without artificial delays.
+
 Production verification passed in both ordinary-browser fallback mode and WebMCP-enabled Chromium. The black-box harness now accepts `NIVRA_WEBMCP_URL` and completed three full Golden repetitions against the public HTTPS deployment.
 
 The Vercel project is connected to the private GitHub repository `MaximusFT/nivra`, with access limited to that repository. Pushes to `main` automatically build and update production; branches and pull requests produce preview deployments. Direct Vercel access is not required on a development computer.

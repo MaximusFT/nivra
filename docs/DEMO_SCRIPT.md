@@ -9,6 +9,12 @@ Target duration: under three minutes.
 3. Select **Reset Demo**.
 4. Keep the Context panel visible.
 
+Opening narration:
+
+```text
+Nivra is a shared architecture workspace for an architect and an AI agent. This demo starts from an imported Commerce architecture snapshot. I want to verify one assumption: is Checkout really independently deployable?
+```
+
 ## 1. Read the shared architecture
 
 Prompt:
@@ -18,6 +24,8 @@ Read the active architecture. Is Checkout independently deployable?
 ```
 
 Expected result: the agent calls `get_architecture`. Point out that the HLD presents Checkout as a separately deployed frontend artifact.
+
+The workspace can also be explored manually. Selecting Checkout opens its owner, deployment information, evidence source and an explicit **Explore Checkout internals** action; selecting unrelated elements shows their own context instead of Checkout actions.
 
 ## 2. Reveal the hidden coupling
 
@@ -29,6 +37,12 @@ Inspect Checkout, open its low-level view, and show the most important evidence 
 
 Expected result: the agent calls `inspect_element` and `show_architecture_view`; Checkout LLD focuses `Basket Adapter -> Product Store` with the `shares state` label.
 
+Narration:
+
+```text
+A separate box does not guarantee an independent system. Nivra found that Basket Adapter consumes Product's in-process runtime state across a deployment boundary. Pricing uses an explicit Product API contract, so that dependency is acceptable.
+```
+
 ## 3. Record explicit policy
 
 Prompt:
@@ -38,6 +52,8 @@ Record the policy required to make Checkout independently deployable, then valid
 ```
 
 Expected result: the agent calls `add_constraint` for the four canonical rules and `validate_architecture` with `current`. The Policy panel shows `2 passed / 2 failed`.
+
+The failed result explains that Checkout is not independently deployable and reveals one next action. The Proposal action is intentionally hidden before validation.
 
 ## 4. Propose the smallest alternative
 
@@ -58,6 +74,12 @@ Validate the proposal, then switch back to Current and confirm that the original
 ```
 
 Expected result: the agent calls `validate_architecture` for Proposal and Current. Proposal reports `4 passed / 0 failed`; Current restores the original `shares state` relation.
+
+Closing narration:
+
+```text
+The agent did not replace the architect. It exposed evidence, the human turned a trade-off into policy, and Nivra verified the smallest alternative. Current Architecture was never overwritten.
+```
 
 ## Fallback
 

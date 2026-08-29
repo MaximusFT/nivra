@@ -3,18 +3,28 @@ import { Bot, Check, CircleAlert, LoaderCircle } from "lucide-react";
 import { useWorkspaceStore } from "../workspace/store";
 
 const statusLabels = {
-  checking: "Checking WebMCP",
-  ready: "WebMCP ready",
-  unavailable: "WebMCP unavailable",
+  checking: "Checking agent connection",
+  ready: "WebMCP ready · 7 tools",
+  unavailable: "WebMCP unavailable · manual mode",
 } as const;
+
+const toolLabels: Record<string, string> = {
+  get_architecture: "Reading architecture",
+  inspect_element: "Inspecting architecture evidence",
+  show_architecture_view: "Opening architecture view",
+  annotate_architecture: "Recording architecture finding",
+  add_constraint: "Adding architecture policy",
+  create_proposal: "Creating architecture proposal",
+  validate_architecture: "Validating architecture",
+};
 
 export function AgentActivityBar() {
   const webMcpStatus = useWorkspaceStore((state) => state.webMcpStatus);
   const entries = useWorkspaceStore((state) => state.agentActivity);
-  const visibleEntries = entries.slice(-3).reverse();
+  const visibleEntries = entries.slice(-4);
 
   return (
-    <footer className="flex h-16 shrink-0 items-center gap-4 border-t border-slate-200 bg-white px-5">
+    <footer className="flex h-[72px] shrink-0 items-center gap-4 border-t border-slate-200 bg-white px-5">
       <div className="flex min-w-44 items-center gap-2 border-r border-slate-200 pr-4">
         <span className="grid size-7 place-items-center rounded-lg bg-slate-100 text-slate-600">
           <Bot aria-hidden="true" size={15} />
@@ -28,11 +38,21 @@ export function AgentActivityBar() {
       </div>
 
       {visibleEntries.length === 0 ? (
-        <p className="text-xs text-slate-400">Tool calls will appear here in real time.</p>
+        <div>
+          <p className="text-xs font-medium text-slate-600">
+            {webMcpStatus === "ready" ? "Ready for agent analysis" : "Manual exploration is ready"}
+          </p>
+          <p className="mt-0.5 text-[11px] text-slate-400">
+            Real agent steps appear here as WebMCP tools run.
+          </p>
+        </div>
       ) : (
-        <ol className="flex min-w-0 flex-1 items-center gap-5 overflow-hidden">
-          {visibleEntries.map((entry) => (
+        <ol className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden">
+          {visibleEntries.map((entry, index) => (
             <li className="flex min-w-0 items-center gap-2" key={entry.id}>
+              <span className="grid size-5 shrink-0 place-items-center rounded-full bg-slate-100 text-[10px] font-semibold text-slate-500">
+                {entries.length - visibleEntries.length + index + 1}
+              </span>
               {entry.status === "running" ? (
                 <LoaderCircle aria-hidden="true" className="shrink-0 animate-spin text-sky-600" size={14} />
               ) : entry.status === "success" ? (
@@ -41,9 +61,12 @@ export function AgentActivityBar() {
                 <CircleAlert aria-hidden="true" className="shrink-0 text-rose-600" size={14} />
               )}
               <div className="min-w-0">
-                <p className="truncate text-xs font-medium text-slate-700">{entry.tool}</p>
-                <p className="truncate text-[11px] text-slate-400">{entry.description}</p>
+                <p className="truncate text-xs font-medium text-slate-700">{toolLabels[entry.tool] ?? entry.tool}</p>
+                <p className="truncate text-[11px] text-slate-400">
+                  {entry.tool} · {entry.description}
+                </p>
               </div>
+              {index < visibleEntries.length - 1 ? <span className="mx-1 text-slate-300">→</span> : null}
             </li>
           ))}
         </ol>

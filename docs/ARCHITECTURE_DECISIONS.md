@@ -234,9 +234,19 @@ The connection was verified with commit `d92cdbb`: Vercel built it automatically
 
 Reason: development computers only need GitHub access. Vercel performs the build and release remotely, so work can continue from machines where direct Vercel access is restricted.
 
+## D-024 — Demo navigation follows evidence before action
+
+Status: accepted
+Date: 2026-08-29
+
+Selecting an architecture element always opens its own Context. Elements that own a deeper view expose an explicit contextual drill-down; clicking a node never navigates implicitly. Inspection identifies the demo architecture snapshot as its source, and relation evidence includes protocol, contract and inherited deployment-boundary information.
+
+Policy remains scoped to the Checkout isolation review but shows a safe contextual state when an unrelated element is selected. The Proposal action is hidden until Current validation fails, after which the failed result explains the blocking issue and presents one recommended action. Agent Activity displays real tool calls in sequence with both human-readable labels and exact WebMCP tool names; no artificial delay is introduced.
+
+Reason: the challenge application must remain understandable when explored after the video, while preserving the emotional flow from apparently independent HLD to hidden LLD evidence, human policy, minimal Proposal and deterministic verification.
+
 ## Open decisions before their implementation phases
 
 - Phase 2B: visual treatment for `shares-state` versus explicit protocols.
 - Phase 3B: exact `ValidationResult` and per-rule result schema.
 - Phase 3C: immutable fixture clone/factory strategy for write operations and reset.
-- Phase 5: license approval.
