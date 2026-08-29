@@ -172,17 +172,18 @@ Complete the remaining **Phase 5B/5C delivery assets**, as defined in `docs/IMPL
 
 The production application is live at **https://nivra-psi.vercel.app**. The next task is limited to:
 
-1. decide whether the user approves adding an MIT license;
-2. capture final production screenshots for the Checkout LLD evidence and Proposal `4/4` states;
-3. prepare a fallback screenshot/video package if required for submission;
-4. perform the final fixed demo rehearsal against the production URL;
-5. avoid feature changes unless production verification reveals a blocking defect.
+1. capture final production screenshots for the Checkout LLD evidence and Proposal `4/4` states;
+2. prepare a fallback screenshot/video package if required for submission;
+3. perform the final fixed demo rehearsal against the production URL;
+4. avoid feature changes unless production verification reveals a blocking defect.
 
 Phase 5A is complete. It refined the global visual foundation and desktop application shell, then made graph evidence and the Context/Policy panels denser and more legible. Intentional system typography, a restrained workspace grid, stronger header/view hierarchy, consistent compact controls and visible keyboard focus preserve the established workflow. The WebMCP browser harness now uses semantic DOM text instead of CSS-rendered text.
 
 Desktop verification passed at 1440×900 and 1920×1080: no horizontal overflow, Checkout LLD runtime coupling evidence and Agent Activity remained visible, and the browser console was clean after reload.
 
 Phase 5B documentation and deployment are complete: `README.md` documents setup, verification, architecture and all seven tools; `docs/DEMO_SCRIPT.md` defines the fixed five-step, sub-three-minute flow; Vercel serves the production build at `https://nivra-psi.vercel.app`.
+
+The project is licensed under MIT, approved by the copyright holder on 2026-08-29.
 
 Production verification passed in both ordinary-browser fallback mode and WebMCP-enabled Chromium. The black-box harness now accepts `NIVRA_WEBMCP_URL` and completed three full Golden repetitions against the public HTTPS deployment.
 

@@ -209,7 +209,7 @@ Status: **complete**
 - [x] create final README
 - [x] document architecture and WebMCP tools
 - [x] document local setup and testing
-- [ ] add MIT license if approved
+- [x] add MIT license
 - [x] deploy to Vercel
 - [x] verify public HTTPS build
 - [ ] prepare screenshots

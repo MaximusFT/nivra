@@ -82,3 +82,7 @@ HLD and LLD are views of the same model. Current Architecture is immutable; Prop
 ## Project status
 
 Functional MVP gates A, B and C have passed. The remaining delivery work is visual refinement, public deployment and rehearsal. See [PROJECT_STATUS.md](PROJECT_STATUS.md) for the current handoff state and [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) for the fixed demo sequence.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
