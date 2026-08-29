@@ -161,7 +161,7 @@ npm run test:webmcp PASS — 3 complete Chromium runs; 7 tools; Current 2/2 → 
 Browser runtime    PASS — focus and Agent Activity visible; Current preserved; unavailable fallback verified
 Production HTTPS   PASS — https://nivra-psi.vercel.app; HTTP 200; Vercel Ready
 Production WebMCP  PASS — 3 complete Chromium runs against HTTPS; all 7 tools reliable
-Git auto-deploy     CONFIGURED — MaximusFT/nivra main → Vercel production; verification push in progress
+Git auto-deploy     PASS — d92cdbb built automatically from main; Vercel Ready in 5s; stable URL HTTP 200
 ```
 
 Always run all command-line checks before ending an implementation task.
@@ -187,6 +187,8 @@ Phase 5B documentation and deployment are complete: `README.md` documents setup,
 Production verification passed in both ordinary-browser fallback mode and WebMCP-enabled Chromium. The black-box harness now accepts `NIVRA_WEBMCP_URL` and completed three full Golden repetitions against the public HTTPS deployment.
 
 The Vercel project is connected to the private GitHub repository `MaximusFT/nivra`, with access limited to that repository. Pushes to `main` automatically build and update production; branches and pull requests produce preview deployments. Direct Vercel access is not required on a development computer.
+
+Auto-deploy verification passed with commit `d92cdbb`: Vercel created production deployment `dpl_5nCisrs3R1E2aJB5uYxm7s9pb7XF` without a CLI deploy command, reached Ready in 5 seconds, updated the stable alias and returned HTTP 200. Three production WebMCP repetitions passed after the alias update.
 
 Phase 4 is feature-complete. Avoid expanding product scope during visual polish.
 

@@ -230,6 +230,8 @@ Date: 2026-08-29
 
 The Vercel project is connected to the private `MaximusFT/nivra` GitHub repository through the Vercel GitHub App. App access is limited to this repository. Every push to `main` triggers a production build and release; pull requests and other branches may create preview deployments. The explicit Vercel CLI flow remains a recovery path.
 
+The connection was verified with commit `d92cdbb`: Vercel built it automatically, marked the production deployment Ready in 5 seconds and updated the stable alias. HTTP and three full WebMCP repetitions passed against the updated production URL.
+
 Reason: development computers only need GitHub access. Vercel performs the build and release remotely, so work can continue from machines where direct Vercel access is restricted.
 
 ## Open decisions before their implementation phases
