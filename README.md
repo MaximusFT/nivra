@@ -36,7 +36,7 @@ npm run test:webmcp
 
 ## Deploy to Vercel
 
-Vercel uses the standard Vite build command automatically. Authenticate once, then deploy from the repository root:
+Run this step from a machine that can access Vercel. Vercel uses the standard Vite build command automatically. Authenticate once, then deploy from the repository root:
 
 ```sh
 npx --yes --registry=https://registry.npmjs.org vercel login

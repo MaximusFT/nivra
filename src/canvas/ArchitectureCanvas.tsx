@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo } from 'react';
 import {
   Background,
   BackgroundVariant,
@@ -8,16 +8,16 @@ import {
   ReactFlowProvider,
   useReactFlow,
   type NodeTypes,
-} from "@xyflow/react";
-import { useShallow } from "zustand/react/shallow";
+} from '@xyflow/react';
+import { useShallow } from 'zustand/react/shallow';
 
-import { commerceLayouts } from "../fixtures/commerce/layout";
-import { getProposalDiff } from "../architecture/proposals";
-import { getEffectiveWorkspaceArchitecture } from "../workspace/selectors";
-import { useWorkspaceStore } from "../workspace/store";
-import { toFlowEdges, toFlowNodes } from "./adapters";
-import { getFocusContext } from "./focus/getFocusContext";
-import { ArchitectureNode } from "./nodes/ArchitectureNode";
+import { commerceLayouts } from '../fixtures/commerce/layout';
+import { getProposalDiff } from '../architecture/proposals';
+import { getEffectiveWorkspaceArchitecture } from '../workspace/selectors';
+import { useWorkspaceStore } from '../workspace/store';
+import { toFlowEdges, toFlowNodes } from './adapters';
+import { getFocusContext } from './focus/getFocusContext';
+import { ArchitectureNode } from './nodes/ArchitectureNode';
 
 const nodeTypes = { architecture: ArchitectureNode } satisfies NodeTypes;
 
@@ -53,7 +53,7 @@ function CanvasContent() {
     [activeMode, activeProposalId, architecture],
   );
   const proposalDiff = useMemo(
-    () => (activeMode === "proposal" && activeProposal ? getProposalDiff(activeProposal) : undefined),
+    () => (activeMode === 'proposal' && activeProposal ? getProposalDiff(activeProposal) : undefined),
     [activeMode, activeProposal],
   );
   const view = effectiveArchitecture.views.find(({ id }) => id === activeViewId);
@@ -61,8 +61,8 @@ function CanvasContent() {
   const visibleRelations = view
     ? effectiveArchitecture.relations.filter(({ id }) => view.relationIds.includes(id))
     : [];
-  const hasSharedState = visibleRelations.some(({ type }) => type === "shares-state");
-  const hasSnapshot = visibleRelations.some(({ protocol }) => protocol?.toLowerCase() === "snapshot");
+  const hasSharedState = visibleRelations.some(({ type }) => type === 'shares-state');
+  const hasSnapshot = visibleRelations.some(({ protocol }) => protocol?.toLowerCase() === 'snapshot');
 
   const focus = useMemo(
     () =>
@@ -143,7 +143,7 @@ function CanvasContent() {
         className="!overflow-hidden !rounded-md !border !border-slate-200 !bg-white !shadow-sm"
         showInteractive={false}
       />
-      {view.level === "lld" ? (
+      {view.level === 'lld' ? (
         <Panel position="top-left">
           <div className="flex items-center gap-2 rounded-md border border-slate-200 bg-white/95 p-1.5 text-[11px] shadow-sm backdrop-blur">
             {hasSharedState ? (
@@ -156,17 +156,24 @@ function CanvasContent() {
                 snapshot · Checkout contract
               </span>
             ) : null}
-            <span className="rounded bg-blue-50 px-2.5 py-1.5 font-semibold text-blue-700">
-              REST · explicit API
-            </span>
+            <span className="rounded bg-blue-50 px-2.5 py-1.5 font-semibold text-blue-700">REST · explicit API</span>
           </div>
         </Panel>
       ) : null}
       <Panel position="bottom-right">
         <div className="flex items-center gap-4 rounded-md border border-slate-200 bg-white/95 px-3 py-2 text-[11px] text-slate-600 shadow-sm backdrop-blur">
-          <span className="flex items-center gap-1.5"><i className="size-2 rounded-full bg-blue-500" />Frontend</span>
-          <span className="flex items-center gap-1.5"><i className="size-2 rounded-full bg-violet-500" />Backend</span>
-          <span className="flex items-center gap-1.5"><i className="size-2 rounded-full bg-amber-500" />Data</span>
+          <span className="flex items-center gap-1.5">
+            <i className="size-2 rounded-full bg-blue-500" />
+            Frontend
+          </span>
+          <span className="flex items-center gap-1.5">
+            <i className="size-2 rounded-full bg-violet-500" />
+            Backend
+          </span>
+          <span className="flex items-center gap-1.5">
+            <i className="size-2 rounded-full bg-amber-500" />
+            Data
+          </span>
         </div>
       </Panel>
     </ReactFlow>

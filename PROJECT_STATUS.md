@@ -1,7 +1,7 @@
 # Nivra — Project Status
 
-> Last updated: 2026-08-28  
-> Current phase: Phase 5B in progress; deployment authentication required
+> Last updated: 2026-08-29
+> Current phase: Phase 5B in progress; deploy from home computer only
 > Current branch: `main`
 
 This is the first file to read when resuming Nivra on another computer or in a new Codex task.
@@ -167,18 +167,19 @@ Always run all command-line checks before ending an implementation task.
 
 Complete **Phase 5B — Documentation and deployment**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
 
-The next implementation task should be limited to:
+Do not attempt Vercel authentication or deployment from this work computer. The next implementation task must run from the user's home computer:
 
-1. authenticate to Vercel interactively with `npx --yes --registry=https://registry.npmjs.org vercel login`;
-2. run `npx --yes --registry=https://registry.npmjs.org vercel --prod` from the repository root;
-3. record the production HTTPS URL in this file and verify the deployed build in a clean browser profile;
-4. capture final public screenshots if needed for challenge submission.
+1. `git pull --ff-only` in the `MaximusFT/nivra` clone;
+2. install dependencies with `npm install` if needed, then run `npm run typecheck`, `npm test`, `npm run build` and `npm run test:webmcp`;
+3. authenticate interactively with `npx --yes --registry=https://registry.npmjs.org vercel login`;
+4. deploy from the repository root with `npx --yes --registry=https://registry.npmjs.org vercel --prod`;
+5. record the production HTTPS URL here, verify it in a clean Chrome profile with WebMCP enabled and capture final screenshots if required.
 
 Phase 5A is complete. It refined the global visual foundation and desktop application shell, then made graph evidence and the Context/Policy panels denser and more legible. Intentional system typography, a restrained workspace grid, stronger header/view hierarchy, consistent compact controls and visible keyboard focus preserve the established workflow. The WebMCP browser harness now uses semantic DOM text instead of CSS-rendered text.
 
 Desktop verification passed at 1440×900 and 1920×1080: no horizontal overflow, Checkout LLD runtime coupling evidence and Agent Activity remained visible, and the browser console was clean after reload.
 
-Phase 5B documentation is complete: `README.md` documents setup, verification, architecture and all seven tools; `docs/DEMO_SCRIPT.md` defines the fixed five-step, sub-three-minute flow. Vercel CLI is available but currently logged out. An unauthenticated temporary deployment also requires interactive login, so public deployment is blocked only on Vercel authentication.
+Phase 5B documentation is complete: `README.md` documents setup, verification, architecture and all seven tools; `docs/DEMO_SCRIPT.md` defines the fixed five-step, sub-three-minute flow. Public deployment is intentionally deferred to the home computer because this work computer cannot access Vercel.
 
 Phase 4 is feature-complete. Avoid expanding product scope during visual polish.
 

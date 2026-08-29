@@ -1,10 +1,10 @@
-@import "@xyflow/react/dist/style.css";
-@import "tailwindcss";
+@import '@xyflow/react/dist/style.css';
+@import 'tailwindcss';
 
 :root {
   color: #172033;
   background: #f4f6f8;
-  font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+  font-family: 'Avenir Next', Avenir, 'Segoe UI', sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -14,7 +14,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background-color: #f4f6f8;
-  background-image: linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
     linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
   background-size: 24px 24px;
 }

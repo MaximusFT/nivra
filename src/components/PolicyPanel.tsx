@@ -1,10 +1,10 @@
-import { AlertCircle, CheckCircle2, GitCompare, Play, Plus, ShieldCheck, XCircle } from "lucide-react";
-import { useShallow } from "zustand/react/shallow";
+import { AlertCircle, CheckCircle2, GitCompare, Play, Plus, ShieldCheck, XCircle } from 'lucide-react';
+import { useShallow } from 'zustand/react/shallow';
 
-import { checkoutGoldenConstraints } from "../fixtures/commerce/constraints";
-import { goldenCheckoutProposal } from "../fixtures/commerce/proposals";
-import { getProposalDiff } from "../architecture/proposals";
-import { useWorkspaceStore } from "../workspace/store";
+import { checkoutGoldenConstraints } from '../fixtures/commerce/constraints';
+import { goldenCheckoutProposal } from '../fixtures/commerce/proposals';
+import { getProposalDiff } from '../architecture/proposals';
+import { useWorkspaceStore } from '../workspace/store';
 
 export function PolicyPanel() {
   const {
@@ -32,9 +32,7 @@ export function PolicyPanel() {
       focusValidationCheck: state.focusValidationCheck,
     })),
   );
-  const activeProposal = activeProposalId
-    ? proposals.find(({ id }) => id === activeProposalId)
-    : undefined;
+  const activeProposal = activeProposalId ? proposals.find(({ id }) => id === activeProposalId) : undefined;
   const proposalDiff = activeProposal ? getProposalDiff(activeProposal) : undefined;
 
   const addGoldenConstraints = () => {
@@ -47,7 +45,7 @@ export function PolicyPanel() {
     <div className="min-h-0 flex-1 overflow-y-auto p-4">
       <section>
         <div className="flex items-start gap-3">
-            <span className="grid size-9 shrink-0 place-items-center rounded-md bg-indigo-50 text-indigo-700">
+          <span className="grid size-9 shrink-0 place-items-center rounded-md bg-indigo-50 text-indigo-700">
             <ShieldCheck aria-hidden="true" size={17} />
           </span>
           <div>
@@ -74,7 +72,7 @@ export function PolicyPanel() {
                 <p className="text-xs font-semibold text-slate-800">{constraint.name}</p>
                 <p className="mt-1 text-[11px] leading-4 text-slate-500">{constraint.description}</p>
                 <p className="mt-2 text-[9px] font-semibold uppercase tracking-[0.08em] text-indigo-500">
-                  {constraint.rule.type.replaceAll("-", " ")}
+                  {constraint.rule.type.replaceAll('-', ' ')}
                 </p>
               </li>
             ))}
@@ -112,21 +110,27 @@ export function PolicyPanel() {
                 </div>
                 <button
                   className="rounded-md bg-white px-2.5 py-1.5 text-[10px] font-semibold text-violet-700 shadow-sm"
-                  onClick={() => setActiveMode(activeMode === "proposal" ? "current" : "proposal")}
+                  onClick={() => setActiveMode(activeMode === 'proposal' ? 'current' : 'proposal')}
                   type="button"
                 >
-                  Show {activeMode === "proposal" ? "Current" : "Proposal"}
+                  Show {activeMode === 'proposal' ? 'Current' : 'Proposal'}
                 </button>
               </div>
               <ul className="mt-3 space-y-1 text-[11px]">
                 {proposalDiff?.addedElements.map((id) => (
-                  <li className="text-emerald-700" key={id}>+ Checkout Snapshot Contract</li>
+                  <li className="text-emerald-700" key={id}>
+                    + Checkout Snapshot Contract
+                  </li>
                 ))}
                 {proposalDiff?.removedRelations.map((id) => (
-                  <li className="text-red-700" key={id}>− Product Store runtime dependency</li>
+                  <li className="text-red-700" key={id}>
+                    − Product Store runtime dependency
+                  </li>
                 ))}
                 {proposalDiff?.addedRelations.map((id) => (
-                  <li className="text-emerald-700" key={id}>+ Snapshot contract dependency</li>
+                  <li className="text-emerald-700" key={id}>
+                    + Snapshot contract dependency
+                  </li>
                 ))}
               </ul>
             </div>
@@ -139,16 +143,18 @@ export function PolicyPanel() {
           <div>
             <h3 className="text-sm font-semibold text-slate-900">Architecture Validation</h3>
             <p className="mt-1 text-xs text-slate-500">
-              {activeMode === "proposal" ? `Proposal · ${activeProposal?.name ?? "Unknown"}` : "Current · Commerce Platform v1.35"}
+              {activeMode === 'proposal'
+                ? `Proposal · ${activeProposal?.name ?? 'Unknown'}`
+                : 'Current · Commerce Platform v1.35'}
             </p>
           </div>
           {validationResult ? (
             <span
               className={`rounded-full px-2 py-1 text-[10px] font-bold ${
-                validationResult.passed ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"
+                validationResult.passed ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'
               }`}
             >
-              {validationResult.passed ? "PASSED" : "FAILED"}
+              {validationResult.passed ? 'PASSED' : 'FAILED'}
             </span>
           ) : null}
         </div>
@@ -160,7 +166,7 @@ export function PolicyPanel() {
           type="button"
         >
           <Play aria-hidden="true" size={13} />
-          Validate {activeMode === "proposal" ? "proposal" : "current"} architecture
+          Validate {activeMode === 'proposal' ? 'proposal' : 'current'} architecture
         </button>
 
         {validationResult ? (
@@ -178,7 +184,7 @@ export function PolicyPanel() {
 
             <ul className="mt-3 space-y-2">
               {validationResult.checks.map((check) => {
-                const passed = check.status === "passed";
+                const passed = check.status === 'passed';
                 const Icon = passed ? CheckCircle2 : XCircle;
                 const hasEvidence = check.elementIds.length > 0 || check.relationIds.length > 0;
 
@@ -192,7 +198,7 @@ export function PolicyPanel() {
                     >
                       <Icon
                         aria-hidden="true"
-                        className={`mt-0.5 shrink-0 ${passed ? "text-emerald-600" : "text-red-600"}`}
+                        className={`mt-0.5 shrink-0 ${passed ? 'text-emerald-600' : 'text-red-600'}`}
                         size={14}
                       />
                       <span>

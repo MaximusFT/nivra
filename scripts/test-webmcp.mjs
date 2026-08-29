@@ -1,13 +1,13 @@
-import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
-import { mkdtemp, rm } from "node:fs/promises";
-import { createServer } from "node:net";
-import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
-import WebSocket from "ws";
+import { spawn } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { createServer } from 'node:net';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
+import WebSocket from 'ws';
 
-const root = resolve(import.meta.dirname, "..");
-const repeatCount = Number.parseInt(process.env.NIVRA_WEBMCP_REPEATS ?? "3", 10);
+const root = resolve(import.meta.dirname, '..');
+const repeatCount = Number.parseInt(process.env.NIVRA_WEBMCP_REPEATS ?? '3', 10);
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -16,15 +16,15 @@ function assert(condition, message) {
 function findChrome() {
   const candidates = [
     process.env.NIVRA_CHROME_PATH,
-    "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-    "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
-    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    "/usr/bin/google-chrome",
-    "/usr/bin/chromium",
+    'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+    'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    '/usr/bin/google-chrome',
+    '/usr/bin/chromium',
   ].filter(Boolean);
   const chrome = candidates.find((candidate) => existsSync(candidate));
   if (!chrome) {
-    throw new Error("Chrome was not found. Set NIVRA_CHROME_PATH to a Chromium executable.");
+    throw new Error('Chrome was not found. Set NIVRA_CHROME_PATH to a Chromium executable.');
   }
   return chrome;
 }
@@ -32,12 +32,12 @@ function findChrome() {
 function availablePort() {
   return new Promise((resolvePort, reject) => {
     const server = createServer();
-    server.once("error", reject);
-    server.listen(0, "127.0.0.1", () => {
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', () => {
       const address = server.address();
-      if (!address || typeof address === "string") {
+      if (!address || typeof address === 'string') {
         server.close();
-        reject(new Error("Could not allocate a local port."));
+        reject(new Error('Could not allocate a local port.'));
         return;
       }
       server.close(() => resolvePort(address.port));
@@ -57,17 +57,14 @@ async function waitFor(check, message, timeoutMs = 15_000) {
     }
     await new Promise((resolveDelay) => setTimeout(resolveDelay, 100));
   }
-  throw new Error(`${message}${lastError ? `: ${lastError.message}` : ""}`);
+  throw new Error(`${message}${lastError ? `: ${lastError.message}` : ''}`);
 }
 
 async function stopProcess(child) {
   if (child.exitCode !== null || child.signalCode !== null) return;
-  const exited = new Promise((resolveExit) => child.once("exit", resolveExit));
+  const exited = new Promise((resolveExit) => child.once('exit', resolveExit));
   child.kill();
-  await Promise.race([
-    exited,
-    new Promise((resolveDelay) => setTimeout(resolveDelay, 1_000)),
-  ]);
+  await Promise.race([exited, new Promise((resolveDelay) => setTimeout(resolveDelay, 1_000))]);
 }
 
 class CdpClient {
@@ -80,10 +77,10 @@ class CdpClient {
 
   async connect() {
     await new Promise((resolveOpen, reject) => {
-      this.socket.addEventListener("open", resolveOpen, { once: true });
-      this.socket.addEventListener("error", reject, { once: true });
+      this.socket.addEventListener('open', resolveOpen, { once: true });
+      this.socket.addEventListener('error', reject, { once: true });
     });
-    this.socket.addEventListener("message", ({ data }) => {
+    this.socket.addEventListener('message', ({ data }) => {
       const message = JSON.parse(data.toString());
       if (!message.id) return;
       const pending = this.#pending.get(message.id);
@@ -103,14 +100,13 @@ class CdpClient {
   }
 
   async evaluate(expression) {
-    const response = await this.send("Runtime.evaluate", {
+    const response = await this.send('Runtime.evaluate', {
       expression,
       awaitPromise: true,
       returnByValue: true,
     });
     if (response.exceptionDetails) {
-      const description = response.exceptionDetails.exception?.description
-        ?? response.exceptionDetails.text;
+      const description = response.exceptionDetails.exception?.description ?? response.exceptionDetails.text;
       throw new Error(description);
     }
     return response.result.value;
@@ -137,64 +133,68 @@ function toolExpression(name, input) {
 
 const goldenConstraints = [
   {
-    id: "checkout-runtime-isolation",
-    name: "Checkout Runtime Isolation",
-    description: "Checkout must not depend on Product runtime state.",
-    severity: "error",
-    rule: { type: "forbidden-dependency", sourceId: "checkout-mfe", targetId: "product-store" },
+    id: 'checkout-runtime-isolation',
+    name: 'Checkout Runtime Isolation',
+    description: 'Checkout must not depend on Product runtime state.',
+    severity: 'error',
+    rule: { type: 'forbidden-dependency', sourceId: 'checkout-mfe', targetId: 'product-store' },
   },
   {
-    id: "independent-checkout-deployment",
-    name: "Independent Checkout Deployment",
-    description: "Checkout must remain independently deployable.",
-    severity: "error",
-    rule: { type: "independent-deployment", elementId: "checkout-mfe" },
+    id: 'independent-checkout-deployment',
+    name: 'Independent Checkout Deployment',
+    description: 'Checkout must remain independently deployable.',
+    severity: 'error',
+    rule: { type: 'independent-deployment', elementId: 'checkout-mfe' },
   },
   {
-    id: "no-circular-dependencies",
-    name: "No Circular Dependencies",
-    description: "Architecture dependencies must remain acyclic.",
-    severity: "error",
-    rule: { type: "no-cycles" },
+    id: 'no-circular-dependencies',
+    name: 'No Circular Dependencies',
+    description: 'Architecture dependencies must remain acyclic.',
+    severity: 'error',
+    rule: { type: 'no-cycles' },
   },
   {
-    id: "allowed-product-integration",
-    name: "Allowed Product Integration",
-    description: "Checkout may use the Product REST API.",
-    severity: "error",
-    rule: { type: "allowed-protocol", sourceId: "pricing-module", targetId: "product-service", protocols: ["REST"] },
+    id: 'allowed-product-integration',
+    name: 'Allowed Product Integration',
+    description: 'Checkout may use the Product REST API.',
+    severity: 'error',
+    rule: { type: 'allowed-protocol', sourceId: 'pricing-module', targetId: 'product-service', protocols: ['REST'] },
   },
 ];
 
 const goldenProposal = {
-  id: "checkout-isolation",
-  name: "Checkout Isolation",
-  description: "Replace Product runtime state coupling with a Checkout-owned snapshot contract.",
+  id: 'checkout-isolation',
+  name: 'Checkout Isolation',
+  description: 'Replace Product runtime state coupling with a Checkout-owned snapshot contract.',
   baseVersion: 1.35,
   changes: {
-    addElements: [{
-      id: "checkout-snapshot-contract",
-      name: "Checkout Snapshot Contract",
-      kind: "contract",
-      area: "frontend",
-      level: "lld",
-      parentId: "checkout-mfe",
-      owner: "Checkout Team",
-      deploymentUnit: "checkout",
-      description: "Checkout-owned snapshot of the basket data required to complete an order.",
-    }],
+    addElements: [
+      {
+        id: 'checkout-snapshot-contract',
+        name: 'Checkout Snapshot Contract',
+        kind: 'contract',
+        area: 'frontend',
+        level: 'lld',
+        parentId: 'checkout-mfe',
+        owner: 'Checkout Team',
+        deploymentUnit: 'checkout',
+        description: 'Checkout-owned snapshot of the basket data required to complete an order.',
+      },
+    ],
     updateElements: [],
     removeElementIds: [],
-    addRelations: [{
-      id: "basket-adapter-reads-checkout-snapshot",
-      sourceId: "basket-adapter",
-      targetId: "checkout-snapshot-contract",
-      type: "reads",
-      protocol: "snapshot",
-      description: "Basket Adapter consumes a Checkout-owned snapshot contract.",
-    }],
+    addRelations: [
+      {
+        id: 'basket-adapter-reads-checkout-snapshot',
+        sourceId: 'basket-adapter',
+        targetId: 'checkout-snapshot-contract',
+        type: 'reads',
+        protocol: 'snapshot',
+        description: 'Basket Adapter consumes a Checkout-owned snapshot contract.',
+      },
+    ],
     updateRelations: [],
-    removeRelationIds: ["basket-adapter-shares-product-store"],
+    removeRelationIds: ['basket-adapter-shares-product-store'],
   },
 };
 
@@ -208,34 +208,37 @@ async function executeGoldenRun(cdp, runNumber) {
   const call = (name, input = {}) => cdp.evaluate(toolExpression(name, input));
 
   // Prompt 1 — review Current and record the isolation risk.
-  const initial = await call("get_architecture");
-  assert(initial.mode === "current", `Run ${runNumber}: expected Current mode.`);
+  const initial = await call('get_architecture');
+  assert(initial.mode === 'current', `Run ${runNumber}: expected Current mode.`);
   const firstFinding = {
-    id: "checkout-isolation-risk",
-    title: "Checkout isolation risk",
-    description: "Checkout is deployed separately but still depends on Product runtime state.",
-    severity: "warning",
-    elementIds: ["basket-adapter", "product-store"],
-    relationIds: ["basket-adapter-shares-product-store"],
+    id: 'checkout-isolation-risk',
+    title: 'Checkout isolation risk',
+    description: 'Checkout is deployed separately but still depends on Product runtime state.',
+    severity: 'warning',
+    elementIds: ['basket-adapter', 'product-store'],
+    relationIds: ['basket-adapter-shares-product-store'],
   };
-  await call("annotate_architecture", firstFinding);
-  await call("annotate_architecture", firstFinding);
+  await call('annotate_architecture', firstFinding);
+  await call('annotate_architecture', firstFinding);
 
   // Prompt 2 — inspect Checkout internals, show the LLD and keep the evidence visible.
-  const inspection = await call("inspect_element", { elementId: "checkout-mfe" });
-  assert(inspection.children.some(({ id }) => id === "basket-adapter"), `Run ${runNumber}: Checkout inspection is incomplete.`);
-  await call("show_architecture_view", {
-    viewId: "checkout-lld",
-    focusElementIds: ["basket-adapter", "product-store"],
-    focusRelationIds: ["basket-adapter-shares-product-store"],
+  const inspection = await call('inspect_element', { elementId: 'checkout-mfe' });
+  assert(
+    inspection.children.some(({ id }) => id === 'basket-adapter'),
+    `Run ${runNumber}: Checkout inspection is incomplete.`,
+  );
+  await call('show_architecture_view', {
+    viewId: 'checkout-lld',
+    focusElementIds: ['basket-adapter', 'product-store'],
+    focusRelationIds: ['basket-adapter-shares-product-store'],
   });
-  await call("annotate_architecture", {
-    id: "checkout-runtime-evidence",
-    title: "Runtime state coupling evidence",
-    description: "Basket Adapter shares Product Store state across deployment boundaries.",
-    severity: "warning",
-    elementIds: ["basket-adapter", "product-store"],
-    relationIds: ["basket-adapter-shares-product-store"],
+  await call('annotate_architecture', {
+    id: 'checkout-runtime-evidence',
+    title: 'Runtime state coupling evidence',
+    description: 'Basket Adapter shares Product Store state across deployment boundaries.',
+    severity: 'warning',
+    elementIds: ['basket-adapter', 'product-store'],
+    relationIds: ['basket-adapter-shares-product-store'],
   });
 
   const focused = await waitFor(async () => {
@@ -248,35 +251,44 @@ async function executeGoldenRun(cdp, runNumber) {
   }, `Run ${runNumber}: Checkout LLD is not visible.`);
 
   // Prompt 3 — persist the canonical policy. Retry one ID to prove idempotency.
-  for (const constraint of goldenConstraints) await call("add_constraint", constraint);
-  await call("add_constraint", goldenConstraints[0]);
-  const currentValidation = await call("validate_architecture", { mode: "current" });
+  for (const constraint of goldenConstraints) await call('add_constraint', constraint);
+  await call('add_constraint', goldenConstraints[0]);
+  const currentValidation = await call('validate_architecture', { mode: 'current' });
   assert(currentValidation.validation.summary.passed === 2, `Run ${runNumber}: Current passed count changed.`);
   assert(currentValidation.validation.summary.failed === 2, `Run ${runNumber}: Current failed count changed.`);
 
   // Prompt 4 — create and retry the smallest patch-based alternative.
-  const proposal = await call("create_proposal", goldenProposal);
-  const proposalRetry = await call("create_proposal", goldenProposal);
-  assert(JSON.stringify(proposal.diff) === JSON.stringify(proposalRetry.diff), `Run ${runNumber}: proposal retry changed the diff.`);
+  const proposal = await call('create_proposal', goldenProposal);
+  const proposalRetry = await call('create_proposal', goldenProposal);
+  assert(
+    JSON.stringify(proposal.diff) === JSON.stringify(proposalRetry.diff),
+    `Run ${runNumber}: proposal retry changed the diff.`,
+  );
 
   // Prompt 5 — deterministic Proposal verification.
-  const proposalValidation = await call("validate_architecture", { mode: "proposal" });
+  const proposalValidation = await call('validate_architecture', { mode: 'proposal' });
   assert(proposalValidation.validation.summary.passed === 4, `Run ${runNumber}: Proposal passed count changed.`);
   assert(proposalValidation.validation.summary.failed === 0, `Run ${runNumber}: Proposal failed count changed.`);
 
   // Switch back through the public tool and prove Current was not overwritten.
-  await call("validate_architecture", { mode: "current" });
-  const currentAfterProposal = await call("get_architecture");
+  await call('validate_architecture', { mode: 'current' });
+  const currentAfterProposal = await call('get_architecture');
   assert(
-    currentAfterProposal.architecture.relations.some(({ id }) => id === "basket-adapter-shares-product-store"),
+    currentAfterProposal.architecture.relations.some(({ id }) => id === 'basket-adapter-shares-product-store'),
     `Run ${runNumber}: Current runtime relation was overwritten.`,
   );
   assert(
-    !currentAfterProposal.architecture.elements.some(({ id }) => id === "checkout-snapshot-contract"),
+    !currentAfterProposal.architecture.elements.some(({ id }) => id === 'checkout-snapshot-contract'),
     `Run ${runNumber}: Proposal element leaked into Current.`,
   );
-  assert(currentAfterProposal.architecture.findings.length === 2, `Run ${runNumber}: finding retries were not idempotent.`);
-  assert(currentAfterProposal.architecture.constraints.length === 4, `Run ${runNumber}: constraint retries were not idempotent.`);
+  assert(
+    currentAfterProposal.architecture.findings.length === 2,
+    `Run ${runNumber}: finding retries were not idempotent.`,
+  );
+  assert(
+    currentAfterProposal.architecture.constraints.length === 4,
+    `Run ${runNumber}: constraint retries were not idempotent.`,
+  );
 
   const activity = await cdp.evaluate(`(() => ({
     ready: document.body.innerText.includes("WebMCP ready"),
@@ -302,38 +314,50 @@ async function executeGoldenRun(cdp, runNumber) {
 }
 
 async function main() {
-  assert(Number.isInteger(repeatCount) && repeatCount > 0, "NIVRA_WEBMCP_REPEATS must be a positive integer.");
+  assert(Number.isInteger(repeatCount) && repeatCount > 0, 'NIVRA_WEBMCP_REPEATS must be a positive integer.');
   const chromePath = findChrome();
   const [vitePort, cdpPort] = await Promise.all([availablePort(), availablePort()]);
-  const profileDir = await mkdtemp(join(tmpdir(), "nivra-webmcp-"));
-  const vite = spawn(process.execPath, [
-    join(root, "node_modules", "vite", "bin", "vite.js"),
-    "--host", "127.0.0.1", "--port", String(vitePort), "--strictPort",
-  ], { cwd: root, stdio: "ignore" });
-  const chrome = spawn(chromePath, [
-    "--headless=new",
-    "--disable-gpu",
-    "--no-first-run",
-    "--no-default-browser-check",
-    "--enable-features=WebMCP",
-    `--remote-debugging-port=${cdpPort}`,
-    `--user-data-dir=${profileDir}`,
-    "about:blank",
-  ], { stdio: "ignore", windowsHide: true });
+  const profileDir = await mkdtemp(join(tmpdir(), 'nivra-webmcp-'));
+  const vite = spawn(
+    process.execPath,
+    [
+      join(root, 'node_modules', 'vite', 'bin', 'vite.js'),
+      '--host',
+      '127.0.0.1',
+      '--port',
+      String(vitePort),
+      '--strictPort',
+    ],
+    { cwd: root, stdio: 'ignore' },
+  );
+  const chrome = spawn(
+    chromePath,
+    [
+      '--headless=new',
+      '--disable-gpu',
+      '--no-first-run',
+      '--no-default-browser-check',
+      '--enable-features=WebMCP',
+      `--remote-debugging-port=${cdpPort}`,
+      `--user-data-dir=${profileDir}`,
+      'about:blank',
+    ],
+    { stdio: 'ignore', windowsHide: true },
+  );
 
   let cdp;
   try {
-    await waitFor(async () => (await fetch(`http://127.0.0.1:${vitePort}/`)).ok, "Vite did not start");
+    await waitFor(async () => (await fetch(`http://127.0.0.1:${vitePort}/`)).ok, 'Vite did not start');
     const target = await waitFor(async () => {
       const targets = await fetch(`http://127.0.0.1:${cdpPort}/json/list`).then((response) => response.json());
-      return targets.find(({ type }) => type === "page");
-    }, "Chromium debugging target did not start");
+      return targets.find(({ type }) => type === 'page');
+    }, 'Chromium debugging target did not start');
 
     cdp = new CdpClient(target.webSocketDebuggerUrl);
     await cdp.connect();
-    await cdp.send("Runtime.enable");
-    await cdp.send("Page.enable");
-    await cdp.send("Page.navigate", { url: `http://127.0.0.1:${vitePort}/` });
+    await cdp.send('Runtime.enable');
+    await cdp.send('Page.enable');
+    await cdp.send('Page.navigate', { url: `http://127.0.0.1:${vitePort}/` });
     const toolMetadata = await waitFor(async () => {
       const value = await cdp.evaluate(`(async () => {
         if (!document.modelContext || !document.body.innerText.includes("WebMCP ready")) return null;
@@ -344,20 +368,26 @@ async function main() {
         };
       })()`);
       return value?.names.length === 7 ? value : undefined;
-    }, "Seven WebMCP tools were not registered");
-    assert(toolMetadata.executeToolAvailable, "Chromium does not expose ModelContext.executeTool for testing.");
+    }, 'Seven WebMCP tools were not registered');
+    assert(toolMetadata.executeToolAvailable, 'Chromium does not expose ModelContext.executeTool for testing.');
 
     const reports = [];
     for (let run = 1; run <= repeatCount; run += 1) {
       reports.push(await executeGoldenRun(cdp, run));
     }
 
-    console.log(JSON.stringify({
-      status: "passed",
-      repeatCount,
-      tools: toolMetadata.names,
-      reports,
-    }, null, 2));
+    console.log(
+      JSON.stringify(
+        {
+          status: 'passed',
+          repeatCount,
+          tools: toolMetadata.names,
+          reports,
+        },
+        null,
+        2,
+      ),
+    );
   } finally {
     cdp?.close();
     await Promise.all([stopProcess(chrome), stopProcess(vite)]);
