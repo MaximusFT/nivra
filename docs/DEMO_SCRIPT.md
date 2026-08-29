@@ -2,6 +2,8 @@
 
 Target duration: under three minutes.
 
+Russian timed teleprompter with exact UI actions: [VIDEO_SCRIPT_RU.md](VIDEO_SCRIPT_RU.md).
+
 ## Before recording
 
 1. Use a clean browser profile with WebMCP enabled.
