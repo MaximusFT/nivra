@@ -44,6 +44,7 @@ export function ArchitectureNode({ data, selected }: NodeProps<ArchitectureFlowN
       className={`relative w-[204px] rounded-lg border px-3.5 py-3 shadow-sm transition-[box-shadow,transform] ${styles.shell} ${
         selected ? 'ring-2 ring-teal-600 ring-offset-2 shadow-md' : ''
       } ${data.changeStatus === 'added' ? '!border-indigo-500 ring-2 ring-indigo-200 shadow-md' : ''}`}
+      style={data.changeStatus === 'removed' ? { filter: 'grayscale(1)', opacity: 0.58 } : undefined}
     >
       <Handle className="!size-2 !border-white !bg-slate-400" type="target" position={Position.Left} />
       <div className="flex items-start gap-3">
@@ -66,6 +67,11 @@ export function ArchitectureNode({ data, selected }: NodeProps<ArchitectureFlowN
       {data.changeStatus === 'added' ? (
         <span className="absolute -left-2 -top-2 rounded-full border-2 border-white bg-indigo-600 px-1.5 text-[9px] font-bold leading-4 text-white shadow-sm">
           + ADDED
+        </span>
+      ) : null}
+      {data.changeStatus === 'removed' ? (
+        <span className="absolute -left-2 -top-2 rounded-full border-2 border-white bg-slate-600 px-1.5 text-[9px] font-bold leading-4 text-white shadow-sm">
+          − REMOVED
         </span>
       ) : null}
       <Handle className="!size-2 !border-white !bg-slate-400" type="source" position={Position.Right} />

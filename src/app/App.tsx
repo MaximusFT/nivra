@@ -1,4 +1,4 @@
-import { Box, CheckCircle2, Circle, RotateCcw } from 'lucide-react';
+import { ArrowLeft, Box, CheckCircle2, Circle, RotateCcw } from 'lucide-react';
 import { useShallow } from 'zustand/react/shallow';
 
 import { ArchitectureCanvas } from '../canvas/ArchitectureCanvas';
@@ -104,30 +104,16 @@ export function App() {
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <div className="flex rounded-md border border-slate-200 bg-slate-100/80 p-0.5 text-xs">
+            {isCheckoutView ? (
               <button
-                className={`rounded px-3 py-1.5 transition-colors ${
-                  !isCheckoutView
-                    ? 'bg-white font-medium text-slate-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800'
-                }`}
+                className="flex items-center gap-1.5 rounded-md border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900"
                 onClick={() => setActiveView(COMMERCE_HLD_VIEW_ID)}
                 type="button"
               >
-                Commerce HLD
+                <ArrowLeft aria-hidden="true" size={13} />
+                Back to Commerce Platform
               </button>
-              <button
-                className={`rounded px-3 py-1.5 transition-colors ${
-                  isCheckoutView
-                    ? 'bg-white font-medium text-slate-900 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800'
-                }`}
-                onClick={() => setActiveView(CHECKOUT_LLD_VIEW_ID)}
-                type="button"
-              >
-                Checkout LLD
-              </button>
-            </div>
+            ) : null}
             <p className="text-xs text-slate-500">
               {activeView?.elementIds.length ?? 0} elements · {activeView?.relationIds.length ?? 0} relations
             </p>

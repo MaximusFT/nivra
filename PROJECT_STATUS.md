@@ -155,7 +155,7 @@ The following checks passed after the latest change:
 
 ```text
 npm run typecheck  PASS
-npm test           PASS — 51 tests
+npm test           PASS — 52 tests
 npm run build      PASS
 npm run test:webmcp PASS — 3 complete Chromium runs; 7 tools; Current 2/2 → Proposal 4/0
 Browser runtime    PASS — focus and Agent Activity visible; Current preserved; unavailable fallback verified
@@ -186,6 +186,10 @@ Phase 5B documentation and deployment are complete: `README.md` documents setup,
 The project is licensed under MIT, approved by the copyright holder on 2026-08-29.
 
 Phase 5D demo narrative hardening is complete. First-time visitors now receive a scoped Checkout independence brief; selecting Checkout exposes an explicit LLD drill-down while unrelated elements retain their own safe context. Element and relation inspection identifies the demo snapshot source, and relations explain protocol, contract and deployment-boundary evidence. Policy hides Proposal until Current fails, then presents one recommended action and explains the verified result. Agent Activity presents actual WebMCP calls as a numbered timeline without artificial delays.
+
+The final narrative pass removed the hard-coded HLD/LLD tabs in favor of contextual drill-down and breadcrumb return. Findings now lead directly into explicit human policy decisions. A standalone **Run guided agent demo** option transparently simulates the same four verified workspace operations and labels every activity as a demo simulation. Proposal mode keeps removed Product Store evidence visible as a muted ghost beside the added Snapshot Contract, and successful validation can produce a copyable five-step implementation brief.
+
+Final local browser verification passed at 1440×900: the complete guided path reached the implementation brief, added and removed evidence remained visible together, the page had no horizontal overflow and the console was clean.
 
 Production verification passed in both ordinary-browser fallback mode and WebMCP-enabled Chromium. The black-box harness now accepts `NIVRA_WEBMCP_URL` and completed three full Golden repetitions against the public HTTPS deployment.
 

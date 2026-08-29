@@ -27,6 +27,8 @@ Expected result: the agent calls `get_architecture`. Point out that the HLD pres
 
 The workspace can also be explored manually. Selecting Checkout opens its owner, deployment information, evidence source and an explicit **Explore Checkout internals** action; selecting unrelated elements shows their own context instead of Checkout actions.
 
+For a self-contained rehearsal without an external agent, select **Run guided agent demo**. Nivra clearly labels this as a local simulation and stages the same four verified operations in Agent Activity: read architecture, inspect Checkout, open evidence and record a Finding.
+
 ## 2. Reveal the hidden coupling
 
 Prompt:
@@ -53,17 +55,17 @@ Record the policy required to make Checkout independently deployable, then valid
 
 Expected result: the agent calls `add_constraint` for the four canonical rules and `validate_architecture` with `current`. The Policy panel shows `2 passed / 2 failed`.
 
-The failed result explains that Checkout is not independently deployable and reveals one next action. The Proposal action is intentionally hidden before validation.
+In the manual path, select **Turn finding into policy**, review the four decisions, then select **Save and validate policy**. The failed result explains that Checkout is not independently deployable and reveals one next action. The Proposal action is intentionally hidden before validation.
 
-## 4. Propose the smallest alternative
+## 4. Create a remediation proposal
 
 Prompt:
 
 ```text
-Create the smallest proposal that removes the runtime state dependency without changing Current Architecture.
+Create a remediation proposal that removes the runtime state dependency without changing Current Architecture.
 ```
 
-Expected result: the agent calls `create_proposal`. The workspace moves to Proposal mode and shows the added Checkout Snapshot Contract plus the removed Product Store runtime dependency.
+Expected result: the agent calls `create_proposal`. The workspace moves to Proposal mode and shows both sides of the diff at once: the new Checkout Snapshot Contract is marked `ADDED`, while Product Store and the old runtime relation remain visible as muted `REMOVED` evidence.
 
 ## 5. Verify and preserve Current
 
@@ -73,7 +75,7 @@ Prompt:
 Validate the proposal, then switch back to Current and confirm that the original architecture is unchanged.
 ```
 
-Expected result: the agent calls `validate_architecture` for Proposal and Current. Proposal reports `4 passed / 0 failed`; Current restores the original `shares state` relation.
+Expected result: the agent calls `validate_architecture` for Proposal and Current. Proposal reports `4 passed / 0 failed`; Current restores the original `shares state` relation. Select **Prepare implementation plan** to finish with a five-step delivery brief that can be copied as Markdown.
 
 Closing narration:
 
@@ -83,4 +85,4 @@ The agent did not replace the architect. It exposed evidence, the human turned a
 
 ## Fallback
 
-When WebMCP is unavailable, run the same story manually: select Checkout LLD, use **Policy** to add the Checkout constraints, create the smallest proposal, then validate Current and Proposal. The documented browser gate remains `npm run test:webmcp`.
+When an external WebMCP client is unavailable, select **Run guided agent demo**, then continue from the generated Finding through Policy, Proposal, verification and implementation planning. The footer identifies this activity as `Demo simulation`; it does not impersonate a connected external agent. The documented browser gate remains `npm run test:webmcp`.

@@ -54,4 +54,26 @@ describe("React Flow adapters", () => {
     );
     expect(edges.some(({ id }) => id === "basket-adapter-shares-product-store")).toBe(false);
   });
+
+  it("marks proposal additions and removals as presentation-only change states", () => {
+    const { view, layout } = getHldFixture();
+    const nodes = toFlowNodes({
+      architecture: commerceArchitecture,
+      view,
+      layout,
+      addedElementIds: ["checkout-mfe"],
+      removedElementIds: ["shared-store"],
+    });
+    const edges = toFlowEdges({
+      architecture: commerceArchitecture,
+      view,
+      addedRelationIds: ["checkout-mfe-calls-backend-api"],
+      removedRelationIds: ["product-mfe-writes-shared-store"],
+    });
+
+    expect(nodes.find(({ id }) => id === "checkout-mfe")?.data.changeStatus).toBe("added");
+    expect(nodes.find(({ id }) => id === "shared-store")?.data.changeStatus).toBe("removed");
+    expect(edges.find(({ id }) => id === "checkout-mfe-calls-backend-api")?.data?.changeStatus).toBe("added");
+    expect(edges.find(({ id }) => id === "product-mfe-writes-shared-store")?.data?.changeStatus).toBe("removed");
+  });
 });

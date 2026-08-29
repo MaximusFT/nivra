@@ -57,6 +57,7 @@ function CanvasContent() {
     [activeMode, activeProposal],
   );
   const view = effectiveArchitecture.views.find(({ id }) => id === activeViewId);
+  const originalView = architecture.views.find(({ id }) => id === activeViewId);
   const layout = commerceLayouts.find(({ viewId }) => viewId === activeViewId);
   const visibleRelations = view
     ? effectiveArchitecture.relations.filter(({ id }) => view.relationIds.includes(id))
@@ -77,34 +78,72 @@ function CanvasContent() {
     [effectiveArchitecture, selectedElementIds, selectedRelationIds, view],
   );
 
-  const nodes = useMemo(
-    () =>
-      view && layout
-        ? toFlowNodes({
+  const nodes = useMemo(() => {
+    if (!view || !layout) return [];
+
+    const activeNodes = toFlowNodes({
             architecture: effectiveArchitecture,
             view,
             layout,
             selectedElementIds,
             focusedElementIds: focus.elementIds,
             addedElementIds: proposalDiff?.addedElements,
-          })
-        : [],
-    [effectiveArchitecture, focus.elementIds, layout, proposalDiff?.addedElements, selectedElementIds, view],
-  );
+          });
 
-  const edges = useMemo(
-    () =>
-      view
-        ? toFlowEdges({
+    if (!proposalDiff || !originalView) return activeNodes;
+
+    const activeNodeIds = new Set(activeNodes.map(({ id }) => id));
+    const removedNodeIds = new Set(proposalDiff.removedElements);
+    for (const relation of architecture.relations) {
+      if (!proposalDiff.removedRelations.includes(relation.id)) continue;
+      if (!activeNodeIds.has(relation.sourceId)) removedNodeIds.add(relation.sourceId);
+      if (!activeNodeIds.has(relation.targetId)) removedNodeIds.add(relation.targetId);
+    }
+
+    const removedView = {
+      ...originalView,
+      elementIds: originalView.elementIds.filter((id) => removedNodeIds.has(id)),
+      relationIds: [],
+    };
+    const removedNodes = toFlowNodes({
+      architecture,
+      view: removedView,
+      layout,
+      removedElementIds: [...removedNodeIds],
+    }).map((node) => ({
+      ...node,
+      selectable: false,
+      position: { x: node.position.x + 260, y: node.position.y },
+    }));
+
+    return [...activeNodes, ...removedNodes];
+  }, [architecture, effectiveArchitecture, focus.elementIds, layout, originalView, proposalDiff, selectedElementIds, view]);
+
+  const edges = useMemo(() => {
+    if (!view) return [];
+
+    const activeEdges = toFlowEdges({
             architecture: effectiveArchitecture,
             view,
             selectedRelationIds,
             focusedRelationIds: focus.relationIds,
             addedRelationIds: proposalDiff?.addedRelations,
-          })
-        : [],
-    [effectiveArchitecture, focus.relationIds, proposalDiff?.addedRelations, selectedRelationIds, view],
-  );
+          });
+
+    if (!proposalDiff || !originalView) return activeEdges;
+
+    const removedView = {
+      ...originalView,
+      relationIds: originalView.relationIds.filter((id) => proposalDiff.removedRelations.includes(id)),
+    };
+    const removedEdges = toFlowEdges({
+      architecture,
+      view: removedView,
+      removedRelationIds: proposalDiff.removedRelations,
+    });
+
+    return [...activeEdges, ...removedEdges];
+  }, [architecture, effectiveArchitecture, focus.relationIds, originalView, proposalDiff, selectedRelationIds, view]);
 
   useEffect(() => {
     void fitView({ padding: 0.16, maxZoom: 1, duration: 240 });

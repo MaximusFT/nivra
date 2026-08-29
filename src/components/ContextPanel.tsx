@@ -4,9 +4,11 @@ import {
   ArrowDownLeft,
   ArrowRight,
   ArrowUpRight,
+  Bot,
   Box,
   DatabaseZap,
   Plus,
+  Play,
   Search,
   ShieldCheck,
 } from 'lucide-react';
@@ -75,6 +77,7 @@ function RelationListItem({
 
 export function ContextPanel() {
   const [activeTab, setActiveTab] = useState<'inspect' | 'policy'>('inspect');
+  const [demoRunning, setDemoRunning] = useState(false);
   const {
     architecture,
     selectedElementIds,
@@ -84,6 +87,9 @@ export function ContextPanel() {
     addFinding,
     focusFinding,
     setActiveView,
+    selectElements,
+    selectRelations,
+    upsertAgentActivity,
   } = useWorkspaceStore(
     useShallow((state) => ({
       architecture: state.architecture,
@@ -94,6 +100,9 @@ export function ContextPanel() {
       addFinding: state.addFinding,
       focusFinding: state.focusFinding,
       setActiveView: state.setActiveView,
+      selectElements: state.selectElements,
+      selectRelations: state.selectRelations,
+      upsertAgentActivity: state.upsertAgentActivity,
     })),
   );
 
@@ -106,7 +115,8 @@ export function ContextPanel() {
   const selectedRelationId = selectedRelationIds[0];
   const inspection = selectedElementId ? inspectElement(effectiveArchitecture, selectedElementId) : undefined;
   const relation = selectedRelationId
-    ? effectiveArchitecture.relations.find(({ id }) => id === selectedRelationId)
+    ? effectiveArchitecture.relations.find(({ id }) => id === selectedRelationId) ??
+      architecture.relations.find(({ id }) => id === selectedRelationId)
     : undefined;
   const relationSource = relation ? getElementById(effectiveArchitecture, relation.sourceId) : undefined;
   const relationTarget = relation ? getElementById(effectiveArchitecture, relation.targetId) : undefined;
@@ -125,6 +135,47 @@ export function ContextPanel() {
   const childView = inspection
     ? effectiveArchitecture.views.find(({ rootElementId }) => rootElementId === inspection.element.id)
     : undefined;
+
+  const runGuidedAnalysis = async () => {
+    setDemoRunning(true);
+    const runId = Date.now();
+    const runStep = async (index: number, tool: string, description: string, action: () => void) => {
+      const entry = {
+        id: `guided-demo-${runId}-${index}`,
+        timestamp: Date.now(),
+        tool,
+        description: `Demo simulation · ${description}`,
+        status: 'running' as const,
+      };
+      upsertAgentActivity(entry);
+      await new Promise((resolve) => window.setTimeout(resolve, 650));
+      action();
+      upsertAgentActivity({ ...entry, status: 'success' });
+      await new Promise((resolve) => window.setTimeout(resolve, 250));
+    };
+
+    try {
+      await runStep(1, 'get_architecture', 'Read 19 elements and 24 relations', () => undefined);
+      await runStep(2, 'inspect_element', 'Inspect the Checkout deployment boundary', () => {
+        selectElements(['checkout-mfe']);
+      });
+      await runStep(3, 'show_architecture_view', 'Open Checkout internals and focus runtime evidence', () => {
+        setActiveView(CHECKOUT_LLD_VIEW_ID);
+        selectElements(['basket-adapter', 'product-store']);
+        selectRelations(['basket-adapter-shares-product-store']);
+      });
+      await runStep(4, 'annotate_architecture', 'Record the runtime coupling risk', () => {
+        const sharedStateRelation = architecture.relations.find(
+          ({ id }) => id === 'basket-adapter-shares-product-store',
+        );
+        if (sharedStateRelation) addFinding(relationFinding(sharedStateRelation));
+        selectElements([]);
+        selectRelations(['basket-adapter-shares-product-store']);
+      });
+    } finally {
+      setDemoRunning(false);
+    }
+  };
 
   return (
     <aside className="flex w-[336px] shrink-0 flex-col border-l border-slate-200 bg-white shadow-[-8px_0_24px_rgba(15,23,42,0.025)]">
@@ -262,7 +313,9 @@ export function ContextPanel() {
                   </div>
                   <div className="flex items-center justify-between gap-3 py-2.5">
                     <dt className="text-slate-500">Deployment boundary</dt>
-                    <dd className={`font-semibold ${crossesDeploymentBoundary ? 'text-amber-700' : 'text-emerald-700'}`}>
+                    <dd
+                      className={`font-semibold ${crossesDeploymentBoundary ? 'text-amber-700' : 'text-emerald-700'}`}
+                    >
                       {crossesDeploymentBoundary ? 'Crosses boundary' : 'Within boundary'}
                     </dd>
                   </div>
@@ -295,17 +348,26 @@ export function ContextPanel() {
                     Verify that Checkout can evolve and deploy without Product runtime state.
                   </p>
                   <button
-                    className="mt-4 flex w-full items-center justify-between rounded-md bg-slate-900 px-3 py-2.5 text-left text-xs font-semibold text-white hover:bg-slate-700"
-                    onClick={() => {
-                      setActiveView(CHECKOUT_LLD_VIEW_ID);
-                    }}
+                    className="mt-4 flex w-full items-center justify-between rounded-md bg-slate-900 px-3 py-2.5 text-left text-xs font-semibold text-white hover:bg-slate-700 disabled:cursor-wait disabled:bg-slate-600"
+                    disabled={demoRunning}
+                    onClick={() => void runGuidedAnalysis()}
                     type="button"
                   >
-                    Explore Checkout evidence
-                    <ArrowRight aria-hidden="true" size={14} />
+                    <span className="flex items-center gap-2">
+                      {demoRunning ? <Bot aria-hidden="true" className="animate-pulse" size={14} /> : <Play aria-hidden="true" size={14} />}
+                      {demoRunning ? 'Analyzing architecture…' : 'Run guided agent demo'}
+                    </span>
+                    {!demoRunning ? <ArrowRight aria-hidden="true" size={14} /> : null}
+                  </button>
+                  <button
+                    className="mt-2 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+                    onClick={() => setActiveView(CHECKOUT_LLD_VIEW_ID)}
+                    type="button"
+                  >
+                    Explore manually
                   </button>
                   <p className="mt-3 text-[11px] leading-4 text-slate-400">
-                    Or select any element to inspect its owner, deployment and dependencies.
+                    Guided mode locally simulates the same verified WebMCP tool sequence. Or select any element to inspect it.
                   </p>
                 </div>
               </section>
@@ -326,9 +388,9 @@ export function ContextPanel() {
             ) : (
               <ul className="space-y-2">
                 {effectiveArchitecture.findings.map((finding) => (
-                  <li key={finding.id}>
+                  <li className="overflow-hidden rounded-lg border border-amber-200 bg-amber-50" key={finding.id}>
                     <button
-                      className="w-full rounded-lg border border-amber-200 bg-amber-50 p-3 text-left transition-colors hover:border-amber-300"
+                      className="w-full p-3 text-left transition-colors hover:bg-amber-100/60"
                       onClick={() => focusFinding(finding.id)}
                       type="button"
                     >
@@ -338,6 +400,14 @@ export function ContextPanel() {
                       </span>
                       <strong className="mt-1.5 block text-xs text-slate-800">{finding.title}</strong>
                       <span className="mt-1 block text-[11px] leading-4 text-slate-600">{finding.description}</span>
+                    </button>
+                    <button
+                      className="flex w-full items-center justify-between border-t border-amber-200 bg-white/70 px-3 py-2 text-[11px] font-semibold text-amber-800 hover:bg-white"
+                      onClick={() => setActiveTab('policy')}
+                      type="button"
+                    >
+                      Turn finding into policy
+                      <ArrowRight aria-hidden="true" size={13} />
                     </button>
                   </li>
                 ))}

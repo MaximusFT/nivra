@@ -28,6 +28,7 @@ export interface ToFlowEdgesOptions {
   selectedRelationIds?: string[];
   focusedRelationIds?: string[];
   addedRelationIds?: string[];
+  removedRelationIds?: string[];
 }
 
 export function toFlowEdges({
@@ -36,6 +37,7 @@ export function toFlowEdges({
   selectedRelationIds = [],
   focusedRelationIds = [],
   addedRelationIds = [],
+  removedRelationIds = [],
 }: ToFlowEdgesOptions): ArchitectureFlowEdge[] {
   const visibleElementIds = new Set(view.elementIds);
   const visibleRelationIds = new Set(view.relationIds);
@@ -43,6 +45,7 @@ export function toFlowEdges({
   const focusedIds = new Set(focusedRelationIds);
   const hasFocus = focusedIds.size > 0;
   const addedIds = new Set(addedRelationIds);
+  const removedIds = new Set(removedRelationIds);
 
   return architecture.relations
     .filter(
@@ -57,6 +60,8 @@ export function toFlowEdges({
       const isFocused = !hasFocus || focusedIds.has(relation.id);
       const isSharedState = relation.type === "shares-state";
       const isAdded = addedIds.has(relation.id);
+      const isRemoved = removedIds.has(relation.id);
+      const changeStatus = isAdded ? "added" : isRemoved ? "removed" : undefined;
 
       return {
         id: relation.id,
@@ -69,28 +74,28 @@ export function toFlowEdges({
           relationType: relation.type,
           protocol: relation.protocol,
           description: relation.description,
-          changeStatus: isAdded ? "added" : undefined,
+          changeStatus,
         },
         style: {
-          stroke: isAdded ? "#4f46e5" : color,
+          stroke: isRemoved ? "#94a3b8" : isAdded ? "#4f46e5" : color,
           strokeWidth: isSelected ? 3 : isSharedState ? 2.4 : 1.5,
-          strokeDasharray: isSharedState ? "7 4" : undefined,
-          opacity: isFocused ? 1 : 0.18,
+          strokeDasharray: isRemoved ? "4 5" : isSharedState ? "7 4" : undefined,
+          opacity: isRemoved ? 0.65 : isFocused ? 1 : 0.18,
         },
         labelStyle: {
-          fill: isSharedState ? "#b91c1c" : relation.protocol ? "#1d4ed8" : "#475569",
+          fill: isRemoved ? "#64748b" : isSharedState ? "#b91c1c" : relation.protocol ? "#1d4ed8" : "#475569",
           fontSize: 11,
           fontWeight: isSharedState ? 700 : 600,
         },
         labelBgStyle: {
-          fill: isSharedState ? "#fef2f2" : "#f7f8fa",
+          fill: isRemoved ? "#f1f5f9" : isSharedState ? "#fef2f2" : "#f7f8fa",
           fillOpacity: 0.96,
         },
         labelBgPadding: [5, 3],
         labelBgBorderRadius: 4,
         markerEnd: {
           type: MarkerType.ArrowClosed,
-          color: isAdded ? "#4f46e5" : color,
+          color: isRemoved ? "#94a3b8" : isAdded ? "#4f46e5" : color,
           width: 16,
           height: 16,
         },

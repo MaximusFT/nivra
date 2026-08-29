@@ -9,6 +9,7 @@ export interface ToFlowNodesOptions {
   selectedElementIds?: string[];
   focusedElementIds?: string[];
   addedElementIds?: string[];
+  removedElementIds?: string[];
 }
 
 export function toFlowNodes({
@@ -18,12 +19,14 @@ export function toFlowNodes({
   selectedElementIds = [],
   focusedElementIds = [],
   addedElementIds = [],
+  removedElementIds = [],
 }: ToFlowNodesOptions): ArchitectureFlowNode[] {
   const visibleElementIds = new Set(view.elementIds);
   const selectedIds = new Set(selectedElementIds);
   const focusedIds = new Set(focusedElementIds);
   const hasFocus = focusedIds.size > 0;
   const addedIds = new Set(addedElementIds);
+  const removedIds = new Set(removedElementIds);
   const positions = new Map(
     layout.elements.map(({ elementId, x, y }) => [elementId, { x, y }] as const),
   );
@@ -57,7 +60,7 @@ export function toFlowNodes({
         owner: element.owner,
         deploymentUnit: element.deploymentUnit,
         findingCount,
-        changeStatus: addedIds.has(element.id) ? "added" : undefined,
+        changeStatus: addedIds.has(element.id) ? "added" : removedIds.has(element.id) ? "removed" : undefined,
       },
       };
     });

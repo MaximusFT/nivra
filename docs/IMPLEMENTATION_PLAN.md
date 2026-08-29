@@ -234,6 +234,11 @@ Status: **complete**
 - [x] explain the verified Proposal and preserve Current
 - [x] present real WebMCP tool calls as a readable activity timeline
 - [x] document manual WebMCP-enabled Chrome launch
+- [x] replace hard-coded HLD/LLD tabs with contextual navigation
+- [x] connect Findings directly to policy decisions
+- [x] stage a transparent guided agent simulation for standalone exploration
+- [x] show added and removed architecture evidence together
+- [x] finish verified Proposals with a copyable implementation brief
 
 ## Optional work after P0/P1 stability
 
@@ -261,6 +266,7 @@ Each block should end with tests and a status-file update so work can move betwe
 11. **Block 11 — Phase 4C Golden prompt reliability and Checkpoint C:** complete; gate passed.
 12. **Block 12 — Phase 5A visual polish:** complete.
 13. **Block 13 — Vercel production deployment, Git auto-deploy and HTTPS/WebMCP verification:** complete.
-14. **Block 14 — next:** final screenshots/fallback assets and license decision.
+14. **Block 14 — MIT license and demo narrative hardening:** complete.
+15. **Block 15 — next:** final production screenshots and recorded demo assets.
 
 Do not combine all blocks into one unreviewable change.
