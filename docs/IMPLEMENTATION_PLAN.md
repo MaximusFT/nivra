@@ -247,7 +247,7 @@ Each block should end with tests and a status-file update so work can move betwe
 10. **Block 10 — Phase 4B WebMCP write and compute tools:** complete.
 11. **Block 11 — Phase 4C Golden prompt reliability and Checkpoint C:** complete; gate passed.
 12. **Block 12 — Phase 5A visual polish:** complete.
-13. **Block 13 — Vercel production deployment and HTTPS/WebMCP verification:** complete.
+13. **Block 13 — Vercel production deployment, Git auto-deploy and HTTPS/WebMCP verification:** complete.
 14. **Block 14 — next:** final screenshots/fallback assets and license decision.
 
 Do not combine all blocks into one unreviewable change.

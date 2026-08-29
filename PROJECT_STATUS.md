@@ -161,6 +161,7 @@ npm run test:webmcp PASS — 3 complete Chromium runs; 7 tools; Current 2/2 → 
 Browser runtime    PASS — focus and Agent Activity visible; Current preserved; unavailable fallback verified
 Production HTTPS   PASS — https://nivra-psi.vercel.app; HTTP 200; Vercel Ready
 Production WebMCP  PASS — 3 complete Chromium runs against HTTPS; all 7 tools reliable
+Git auto-deploy     CONFIGURED — MaximusFT/nivra main → Vercel production; verification push in progress
 ```
 
 Always run all command-line checks before ending an implementation task.
@@ -184,6 +185,8 @@ Desktop verification passed at 1440×900 and 1920×1080: no horizontal overflow,
 Phase 5B documentation and deployment are complete: `README.md` documents setup, verification, architecture and all seven tools; `docs/DEMO_SCRIPT.md` defines the fixed five-step, sub-three-minute flow; Vercel serves the production build at `https://nivra-psi.vercel.app`.
 
 Production verification passed in both ordinary-browser fallback mode and WebMCP-enabled Chromium. The black-box harness now accepts `NIVRA_WEBMCP_URL` and completed three full Golden repetitions against the public HTTPS deployment.
+
+The Vercel project is connected to the private GitHub repository `MaximusFT/nivra`, with access limited to that repository. Pushes to `main` automatically build and update production; branches and pull requests produce preview deployments. Direct Vercel access is not required on a development computer.
 
 Phase 4 is feature-complete. Avoid expanding product scope during visual polish.
 
@@ -215,6 +218,8 @@ Never rely on chat history as the only record of project state.
 ## Git delivery policy
 
 The user has explicitly authorized automatic Git delivery. After every completed and verified work block, Codex must update the handoff files, create a commit and push it to `origin` without requesting additional confirmation.
+
+Vercel is connected to GitHub. A push to `main` is also the production release mechanism; do not run `vercel --prod` during normal delivery. Use explicit CLI deployment only as a recovery path.
 
 Do not commit partially verified implementation work. If a block is interrupted or failing, record the state locally and finish or repair it before pushing.
 

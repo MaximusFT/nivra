@@ -212,16 +212,25 @@ The default reliability gate is three complete repetitions from Reset Demo. Each
 
 Reason: unit tests protect handlers and invariants, but Checkpoint C requires black-box proof that registration, browser transport, workspace actions and visible React state work together.
 
-## D-022 — Production is an explicit Vercel CLI deployment
+## D-022 — Initial production deployment uses the Vercel CLI
+
+Status: superseded by D-023 for routine releases
+Date: 2026-08-29
+
+The production application was initially deployed to `https://nivra-psi.vercel.app` under the `maximusfts-projects/nivra` Vercel project using Vercel's detected Vite defaults and an explicit CLI release.
+
+The WebMCP harness accepts `NIVRA_WEBMCP_URL` for black-box verification of a deployed target. Three complete Golden repetitions passed against the production HTTPS URL after deployment.
+
+Reason: the first explicit release provided repeatable proof that the published artifact, not only local Vite, supports the full agent workflow.
+
+## D-023 — Pushes to `main` automatically deploy to Vercel production
 
 Status: accepted
 Date: 2026-08-29
 
-The production application is deployed to `https://nivra-psi.vercel.app` under the `maximusfts-projects/nivra` Vercel project. The initial deployment uses Vercel's detected Vite defaults and is not connected to automatic Git deployments; future releases remain explicit CLI actions until the user chooses otherwise.
+The Vercel project is connected to the private `MaximusFT/nivra` GitHub repository through the Vercel GitHub App. App access is limited to this repository. Every push to `main` triggers a production build and release; pull requests and other branches may create preview deployments. The explicit Vercel CLI flow remains a recovery path.
 
-The WebMCP harness accepts `NIVRA_WEBMCP_URL` for black-box verification of a deployed target. Three complete Golden repetitions passed against the production HTTPS URL after deployment.
-
-Reason: explicit releases keep deployment changes deliberate while still providing repeatable proof that the published artifact, not only local Vite, supports the full agent workflow.
+Reason: development computers only need GitHub access. Vercel performs the build and release remotely, so work can continue from machines where direct Vercel access is restricted.
 
 ## Open decisions before their implementation phases
 

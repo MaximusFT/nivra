@@ -38,14 +38,19 @@ npm run test:webmcp
 
 ## Deploy to Vercel
 
-Run this step from a machine that can access Vercel. Vercel uses the standard Vite build command automatically. Authenticate once, then deploy from the repository root:
+The Vercel project is connected to `MaximusFT/nivra`. Every push to `main` automatically builds and updates production, so normal delivery from any computer is:
 
 ```sh
-npx --yes --registry=https://registry.npmjs.org vercel login
+git push origin main
+```
+
+Pull requests and non-production branches produce preview deployments. An explicit CLI deployment remains available as a recovery path from an authenticated machine:
+
+```sh
 npx --yes --registry=https://registry.npmjs.org vercel --prod
 ```
 
-Open the resulting HTTPS URL in Chrome with WebMCP enabled for the agent-driven demonstration. A standard browser still supports the complete manual workflow.
+Open the production HTTPS URL in Chrome with WebMCP enabled for the agent-driven demonstration. A standard browser still supports the complete manual workflow.
 
 Current production deployment: [nivra-psi.vercel.app](https://nivra-psi.vercel.app).
 
