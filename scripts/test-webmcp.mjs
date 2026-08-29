@@ -238,12 +238,14 @@ async function executeGoldenRun(cdp, runNumber) {
     relationIds: ["basket-adapter-shares-product-store"],
   });
 
-  const focused = await cdp.evaluate(`(() => ({
-    selectedNodes: [...document.querySelectorAll(".react-flow__node.selected")].map((node) => node.dataset.id),
-    selectedEdges: [...document.querySelectorAll(".react-flow__edge.selected")].map((edge) => edge.dataset.id),
-    lowLevelVisible: document.body.innerText.includes("Low-Level Design")
-  }))()`);
-  assert(focused.lowLevelVisible, `Run ${runNumber}: Checkout LLD is not visible.`);
+  const focused = await waitFor(async () => {
+    const value = await cdp.evaluate(`(() => ({
+      selectedNodes: [...document.querySelectorAll(".react-flow__node.selected")].map((node) => node.dataset.id),
+      selectedEdges: [...document.querySelectorAll(".react-flow__edge.selected")].map((edge) => edge.dataset.id),
+      lowLevelVisible: document.body.textContent?.includes("Low-Level Design") ?? false
+    }))()`);
+    return value?.lowLevelVisible ? value : undefined;
+  }, `Run ${runNumber}: Checkout LLD is not visible.`);
 
   // Prompt 3 — persist the canonical policy. Retry one ID to prove idempotency.
   for (const constraint of goldenConstraints) await call("add_constraint", constraint);

@@ -19,28 +19,28 @@ export function App() {
   const isCheckoutView = activeView?.id === CHECKOUT_LLD_VIEW_ID;
 
   return (
-    <main className="flex h-screen min-h-[640px] flex-col overflow-hidden bg-slate-50">
-      <header className="flex h-16 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-5">
-        <div className="flex items-center gap-3">
-          <span className="grid size-9 place-items-center rounded-xl bg-slate-900 text-white">
+    <main className="flex h-screen min-h-[640px] flex-col overflow-hidden bg-[#f4f6f8] text-slate-800">
+      <header className="flex h-[68px] shrink-0 items-center justify-between border-b border-slate-200/90 bg-white/95 px-6 shadow-[0_1px_0_rgba(15,23,42,0.03)] backdrop-blur">
+        <div className="flex items-center gap-3.5">
+          <span className="grid size-9 place-items-center rounded-lg bg-slate-900 text-white shadow-sm">
             <Box aria-hidden="true" size={18} />
           </span>
           <div>
-            <div className="flex items-baseline gap-2">
-              <h1 className="text-base font-semibold tracking-tight">Nivra</h1>
+            <div className="flex items-baseline gap-2.5">
+              <h1 className="text-[17px] font-semibold text-slate-950">Nivra</h1>
               <span className="text-xs text-slate-400">Architecture workspace</span>
             </div>
-            <p className="text-xs text-slate-500">
+            <p className="text-[11px] font-medium text-slate-500">
               {summary.name} · v{summary.version}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-5 text-xs">
-          <div className="flex rounded-lg bg-slate-100 p-1 text-[11px]">
+        <div className="flex items-center gap-6 text-xs">
+          <div className="flex rounded-md border border-slate-200 bg-slate-100/80 p-0.5 text-[11px]">
             <button
-              className={`flex items-center gap-1.5 rounded-md px-2.5 py-1.5 ${
-                activeMode === "current" ? "bg-white font-semibold text-slate-900 shadow-sm" : "text-slate-500"
+              className={`flex items-center gap-1.5 rounded px-2.5 py-1.5 ${
+                activeMode === "current" ? "bg-white font-semibold text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
               }`}
               onClick={() => setActiveMode("current")}
               type="button"
@@ -49,8 +49,8 @@ export function App() {
               Current
             </button>
             <button
-              className={`rounded-md px-2.5 py-1.5 ${
-                activeMode === "proposal" ? "bg-white font-semibold text-violet-700 shadow-sm" : "text-slate-500"
+              className={`rounded px-2.5 py-1.5 ${
+                activeMode === "proposal" ? "bg-white font-semibold text-violet-700 shadow-sm" : "text-slate-500 hover:text-slate-700"
               } disabled:cursor-not-allowed disabled:opacity-40`}
               disabled={!activeProposalId}
               onClick={() => setActiveMode("proposal")}
@@ -64,7 +64,7 @@ export function App() {
             <span>Workspace ready</span>
           </div>
           <button
-            className="flex items-center gap-1.5 rounded-lg border border-slate-200 px-2.5 py-1.5 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-800"
+            className="flex items-center gap-1.5 rounded-md border border-slate-200 px-2.5 py-1.5 font-medium text-slate-500 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-800"
             onClick={resetWorkspace}
             type="button"
           >
@@ -75,9 +75,9 @@ export function App() {
       </header>
 
       <section className="flex min-h-0 flex-1 flex-col">
-        <div className="flex h-12 shrink-0 items-center justify-between border-b border-slate-200 bg-white px-5">
+        <div className="flex h-[58px] shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6">
           <div>
-            <nav aria-label="Architecture breadcrumb" className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
+            <nav aria-label="Architecture breadcrumb" className="flex items-center gap-1.5 text-sm font-semibold text-slate-900">
               <button
                 className="rounded px-1 py-0.5 transition-colors hover:bg-slate-100"
                 onClick={() => setActiveView(COMMERCE_HLD_VIEW_ID)}
@@ -92,14 +92,14 @@ export function App() {
                 </>
               ) : null}
             </nav>
-            <p className="text-[11px] text-slate-500">
+            <p className="text-[10px] font-medium uppercase tracking-[0.08em] text-slate-400">
               {activeView?.level === "lld" ? "Low-Level Design" : "High-Level Design"}
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <div className="flex rounded-lg bg-slate-100 p-1 text-xs">
+            <div className="flex rounded-md border border-slate-200 bg-slate-100/80 p-0.5 text-xs">
               <button
-                className={`rounded-md px-3 py-1.5 transition-colors ${
+                className={`rounded px-3 py-1.5 transition-colors ${
                   !isCheckoutView ? "bg-white font-medium text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-800"
                 }`}
                 onClick={() => setActiveView(COMMERCE_HLD_VIEW_ID)}
@@ -108,7 +108,7 @@ export function App() {
                 Commerce HLD
               </button>
               <button
-                className={`rounded-md px-3 py-1.5 transition-colors ${
+                className={`rounded px-3 py-1.5 transition-colors ${
                   isCheckoutView ? "bg-white font-medium text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-800"
                 }`}
                 onClick={() => setActiveView(CHECKOUT_LLD_VIEW_ID)}

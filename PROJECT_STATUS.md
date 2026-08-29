@@ -1,7 +1,7 @@
 # Nivra — Project Status
 
 > Last updated: 2026-08-28  
-> Current phase: Phase 4 complete; Checkpoint C passed; Phase 5A next
+> Current phase: Phase 5A in progress; shell polish block complete
 > Current branch: `main`
 
 This is the first file to read when resuming Nivra on another computer or in a new Codex task.
@@ -165,16 +165,17 @@ Always run all three command-line checks before ending an implementation task.
 
 ## Exact next task
 
-Start **Phase 5A — Visual polish**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
+Continue **Phase 5A — Visual polish**, as defined in `docs/IMPLEMENTATION_PLAN.md`.
 
 The next implementation task should be limited to:
 
-1. review and refine the complete desktop shell at 1440×900 and 1920×1080;
-2. improve typography, spacing, focus states and semantic contrast without changing the proven workflow;
-3. polish the Checkout LLD evidence hero state;
-4. polish the Proposal `4/4` validation hero state;
-5. verify accessibility basics, readable labels and browser console cleanliness;
-6. preserve all Phase 4 tool schemas and Checkpoint C invariants.
+1. refine the Context and Policy panel density at 1440×900 and 1920×1080;
+2. improve node and edge presentation, including focus states and semantic contrast;
+3. audit the Checkout LLD and Proposal `4/4` hero states at both desktop sizes;
+4. verify accessibility basics, readable labels and browser console cleanliness;
+5. preserve all Phase 4 tool schemas and Checkpoint C invariants.
+
+The first 5A block refined the global visual foundation and desktop application shell: intentional system typography, a restrained workspace grid, stronger header/view hierarchy, consistent compact controls and visible keyboard focus. It also made the WebMCP browser harness independent of CSS text transformations.
 
 Phase 4 is feature-complete. Avoid expanding product scope during visual polish.
 

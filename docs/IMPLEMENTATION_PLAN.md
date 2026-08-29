@@ -195,9 +195,9 @@ Checkpoint C result: **passed** after three complete WebMCP-enabled Chromium rep
 
 ### Phase 5A — Visual polish
 
-Status: **next**
+Status: **in progress**
 
-- [ ] finalize desktop workspace shell
+- [x] establish visual foundation and refine desktop workspace shell
 - [ ] tune 1440×900 and 1920×1080 layouts
 - [ ] refine typography, spacing, focus and semantic colors
 - [ ] polish hero screen: Checkout LLD evidence
