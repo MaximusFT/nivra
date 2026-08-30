@@ -83,7 +83,7 @@ Verified Proposals can be saved as architecture branches. These are durable alte
 
 ## Project status
 
-Functional MVP gates A, B and C have passed. The remaining delivery work is visual refinement, public deployment and rehearsal. See [PROJECT_STATUS.md](PROJECT_STATUS.md) for the current handoff state and [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) for the fixed demo sequence.
+Functional MVP gates A, B and C have passed. The complete application is deployed publicly, and the fixed sub-three-minute demonstration sequence is documented in [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md).
 
 ## License
 

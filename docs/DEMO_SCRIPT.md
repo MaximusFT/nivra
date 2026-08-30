@@ -2,8 +2,6 @@
 
 Target duration: **2:45–2:55**. Text calibrated for a calm speaking pace without long pauses.
 
-Russian timed teleprompter: [VIDEO_SCRIPT_RU.md](VIDEO_SCRIPT_RU.md).
-
 ## Before recording
 
 - Open `https://nivra-psi.vercel.app` in Chrome with WebMCP.
