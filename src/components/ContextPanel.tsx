@@ -19,6 +19,7 @@ import type { ArchitectureFinding, ArchitectureModel, ArchitectureRelation } fro
 import { useWorkspaceStore } from '../workspace/store';
 import { getEffectiveWorkspaceArchitecture } from '../workspace/selectors';
 import { CHECKOUT_LLD_VIEW_ID } from '../shared/ids';
+import { getModelContext } from '../webmcp/availability';
 import { PolicyPanel } from './PolicyPanel';
 
 function relationFinding(relation: ArchitectureRelation): ArchitectureFinding {
@@ -138,40 +139,101 @@ export function ContextPanel() {
 
   const runGuidedAnalysis = async () => {
     setDemoRunning(true);
-    const runId = Date.now();
-    const runStep = async (index: number, tool: string, description: string, action: () => void) => {
-      const entry = {
-        id: `guided-demo-${runId}-${index}`,
-        timestamp: Date.now(),
-        tool,
-        description: `Demo simulation · ${description}`,
-        status: 'running' as const,
-      };
-      upsertAgentActivity(entry);
+    const modelContext = getModelContext();
+
+    const executeWebMcp = async (toolName: string, input: Record<string, unknown> = {}) => {
+      const mc = modelContext as (typeof modelContext & { executeTool?: (tool: unknown, args: unknown) => Promise<unknown> }) | undefined;
+      if (mc && typeof mc.executeTool === 'function') {
+        try {
+          const tools = await mc.getTools();
+          const tool = tools.find((candidate: any) => candidate.name === toolName);
+          if (tool) {
+            try {
+              await mc.executeTool(tool, JSON.stringify(input));
+            } catch {
+              await mc.executeTool(tool, input);
+            }
+            return true;
+          }
+        } catch (error) {
+          console.warn('WebMCP executeTool failed, falling back to direct state action', error);
+        }
+      }
+      return false;
+    };
+
+    const runStep = async (
+      index: number,
+      toolName: string,
+      description: string,
+      fallbackAction: () => void,
+      input: Record<string, unknown> = {},
+    ) => {
       await new Promise((resolve) => window.setTimeout(resolve, 850));
-      action();
-      upsertAgentActivity({ ...entry, status: 'success' });
+      const executed = await executeWebMcp(toolName, input);
+      if (!executed) {
+        const runId = Date.now();
+        const entry = {
+          id: `guided-demo-${runId}-${index}`,
+          timestamp: Date.now(),
+          tool: toolName,
+          description: `Demo simulation · ${description}`,
+          status: 'running' as const,
+        };
+        upsertAgentActivity(entry);
+        fallbackAction();
+        upsertAgentActivity({ ...entry, status: 'success' });
+      }
       await new Promise((resolve) => window.setTimeout(resolve, 350));
     };
 
     try {
       await runStep(1, 'get_architecture', 'Read 19 elements and 24 relations', () => undefined);
-      await runStep(2, 'inspect_element', 'Inspect the Checkout deployment boundary', () => {
-        selectElements(['checkout-mfe']);
-      });
-      await runStep(3, 'show_architecture_view', 'Open Checkout internals and focus runtime evidence', () => {
-        setActiveView(CHECKOUT_LLD_VIEW_ID);
-        selectElements(['basket-adapter', 'product-store']);
-        selectRelations(['basket-adapter-shares-product-store']);
-      });
-      await runStep(4, 'annotate_architecture', 'Record the runtime coupling risk', () => {
-        const sharedStateRelation = architecture.relations.find(
-          ({ id }) => id === 'basket-adapter-shares-product-store',
-        );
-        if (sharedStateRelation) addFinding(relationFinding(sharedStateRelation));
-        selectElements([]);
-        selectRelations(['basket-adapter-shares-product-store']);
-      });
+      await runStep(
+        2,
+        'inspect_element',
+        'Inspect the Checkout deployment boundary',
+        () => {
+          selectElements(['checkout-mfe']);
+        },
+        { elementId: 'checkout-mfe' },
+      );
+      await runStep(
+        3,
+        'show_architecture_view',
+        'Open Checkout internals and focus runtime evidence',
+        () => {
+          setActiveView(CHECKOUT_LLD_VIEW_ID);
+          selectElements(['basket-adapter', 'product-store']);
+          selectRelations(['basket-adapter-shares-product-store']);
+        },
+        {
+          viewId: CHECKOUT_LLD_VIEW_ID,
+          focusElementIds: ['basket-adapter', 'product-store'],
+          focusRelationIds: ['basket-adapter-shares-product-store'],
+        },
+      );
+      await runStep(
+        4,
+        'annotate_architecture',
+        'Record the runtime coupling risk',
+        () => {
+          const sharedStateRelation = architecture.relations.find(
+            ({ id }) => id === 'basket-adapter-shares-product-store',
+          );
+          if (sharedStateRelation) addFinding(relationFinding(sharedStateRelation));
+          selectElements([]);
+          selectRelations(['basket-adapter-shares-product-store']);
+        },
+        {
+          id: 'checkout-isolation-risk',
+          title: 'Checkout isolation risk',
+          description: 'Checkout is deployed separately but still depends on Product runtime state.',
+          severity: 'warning',
+          elementIds: ['basket-adapter', 'product-store'],
+          relationIds: ['basket-adapter-shares-product-store'],
+        },
+      );
     } finally {
       setDemoRunning(false);
     }
