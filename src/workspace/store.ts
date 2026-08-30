@@ -65,8 +65,6 @@ export const useWorkspaceStore = create<WorkspaceStore>((set) => ({
       if (activeMode === 'proposal' && !state.activeProposalId) return state;
       return {
         activeMode,
-        selectedElementIds: [],
-        selectedRelationIds: [],
         validationResult: undefined,
       };
     }),
@@ -97,7 +95,7 @@ export const useWorkspaceStore = create<WorkspaceStore>((set) => ({
 
       return {
         activeViewId: evidenceView?.id ?? state.activeViewId,
-        selectedElementIds: [...elementIds],
+        selectedElementIds: relationIds.length > 0 ? [] : [...elementIds],
         selectedRelationIds: [...relationIds],
       };
     }),
@@ -122,8 +120,8 @@ export const useWorkspaceStore = create<WorkspaceStore>((set) => ({
       activeMode: 'proposal',
       activeProposalId: proposal.id,
       activeViewId: proposal.id === 'checkout-isolation' ? 'checkout-lld' : state.activeViewId,
-      selectedElementIds: [],
-      selectedRelationIds: [],
+      selectedElementIds: state.selectedElementIds,
+      selectedRelationIds: state.selectedRelationIds.length > 0 ? state.selectedRelationIds : (proposal.changes.removeRelationIds.length > 0 ? [...proposal.changes.removeRelationIds] : []),
       validationResult: undefined,
     })),
   saveActiveProposalAsBranch: () =>
@@ -178,7 +176,7 @@ export const useWorkspaceStore = create<WorkspaceStore>((set) => ({
 
       return {
         activeViewId: evidenceView?.id ?? state.activeViewId,
-        selectedElementIds: [...check.elementIds],
+        selectedElementIds: check.relationIds.length > 0 ? [] : [...check.elementIds],
         selectedRelationIds: [...check.relationIds],
       };
     }),

@@ -267,7 +267,58 @@ export function ContextPanel() {
       {activeTab === 'inspect' ? (
         <>
           <div className="min-h-0 flex-1 overflow-y-auto p-4">
-            {inspection ? (
+            {relation ? (
+              <section>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-400">Relation</p>
+                <h3 className="mt-1 text-base font-semibold text-slate-900">
+                  {relationSource?.name ?? relation.sourceId}
+                </h3>
+                <p className="my-2 text-xs font-semibold text-slate-400">
+                  ↓ {relation.protocol ?? relation.type.replaceAll('-', ' ')}
+                </p>
+                <h3 className="text-base font-semibold text-slate-900">{relationTarget?.name ?? relation.targetId}</h3>
+                {relation.description ? (
+                  <p className="mt-4 text-xs leading-5 text-slate-600">{relation.description}</p>
+                ) : null}
+                <dl className="mt-4 divide-y divide-slate-200 rounded-lg border border-slate-200 bg-slate-50 px-3 text-xs">
+                  <div className="flex items-center justify-between gap-3 py-2.5">
+                    <dt className="text-slate-500">Protocol</dt>
+                    <dd className="font-semibold text-slate-800">{relation.protocol ?? 'In-process runtime'}</dd>
+                  </div>
+                  <div className="flex items-center justify-between gap-3 py-2.5">
+                    <dt className="text-slate-500">Contract</dt>
+                    <dd className="text-right font-semibold text-slate-800">
+                      {relationContract
+                        ? `${relationContract.name}${relationContract.version ? ` ${relationContract.version}` : ''}`
+                        : 'No explicit contract'}
+                    </dd>
+                  </div>
+                  <div className="flex items-center justify-between gap-3 py-2.5">
+                    <dt className="text-slate-500">Deployment boundary</dt>
+                    <dd
+                      className={`font-semibold ${crossesDeploymentBoundary ? 'text-amber-700' : 'text-emerald-700'}`}
+                    >
+                      {crossesDeploymentBoundary ? 'Crosses boundary' : 'Within boundary'}
+                    </dd>
+                  </div>
+                  <div className="flex items-center justify-between gap-3 py-2.5">
+                    <dt className="flex items-center gap-1.5 text-slate-500">
+                      <DatabaseZap aria-hidden="true" size={13} /> Source
+                    </dt>
+                    <dd className="font-semibold text-slate-800">Demo architecture snapshot</dd>
+                  </div>
+                </dl>
+                <button
+                  className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-slate-900 px-3 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-slate-700 disabled:cursor-default disabled:bg-slate-200 disabled:text-slate-500"
+                  disabled={relationAlreadyAnnotated}
+                  onClick={() => addFinding(relationFinding(relation))}
+                  type="button"
+                >
+                  <Plus aria-hidden="true" size={14} />
+                  {relationAlreadyAnnotated ? 'Finding added' : 'Add finding'}
+                </button>
+              </section>
+            ) : inspection ? (
               <section>
                 <div className="mb-4 flex items-start gap-3">
                   <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-slate-100 text-slate-600">
@@ -346,57 +397,6 @@ export function ContextPanel() {
                     ) : null}
                   </ul>
                 </div>
-              </section>
-            ) : relation ? (
-              <section>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-400">Relation</p>
-                <h3 className="mt-1 text-base font-semibold text-slate-900">
-                  {relationSource?.name ?? relation.sourceId}
-                </h3>
-                <p className="my-2 text-xs font-semibold text-slate-400">
-                  ↓ {relation.protocol ?? relation.type.replaceAll('-', ' ')}
-                </p>
-                <h3 className="text-base font-semibold text-slate-900">{relationTarget?.name ?? relation.targetId}</h3>
-                {relation.description ? (
-                  <p className="mt-4 text-xs leading-5 text-slate-600">{relation.description}</p>
-                ) : null}
-                <dl className="mt-4 divide-y divide-slate-200 rounded-lg border border-slate-200 bg-slate-50 px-3 text-xs">
-                  <div className="flex items-center justify-between gap-3 py-2.5">
-                    <dt className="text-slate-500">Protocol</dt>
-                    <dd className="font-semibold text-slate-800">{relation.protocol ?? 'In-process runtime'}</dd>
-                  </div>
-                  <div className="flex items-center justify-between gap-3 py-2.5">
-                    <dt className="text-slate-500">Contract</dt>
-                    <dd className="text-right font-semibold text-slate-800">
-                      {relationContract
-                        ? `${relationContract.name}${relationContract.version ? ` ${relationContract.version}` : ''}`
-                        : 'No explicit contract'}
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between gap-3 py-2.5">
-                    <dt className="text-slate-500">Deployment boundary</dt>
-                    <dd
-                      className={`font-semibold ${crossesDeploymentBoundary ? 'text-amber-700' : 'text-emerald-700'}`}
-                    >
-                      {crossesDeploymentBoundary ? 'Crosses boundary' : 'Within boundary'}
-                    </dd>
-                  </div>
-                  <div className="flex items-center justify-between gap-3 py-2.5">
-                    <dt className="flex items-center gap-1.5 text-slate-500">
-                      <DatabaseZap aria-hidden="true" size={13} /> Source
-                    </dt>
-                    <dd className="font-semibold text-slate-800">Demo architecture snapshot</dd>
-                  </div>
-                </dl>
-                <button
-                  className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-slate-900 px-3 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-slate-700 disabled:cursor-default disabled:bg-slate-200 disabled:text-slate-500"
-                  disabled={relationAlreadyAnnotated}
-                  onClick={() => addFinding(relationFinding(relation))}
-                  type="button"
-                >
-                  <Plus aria-hidden="true" size={14} />
-                  {relationAlreadyAnnotated ? 'Finding added' : 'Add finding'}
-                </button>
               </section>
             ) : (
               <section className="overflow-hidden rounded-lg border border-slate-200 bg-slate-50">

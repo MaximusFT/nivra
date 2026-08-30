@@ -1,94 +1,109 @@
-# Nivra — Five-Step Demo Script
+# Nivra — Three-Minute Video Teleprompter
 
-Target duration: under three minutes.
+Target duration: **2:45–2:55**. Text calibrated for a calm speaking pace without long pauses.
 
-Russian timed teleprompter with exact UI actions: [VIDEO_SCRIPT_RU.md](VIDEO_SCRIPT_RU.md).
+Russian timed teleprompter: [VIDEO_SCRIPT_RU.md](VIDEO_SCRIPT_RU.md).
 
 ## Before recording
 
-1. Use a clean browser profile with WebMCP enabled.
-2. Open Nivra and confirm the footer says `WebMCP ready`.
-3. Select **Reset Demo**.
-4. Keep the Context panel visible.
+- Open `https://nivra-psi.vercel.app` in Chrome with WebMCP.
+- Confirm the footer displays `WebMCP ready · 7 tools`.
+- Set browser zoom to 100% and recording resolution to 1920×1080.
+- Click `Reset Demo`.
+- Do not move cursor unnecessarily.
 
-Opening narration:
+## 0:00–0:20 — Problem & Product
 
-```text
-Nivra is a shared architecture workspace for an architect and an AI agent. This demo starts from an imported Commerce architecture snapshot. I want to verify one assumption: is Checkout really independently deployable?
-```
+**On screen:** Initial Commerce HLD. Do not click anything.
 
-## 1. Read the shared architecture
+**Speak:**
 
-Prompt:
+> Large architecture is hard to keep in mind, especially when it changes every sprint. Nivra is a shared architecture workspace for an engineer and an AI agent. The human sees an interactive map, while the agent works with the same structured model via WebMCP. Today, I want to verify one assumption: can Checkout really be developed and released independently?
 
-```text
-Read the active architecture. Is Checkout independently deployable?
-```
+## 0:20–0:38 — Architectural Context
 
-Expected result: the agent calls `get_architecture`. Point out that the HLD presents Checkout as a separately deployed frontend artifact.
+**On screen:** Click `Product Service`, then `Checkout MFE`. Pause on Context.
 
-The workspace can also be explored manually. Selecting Checkout opens its owner, deployment information, evidence source and an explicit **Explore Checkout internals** action; selecting unrelated elements shows their own context instead of Checkout actions.
+**Speak:**
 
-For a self-contained rehearsal without an external agent, select **Run guided agent demo**. Nivra clearly labels this as a local simulation and stages the same four verified operations in Agent Activity: read architecture, inspect Checkout, open evidence and record a Finding.
+> This demo starts from an imported Commerce Platform snapshot. I can select any element to view its owner, deployment unit, and dependencies. Checkout looks like a separate microfrontend, but a separate box on a diagram does not guarantee independence. It has its own low-level view that can be explored.
 
-Select **Explore evidence manually** to skip the staged sequence and open the same shared-state relation directly. The footer keeps the latest two steps visible; **View all** opens the complete activity history.
+## 0:38–1:02 — Agent Analysis
 
-## 2. Reveal the hidden coupling
+**On screen:** Click empty canvas background, then `Run guided agent demo`. Do not move cursor until all four steps appear.
 
-Prompt:
+**Speak:**
 
-```text
-Inspect Checkout, open its low-level view, and show the most important evidence for any coupling risk.
-```
+> I am running guided analysis. For an autonomous demo, Nivra transparently executes the same verified sequence of WebMCP tool calls. In a live session, a connected agent invokes these tools. It reads the model, inspects the Checkout boundary, opens internal architecture, and records the observed risk. All operations appear in Agent Activity, and the full history can be expanded at any time.
 
-Expected result: the agent calls `inspect_element` and `show_architecture_view`; Checkout LLD focuses `Basket Adapter -> Product Store` with the `shares state` label.
+## 1:02–1:28 — Hidden Coupling
 
-Narration:
+**On screen:** Point to the red `shares state` relation. Click it if needed. In Context, highlight `Crosses boundary` and `No explicit contract`.
 
-```text
-A separate box does not guarantee an independent system. Nivra found that Basket Adapter consumes Product's in-process runtime state across a deployment boundary. Pricing uses an explicit Product API contract, so that dependency is acceptable.
-```
+**Speak:**
 
-## 3. Record explicit policy
+> Here is the key piece of evidence. Basket Adapter directly uses Product Store at runtime. This dependency crosses a deployment boundary with no explicit contract, so changing Product's internal state could break Checkout. In comparison, Pricing Module integrates with Product Service via REST and a versioned API contract. That dependency is explicit and controlled.
 
-Prompt:
+## 1:28–1:50 — Human Decision & Current Validation
 
-```text
-Record the policy required to make Checkout independently deployable, then validate the current architecture.
-```
+**On screen:** Click `Turn finding into policy`, then `Save and validate policy`.
 
-Expected result: the agent calls `add_constraint` for the four canonical rules and `validate_architecture` with `current`. The Policy panel shows `2 passed / 2 failed`.
+**Speak:**
 
-In the manual path, select **Turn finding into policy**, review the four decisions, then select **Save and validate policy**. The failed result explains that Checkout is not independently deployable and reveals one next action. The Proposal action is intentionally hidden before validation.
+> The agent uncovered facts, but the architectural decision remains with the human. I permit REST integration, forbid shared runtime state, and require independent deployment without cycles. Nivra turns these decisions into executable policy and validates Current Architecture. The result is two rules passed and two failed. Now it is clear not only what is broken, but why.
 
-## 4. Create a remediation proposal
+## 1:50–2:15 — Proposal & Visual Diff
 
-Prompt:
+**On screen:** Click `Create remediation proposal`. Highlight the two diverging relations labeled `REMOVED` and `ADDED`.
 
-```text
-Create a remediation proposal that removes the runtime state dependency without changing Current Architecture.
-```
+**Speak:**
 
-Expected result: the agent calls `create_proposal`. The workspace moves to Proposal mode and shows both sides of the diff at once: the new Checkout Snapshot Contract is marked `ADDED`, while Product Store and the old runtime relation remain visible as muted `REMOVED` evidence.
+> I am creating a remediation proposal. Current Architecture is never overwritten. Nivra presents the replacement directly on the canvas: the old runtime dependency on Product Store is muted and marked as removed, while the new Checkout Snapshot Contract appears as added. This is a separate alternative that can be compared against the baseline.
 
-## 5. Verify and preserve Current
+## 2:15–2:36 — Deterministic Success
 
-Prompt:
+**On screen:** Click `Validate proposal architecture`, then `Prepare implementation plan`.
 
-```text
-Validate the proposal, then switch back to Current and confirm that the original architecture is unchanged.
-```
+**Speak:**
 
-Expected result: the agent calls `validate_architecture` for Proposal and Current. Proposal reports `4 passed / 0 failed`; Current restores the original `shares state` relation. Select **Prepare implementation plan** to produce a five-step delivery brief, then select **Save as architecture branch**.
+> Now Nivra deterministically validates the Proposal against the exact same rules. All four policies pass. From this verified solution, Nivra generates an implementation brief: add the contract, publish the snapshot, migrate the adapter, verify independent deployment, and remove the legacy dependency. This plan can be copied as Markdown directly into delivery workflows.
 
-The temporary Current/Proposal comparison becomes a durable branch selector. `proposal/checkout-isolation` shows the accepted architecture without diff markers; switching to `current/commerce-1.35` restores the original runtime dependency.
+## 2:36–2:55 — Preserving the Branch & Conclusion
 
-Closing narration:
+**On screen:** Click `Save as architecture branch`. In the branch selector, choose `current/commerce-1.35`, then switch back to `proposal/checkout-isolation · verified`.
 
-```text
-The agent did not replace the architect. It exposed evidence, the human turned a trade-off into policy, and Nivra saved the verified alternative as an architecture branch ready for delivery. Current Architecture was never overwritten.
-```
+**Speak:**
 
-## Fallback
+> The final output is not chat advice, but a verified architecture branch. I can return to canonical Current with the original red coupling or switch to saved Checkout Isolation as the clean target architecture. Nivra combines agent discovery, human policy, proposal generation, and verifiable delivery paths without ever altering Current without the architect's consent.
 
-When an external WebMCP client is unavailable, select **Run guided agent demo**, then continue from the generated Finding through Policy, Proposal, verification and implementation planning. The footer identifies this activity as `Demo simulation`; it does not impersonate a connected external agent. The documented browser gate remains `npm run test:webmcp`.
+## Backup Shortcuts
+
+If the recording exceeds three minutes:
+
+1. In the 0:20 block, skip clicking `Product Service` and select `Checkout MFE` directly.
+2. In the 1:02 block, omit the sentence comparing Pricing Module.
+3. In the closing block, switch branches only once to Current and conclude on the red relation.
+
+## Honest Framing Note
+
+The `Run guided agent demo` button triggers an in-browser execution of the verified WebMCP tool sequence via `document.modelContext.executeTool`. Do not claim an external LLM is reasoning in real time during this automated demo step. For live external WebMCP client recordings, use the WebMCP prompts below.
+
+## WebMCP Prompts for Live Agent Sessions
+
+When recording with a connected external WebMCP client (e.g. VS Code Chat), use these five exact prompts:
+
+1. **Read Architecture:**
+   > Read the active architecture. Is Checkout independently deployable?
+
+2. **Inspect & Reveal Evidence:**
+   > Inspect Checkout, open its low-level view, and show the most important evidence for any coupling risk.
+
+3. **Record Policy & Validate:**
+   > Record the policy required to make Checkout independently deployable, then validate the current architecture.
+
+4. **Create Proposal:**
+   > Create a remediation proposal that removes the runtime state dependency without changing Current Architecture.
+
+5. **Verify & Preserve:**
+   > Validate the proposal, then switch back to Current and confirm that the original architecture is unchanged.
+
